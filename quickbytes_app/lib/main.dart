@@ -16,6 +16,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 }
 
 void main() async {
+  const localIp = '192.168.0.101';
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
@@ -26,13 +27,11 @@ void main() async {
     try {
       print("setting up firestore settings");
 
-      // FirebaseFirestore.instance.settings = const Settings(
-      //   host: 'localhost',
-      //   sslEnabled: false,
-      //   persistenceEnabled: false,
-      // );
-
-      FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
+      FirebaseFirestore.instance.settings = const Settings(
+        host: '$localIp:8080',
+        sslEnabled: false,
+        persistenceEnabled: false,
+      );
     } catch (e) {
       print(e);
     }
@@ -54,36 +53,6 @@ class MyApp extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       home: const NotificationPage(),
-    );
-  }
-}
-
-class Intermediate extends StatelessWidget {
-  const Intermediate({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: TextButton(
-          child: const Text('Go Go QuickBytes'),
-          // onPressed: () async {
-          //   try {
-          //     FirebaseFirestore.instance
-          //         .collection('test')
-          //         .add({'emulator': true});
-          //   } catch (e) {
-          //     print(e);
-          //   }
-          // },
-          onPressed: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (c) => const NewsPage(),
-            ),
-          ),
-        ),
-      ),
     );
   }
 }
