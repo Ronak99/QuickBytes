@@ -5,10 +5,11 @@ import ApiError from "../utils/ApiError"
 
 const notifyTopic = async (notification: AppNotification) => {
     try {
-        const response = await notifications.sendToTopic(notification.topic, notification.payload)
-        return response.messageId;
-    } catch (e) {
-        throw new ApiError(httpStatus.EXPECTATION_FAILED, JSON.stringify(e));
+        // const response = await notifications.sendToTopic(notification.topic, notification.payload)
+        return notification;
+        // return response.messageId;
+    } catch (e: any) {
+        throw new ApiError(httpStatus.EXPECTATION_FAILED, e);
     }
 }
 
