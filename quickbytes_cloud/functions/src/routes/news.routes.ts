@@ -2,11 +2,13 @@ import { onDocumentCreated } from 'firebase-functions/v2/firestore'
 import { onRequest, onCall } from 'firebase-functions/v2/https'
 import ApiErrorHandler from '../utils/ApiErrorHandler';
 import * as newsService from '../services/news.service';
-import { News } from '../models/news';
+import { Article } from '../models/article';
 
-const onNewsPublish = onDocumentCreated("news/{newsId}", (newsDoc) => {
-    newsService.onNewsPublish();
-    console.log(newsDoc.data?.data())
+/**
+ * Notifies users of the article that was published under the news collection
+ */
+const onNewsPublish = onDocumentCreated("news/{newsId}", async (newsDoc) => {
+    return await newsService.onNewsPublish({ article: newsDoc.data?.data() as Article });
 });
 
 
@@ -18,7 +20,7 @@ const onNewsPublish = onDocumentCreated("news/{newsId}", (newsDoc) => {
  */
 const publishNews = onRequest(async (request, response) => {
     try {
-        const newsId = await newsService.publishNews({ news: request.body });
+        const newsId = await newsService.publishNews({ article: request.body });
         response.send({ 'success': newsId })
     } catch (error: any) {
         new ApiErrorHandler(error, response);

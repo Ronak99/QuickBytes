@@ -1,9 +1,9 @@
 export enum Relevancy {
-    all,
-    major,
+    all = "all",
+    major = "major",
 }
 
-export interface News {
+export interface Article {
     id?: string,
     title: string,
     content: string,
