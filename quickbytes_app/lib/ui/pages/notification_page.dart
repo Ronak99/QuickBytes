@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
@@ -24,6 +25,18 @@ class NotificationPage extends StatelessWidget {
                   }
                 },
                 child: const Text('Subscribe to notification'),
+              ),
+              TextButton(
+                onPressed: () async {
+                  try {
+                    FirebaseFirestore.instance
+                        .collection('test')
+                        .add({'emulator': true});
+                  } catch (e) {
+                    print(e);
+                  }
+                },
+                child: const Text('Firebase test'),
               ),
             ],
           ),
