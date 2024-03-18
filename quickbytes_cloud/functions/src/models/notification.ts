@@ -1,6 +1,6 @@
 interface AppNotification {
     topic: string,
-    payload: Payload,
+    payload: {},
 }
 
 interface Payload {
@@ -8,6 +8,7 @@ interface Payload {
         title: string,
         body: string,
         channel_id: string,
+        imageUrl: string,
         priority?: 'high',
         click_action?: 'FLUTTER_NOTIFICATION_CLICK',
     },
