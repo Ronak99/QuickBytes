@@ -1,34 +1,34 @@
+import 'package:authentication_repository/authentication_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:quickbytes_app/app.dart';
+import 'package:quickbytes_app/app/app.dart';
+import 'package:quickbytes_app/app/bloc_observer.dart';
 import 'package:quickbytes_app/service/notification_service.dart';
-import 'package:quickbytes_app/ui/pages/news_page.dart';
-import 'package:quickbytes_app/ui/pages/notification_page.dart';
-
-//export PATH="/Users/ronakpustack/.shorebird/bin:$PATH"
-//  asia-south1
+import 'package:flutter/widgets.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print(message.notification);
 }
 
-void main() async {
-  const localIp = '192.168.0.101';
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+_setupBloc() {
+  Bloc.observer = const AppBlocObserver();
+}
 
-  NotificationService().initialize();
+_setupMessaging() {
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+}
 
+_setupLocalEmulator() {
   if (kDebugMode) {
     try {
-      print("setting up firestore settings");
-
       FirebaseFirestore.instance.settings = const Settings(
-        host: '$localIp:8080',
+        host: '192.168.0.101:8080',
         sslEnabled: false,
         persistenceEnabled: false,
       );
@@ -36,23 +36,21 @@ void main() async {
       print(e);
     }
   }
-
-  runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'QuickBytes',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      debugShowCheckedModeBanner: false,
-      home: const NotificationPage(),
-    );
-  }
+  NotificationService().initialize();
+  _setupBloc();
+  _setupMessaging();
+  // _setupLocalEmulator();
+
+  final authenticationRepository = AuthenticationRepository();
+  await authenticationRepository.user.first;
+
+  runApp(
+    App(authenticationRepository: authenticationRepository),
+  );
 }

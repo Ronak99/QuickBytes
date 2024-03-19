@@ -43,6 +43,11 @@ dependencies:
   firebase_core: ^2.24.2
   firebase_messaging: ^14.7.10
 
+  authentication_repository:
+    path: packages/authentication_repository
+  equatable: ^2.0.5
+  flow_builder: ^0.0.10
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
