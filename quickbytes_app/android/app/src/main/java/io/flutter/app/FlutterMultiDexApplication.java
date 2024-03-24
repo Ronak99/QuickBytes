@@ -12,10 +12,16 @@ import android.content.Context;
 import androidx.annotation.CallSuper;
 import androidx.multidex.MultiDex;
 
+import com.quickbytes.quickbytes_app.Services.NotificationService;
+import com.quickbytes.quickbytes_app.Utils.NotificationIdentifier;
+
 /**
  * Extension of {@link android.app.Application}, adding multidex support.
  */
 public class FlutterMultiDexApplication extends Application {
+
+  public static NotificationIdentifier notificationIdentifier = new NotificationIdentifier();
+
   @Override
   @CallSuper
   protected void attachBaseContext(Context base) {
