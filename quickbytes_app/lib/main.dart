@@ -1,18 +1,41 @@
+import 'package:authentication_repository/authentication_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:quickbytes_app/app.dart';
+import 'package:quickbytes_app/app/app.dart';
+import 'package:quickbytes_app/app/bloc_observer.dart';
 import 'package:quickbytes_app/service/notification_service.dart';
-import 'package:quickbytes_app/ui/pages/news_page.dart';
-import 'package:quickbytes_app/ui/pages/notification_page.dart';
-
-//export PATH="/Users/ronakpustack/.shorebird/bin:$PATH"
-//  asia-south1
+import 'package:flutter/widgets.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print(message.notification);
+}
+
+_setupBloc() {
+  Bloc.observer = const AppBlocObserver();
+}
+
+_setupMessaging() {
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+}
+
+_setupLocalEmulator() {
+  if (kDebugMode) {
+    try {
+      FirebaseFirestore.instance.settings = const Settings(
+        host: '192.168.0.101:8080',
+        sslEnabled: false,
+        persistenceEnabled: false,
+      );
+    } catch (e) {
+      print(e);
+    }
+  }
 }
 
 void main() async {
@@ -20,70 +43,14 @@ void main() async {
   await Firebase.initializeApp();
 
   NotificationService().initialize();
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  _setupBloc();
+  _setupMessaging();
+  _setupLocalEmulator();
 
-  if (kDebugMode) {
-    try {
-      print("setting up firestore settings");
+  final authenticationRepository = AuthenticationRepository();
+  await authenticationRepository.user.first;
 
-      // FirebaseFirestore.instance.settings = const Settings(
-      //   host: 'localhost',
-      //   sslEnabled: false,
-      //   persistenceEnabled: false,
-      // );
-
-      FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'QuickBytes',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      debugShowCheckedModeBanner: false,
-      home: const NotificationPage(),
-    );
-  }
-}
-
-class Intermediate extends StatelessWidget {
-  const Intermediate({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: TextButton(
-          child: const Text('Go Go QuickBytes'),
-          // onPressed: () async {
-          //   try {
-          //     FirebaseFirestore.instance
-          //         .collection('test')
-          //         .add({'emulator': true});
-          //   } catch (e) {
-          //     print(e);
-          //   }
-          // },
-          onPressed: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (c) => const NewsPage(),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+  runApp(
+    App(authenticationRepository: authenticationRepository),
+  );
 }

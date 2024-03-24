@@ -1,11 +1,19 @@
-import { News } from "../models/news";
+import Settings from "src/models/settings";
+import { Article } from "../models/article";
 
 const newsConverter = {
-    toFirestore: (data: News) => data,
+    toFirestore: (data: Article) => data,
     fromFirestore: (snap: FirebaseFirestore.QueryDocumentSnapshot) =>
-        snap.data() as News
+        snap.data() as Article
+}
+
+const settingsConverter = {
+    toFirestore: (data: Settings) => data,
+    fromFirestore: (snap: FirebaseFirestore.QueryDocumentSnapshot) =>
+        snap.data() as Settings
 }
 
 export {
     newsConverter,
+    settingsConverter,
 }

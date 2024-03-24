@@ -1,24 +1,56 @@
-import httpStatus = require("http-status")
-import { News } from "../models/news"
-import ApiError from "../utils/ApiError"
-import { logger } from 'firebase-functions/v2'
-import { Firestore } from "../utils/FirestoreReference"
+import httpStatus = require("http-status");
+import { Article } from "../models/article";
+import ApiError from "../utils/ApiError";
+import { logger } from "firebase-functions/v2";
+import { Firestore } from "../utils/FirestoreReference";
+import { notifyTopic } from "./notifications.service";
+import AppNotification from "src/models/app_notification";
 
-const onNewsPublish = () => {
-    throw new ApiError(httpStatus.BAD_REQUEST, "An error occurred!")
-}
+const onNewsPublish = async ({ article }: { article: Article }) => {
+  let log: any = {};
 
-const publishNews = async ({ news }: { news: News }) => {
+  for (const category of article.category_list) {
+    const topic = `${category}_${article.relevancy}`;
+
+    const payload = {
+      type: "delivery",
+      article: article,
+    };
+
+    const notification: AppNotification = {
+      topic: topic,
+      payload: {
+        data: {
+          data: JSON.stringify(payload),
+        },
+      },
+    };
+
+    // handle response
+    let response: any;
     try {
-        news.id = Firestore.news.doc().id
-        await Firestore.news.doc(news.id).set(news);
-        return news.id
+      response = await notifyTopic(notification);
     } catch (e) {
-        throw new ApiError(httpStatus.FORBIDDEN, "Forbidden")
+      if (e instanceof ApiError) {
+        response = e.message;
+      }
     }
-}
 
-export {
-    onNewsPublish,
-    publishNews,
-}
+    // notification response
+    log[topic] = response;
+  }
+
+  Firestore.notificationDelivery.doc(article.id!).set(log);
+};
+
+const publishNews = async ({ article }: { article: Article }) => {
+  try {
+    article.id = Firestore.news.doc().id;
+    await Firestore.news.doc(article.id).set(article);
+    return article.id;
+  } catch (e) {
+    throw new ApiError(httpStatus.FORBIDDEN, "Forbidden");
+  }
+};
+
+export { onNewsPublish, publishNews };

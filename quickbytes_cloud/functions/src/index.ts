@@ -1,11 +1,12 @@
 import { onNewsPublish, publishNews, removeNews } from './routes/news.routes'
 import { notifyTopic } from './routes/notifications.route'
-
-// cd quickbytes_cloud/functions
+import { onSettingsUpdate, createSetting } from './routes/settings.route'
 
 export {
     notifyTopic,
-    // onNewsPublish,
-    // publishNews,
-    // removeNews,
+    onNewsPublish,
+    publishNews,
+    removeNews,
+    onSettingsUpdate,
+    createSetting,
 }
