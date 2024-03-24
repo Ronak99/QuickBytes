@@ -7,9 +7,9 @@ export interface Article {
   id?: string;
   title: string;
   content: string;
+  image: string;
   published_on: Date;
   category_list: [];
   relevancy: Relevancy;
   source_url: string;
-  image: string;
 }

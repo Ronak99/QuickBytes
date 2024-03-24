@@ -5,24 +5,32 @@ import { Article } from "../models/article";
 import AppNotification from "src/models/app_notification";
 
 const notifyTopic = onCall(async (request) => {
+  const payload = {
+    type: "delivery",
+    article: {
+      id: "random-article-1",
+      title: "News Title",
+      content: "Content",
+      image:
+        "https://png.pngtree.com/thumb_back/fh260/background/20230519/pngtree-landscape-jpg-wallpapers-free-download-image_2573540.jpg",
+      published_on: "date",
+      category_list: ["entertainment", "politics"],
+      relevancy: "all",
+      source_url: "https://www.google.com",
+    },
+  };
+
   const notification: AppNotification = {
-    topic: "example",
+    topic: "entertainment_all",
     payload: {
-      notification: {
-        title:
-          "What are the important Lok Sabha election dates for Madhya Pradesh",
-        channel_id: "default",
-        imageUrl:
-          "https://media.istockphoto.com/id/1470130937/photo/young-plants-growing-in-a-crack-on-a-concrete-footpath-conquering-adversity-concept.webp?b=1&s=170667a&w=0&k=20&c=IRaA17rmaWOJkmjU_KD29jZo4E6ZtG0niRpIXQN17fc=",
-      },
       data: {
-        id: "1234",
+        data: JSON.stringify(payload),
       },
     },
   };
 
-  await notificationService.notifyTopic(notification);
-  return "Done";
+  const response = await notificationService.notifyTopic(notification);
+  return response;
 });
 
 export { notifyTopic };

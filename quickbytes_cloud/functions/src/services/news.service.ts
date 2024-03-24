@@ -12,10 +12,18 @@ const onNewsPublish = async ({ article }: { article: Article }) => {
   for (const category of article.category_list) {
     const topic = `${category}_${article.relevancy}`;
 
-    // initialize notification
+    const payload = {
+      type: "delivery",
+      article: article,
+    };
+
     const notification: AppNotification = {
-      payload: {},
       topic: topic,
+      payload: {
+        data: {
+          data: JSON.stringify(payload),
+        },
+      },
     };
 
     // handle response
