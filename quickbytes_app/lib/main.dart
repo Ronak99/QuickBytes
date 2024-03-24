@@ -45,7 +45,7 @@ void main() async {
   NotificationService().initialize();
   _setupBloc();
   _setupMessaging();
-  // _setupLocalEmulator();
+  _setupLocalEmulator();
 
   final authenticationRepository = AuthenticationRepository();
   await authenticationRepository.user.first;

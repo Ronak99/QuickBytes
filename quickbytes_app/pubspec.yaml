@@ -47,6 +47,7 @@ dependencies:
     path: packages/authentication_repository
   equatable: ^2.0.5
   flow_builder: ^0.0.10
+  dio: ^5.4.1
 
 dev_dependencies:
   flutter_test:
