@@ -1,21 +1,21 @@
-interface AppNotification {
+import { Article } from "./article";
+
+enum Category {
+  deliverNews = "deliver_news",
+  cancelNews = "cancel_news",
+  randomUpdates = "random_updates",
+}
+
+interface BaseNotification {
   topic: string;
   payload: {};
 }
 
-interface Payload {
-  notification: {
-    title: string;
-    body: string;
-    channel_id: string;
-    imageUrl: string;
-    priority?: "high";
-    click_action?: "FLUTTER_NOTIFICATION_CLICK";
-  };
-  data: {
-    id: number;
-    articleId: string;
+interface NewsNotification extends BaseNotification {
+  payload: {
+    article: Article;
+    category: Category;
   };
 }
 
-export default AppNotification;
+export { NewsNotification, BaseNotification, Category };

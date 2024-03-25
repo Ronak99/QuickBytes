@@ -4,7 +4,7 @@ import ApiError from "../utils/ApiError";
 import { logger } from "firebase-functions/v2";
 import { Firestore } from "../utils/FirestoreReference";
 import { notifyTopic } from "./notifications.service";
-import AppNotification from "src/models/app_notification";
+import { Category, NewsNotification } from "../models/app_notification";
 
 const onNewsPublish = async ({ article }: { article: Article }) => {
   let log: any = {};
@@ -12,17 +12,11 @@ const onNewsPublish = async ({ article }: { article: Article }) => {
   for (const category of article.category_list) {
     const topic = `${category}_${article.relevancy}`;
 
-    const payload = {
-      type: "delivery",
-      article: article,
-    };
-
-    const notification: AppNotification = {
+    const notification: NewsNotification = {
       topic: topic,
       payload: {
-        data: {
-          data: JSON.stringify(payload),
-        },
+        article: article,
+        category: Category.deliverNews,
       },
     };
 
