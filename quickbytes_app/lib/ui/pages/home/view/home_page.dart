@@ -1,14 +1,38 @@
-import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quickbytes_app/app/bloc/app_bloc.dart';
-import 'package:quickbytes_app/home/widgets/widgets.dart';
+import 'package:quickbytes_app/ui/pages/home/home.dart';
+import 'package:quickbytes_app/utils/platform_channel_handler.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   static Page<void> page() => const MaterialPage<void>(child: HomePage());
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final _platformChannel = PlatformChannelHandler();
+
+  @override
+  void initState() {
+    super.initState();
+
+    _initialize();
+  }
+
+  _initialize() async {
+    List<String> pendingNotifications =
+        await _platformChannel.getPendingNotifications();
+    print("Pending List: $pendingNotifications");
+
+    _platformChannel.initializeEventStream(onData: (data) {
+      print("Init Event Stream: $data");
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +72,22 @@ class HomePage extends StatelessWidget {
                 }
               },
               child: const Text("Subscribe to entertainment_all"),
+            ),
+            TextButton(
+              onPressed: () async {
+                // String id =
+                //     FirebaseFirestore.instance.collection('news').doc().id;
+
+                // NewsArticle(
+                //     title: 'test Title',
+                //     content: 'my content',
+                //     image: 'https://www.picsum.photos/800',
+                //     categoryList: ['entertainment'],
+                //     publishedOn: DateTime.now(),
+                //     relevancy: Relevancy.all,
+                //     sourceUrl: 'https://www.google.com');
+              },
+              child: const Text("Publish News"),
             ),
           ],
         ),

@@ -1,8 +1,9 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:quickbytes_app/login/cubit/login_cubit.dart';
-import 'package:quickbytes_app/login/view/login_form.dart';
+
+import '../cubit/login_cubit.dart';
+import 'login_form.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
