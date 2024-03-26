@@ -9,7 +9,7 @@ export interface Article {
   content: string;
   image: string;
   published_on: Date;
-  category_list: [];
+  category_list: string[];
   relevancy: Relevancy;
   source_url: string;
 }

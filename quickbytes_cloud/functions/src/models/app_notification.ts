@@ -1,9 +1,9 @@
 import { Article } from "./article";
 
 enum Category {
-  deliverNews = "deliver_news",
-  cancelNews = "cancel_news",
-  randomUpdates = "random_updates",
+  deliverNews = "deliverNews",
+  cancelNews = "cancelNews",
+  randomUpdates = "randomUpdates",
 }
 
 interface BaseNotification {

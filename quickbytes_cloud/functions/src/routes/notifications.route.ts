@@ -1,36 +1,30 @@
 import { onDocumentCreated } from "firebase-functions/v2/firestore";
 import { onRequest, onCall } from "firebase-functions/v2/https";
 import * as notificationService from "../services/notifications.service";
-import { Article } from "../models/article";
-import { NewsNotification } from "src/models/app_notification";
+import { Article, Relevancy } from "../models/article";
+import { Category, NewsNotification } from "../models/app_notification";
 
 const notifyTopic = onCall(async (request) => {
-  // const payload = {
-  //   type: "delivery",
-  //   article: {
-  //     id: "random-article-1",
-  //     title: "News Title",
-  //     content: "Content",
-  //     image:
-  //       "https://png.pngtree.com/thumb_back/fh260/background/20230519/pngtree-landscape-jpg-wallpapers-free-download-image_2573540.jpg",
-  //     published_on: "date",
-  //     category_list: ["entertainment", "politics"],
-  //     relevancy: "all",
-  //     source_url: "https://www.google.com",
-  //   },
-  // };
+  const notification: NewsNotification = {
+    topic: "entertainment_all",
+    payload: {
+      article: {
+        id: "random-article-1",
+        title: "News Title",
+        content: "Content",
+        image:
+          "https://png.pngtree.com/thumb_back/fh260/background/20230519/pngtree-landscape-jpg-wallpapers-free-download-image_2573540.jpg",
+        published_on: new Date(),
+        category_list: ["entertainment", "politics"],
+        relevancy: Relevancy.all,
+        source_url: "https://www.google.com",
+      },
+      category: Category.deliverNews,
+    },
+  };
 
-  // const notification: AppNotification = {
-  //   topic: "entertainment_all",
-  //   payload: {
-  //     data: {
-  //       data: JSON.stringify(payload),
-  //     },
-  //   },
-  // };
-
-  // const response = await notificationService.notifyTopic(notification);
-  return "response";
+  const response = await notificationService.notifyTopic(notification);
+  return response;
 });
 
 export { notifyTopic };

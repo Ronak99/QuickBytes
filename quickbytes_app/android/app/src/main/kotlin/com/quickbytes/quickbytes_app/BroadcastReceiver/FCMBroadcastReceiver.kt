@@ -6,20 +6,19 @@ import android.util.Log
 //import com.quickbytes.quickbytes_app.Services.NotificationService
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import com.quickbytes.quickbytes_app.Models.AppNotification
+import com.quickbytes.quickbytes_app.Models.NewsNotification
 import com.quickbytes.quickbytes_app.Services.NotificationService
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 
 
 class FCMBroadcastReceiver : FirebaseMessagingService() {
-    var remoteMessage: RemoteMessage? = null
-    val TAG:String = "FCMBroadcastReceiver"
+    val TAG: String = "FCMBroadcastReceiver"
 
     @SuppressLint("WrongConstant")
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         Log.d(TAG, "Message received")
-        val notificationService = NotificationService(applicationContext)
+        val json = Json { ignoreUnknownKeys = true }
         val payloadIsEmpty = remoteMessage.data.isEmpty()
 
         if (payloadIsEmpty) {
@@ -29,9 +28,12 @@ class FCMBroadcastReceiver : FirebaseMessagingService() {
 
         Log.d(TAG, "Payload is not empty")
         val payload = remoteMessage.data
+        val newsNotification = json.decodeFromString<NewsNotification>(payload["data"] as String)
 
-        val appNotification = Json.decodeFromString<AppNotification>(payload["data"] as String)
-        notificationService.dispatchNotification(appNotification)
+        if (newsNotification.isValid) {
+            val notificationService = NotificationService(applicationContext)
+            notificationService.dispatchNotification(newsNotification)
+        }
     }
 
     override fun onMessageSent(s: String) {

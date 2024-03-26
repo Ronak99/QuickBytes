@@ -10,10 +10,7 @@ import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
-import android.os.Build
-import android.util.Log
 import android.widget.RemoteViews
-import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -24,7 +21,7 @@ import com.quickbytes.quickbytes_app.Activity.NavigationActivity
 import com.quickbytes.quickbytes_app.Constants.kChannelId
 import com.quickbytes.quickbytes_app.Constants.kChannelName
 import com.quickbytes.quickbytes_app.Constants.kNotificationTypeNews
-import com.quickbytes.quickbytes_app.Models.AppNotification
+import com.quickbytes.quickbytes_app.Models.NewsNotification
 import com.quickbytes.quickbytes_app.R
 import io.flutter.app.FlutterMultiDexApplication
 import kotlinx.serialization.encodeToString
@@ -58,18 +55,18 @@ class NotificationService(val context: Context) {
         return currentNightMode == Configuration.UI_MODE_NIGHT_YES
     }
 
-    fun dispatchNotification(appNotification: AppNotification){
+    fun dispatchNotification(newsNotification: NewsNotification){
         createNotificationChannel()
 
-        val notificationHasBeenDelivered = FlutterMultiDexApplication.notificationIdentifier.hasBeenDelivered(appNotification.article.id)
+        val notificationHasBeenDelivered = FlutterMultiDexApplication.notificationIdentifier.hasBeenDelivered(newsNotification.article.id)
         if(notificationHasBeenDelivered) return;
 
         Glide.with(context)
             .asBitmap()
-            .load(appNotification.article.image)
+            .load(newsNotification.article.image)
             .into(object : CustomTarget<Bitmap>() {
                 override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                    prepareAndDispatch(context, resource, appNotification)
+                    prepareAndDispatch(context, resource, newsNotification)
                 }
 
                 override fun onLoadCleared(placeholder: Drawable?) {
@@ -78,24 +75,24 @@ class NotificationService(val context: Context) {
             })
     }
 
-    private fun prepareAndDispatch(context: Context, resource:Bitmap, appNotification: AppNotification) {
+    private fun prepareAndDispatch(context: Context, resource:Bitmap, newsNotification: NewsNotification) {
         // Prepare intent
         val navigationActivityIntent = Intent(context, NavigationActivity::class.java)
         navigationActivityIntent.putExtra("type", kNotificationTypeNews)
-        navigationActivityIntent.putExtra("data", Json.encodeToString<AppNotification>(appNotification))
+        navigationActivityIntent.putExtra("data", Json.encodeToString<NewsNotification>(newsNotification))
 
         // Prepare PendingIntent
         val intentFlags = PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-        val pendingIntent = PendingIntent.getActivity(context, appNotification.id, navigationActivityIntent, intentFlags)
+        val pendingIntent = PendingIntent.getActivity(context, newsNotification.id, navigationActivityIntent, intentFlags)
 
         // Prepare expanded view
         val expandedNotificationView = RemoteViews(context.packageName, R.layout.expanded_notification_view)
         expandedNotificationView.setImageViewBitmap(R.id.notification_image, resource)
-        expandedNotificationView.setTextViewText(R.id.expanded_notification_title, appNotification.article.title)
+        expandedNotificationView.setTextViewText(R.id.expanded_notification_title, newsNotification.article.title)
 
         // Prepare collapsed view
         val collapsedNotificationView = RemoteViews(context.packageName, R.layout.collapsed_notification_view)
-        collapsedNotificationView.setTextViewText(R.id.collapsed_notification_title, appNotification.article.title)
+        collapsedNotificationView.setTextViewText(R.id.collapsed_notification_title, newsNotification.article.title)
         collapsedNotificationView.setTextColor(R.id.collapsed_notification_title, notificationTitleColor)
 
         // Prepare notification
@@ -117,11 +114,11 @@ class NotificationService(val context: Context) {
             return
         }
 
-        NotificationManagerCompat.from(context).notify(appNotification.id, notification)
-        FlutterMultiDexApplication.notificationIdentifier.markAsDelivered(appNotification.article.id);
+        NotificationManagerCompat.from(context).notify(newsNotification.id, notification)
+        FlutterMultiDexApplication.notificationIdentifier.markAsDelivered(newsNotification.article.id);
     }
 
-    fun cancelNotification(appNotification: AppNotification) {
-        NotificationManagerCompat.from(context).cancel(appNotification.id)
+    fun cancelNotification(newsNotification: NewsNotification) {
+        NotificationManagerCompat.from(context).cancel(newsNotification.id)
     }
 }

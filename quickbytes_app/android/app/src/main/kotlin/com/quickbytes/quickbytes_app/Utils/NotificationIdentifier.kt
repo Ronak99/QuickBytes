@@ -1,7 +1,7 @@
 package com.quickbytes.quickbytes_app.Utils
 
 import android.util.Log
-import com.quickbytes.quickbytes_app.Models.NotificationType
+import com.quickbytes.quickbytes_app.Models.NotificationCategory
 import java.util.Random
 
 class NotificationIdentifier {
@@ -31,17 +31,14 @@ class NotificationIdentifier {
         return map[key] ?: 0
     }
 
-//    fun logMap() {
-//        Log.d(TAG, deliveryNotificationMap.toString())
-//    }
-
-    fun getNotificationId(itemId: String, notificationType: NotificationType): Int {
-        val map: MutableMap<String, Int>
-
-        if(notificationType == NotificationType.delivery){
-            map = deliveryNotificationMap
-        }else{
-            map = deliveredNotificationMap
+    fun getNotificationId(itemId: String, category: NotificationCategory): Int {
+        val map: MutableMap<String, Int> = when (category) {
+            NotificationCategory.cancelNews -> {
+                deliveredNotificationMap
+            }
+            else -> {
+                deliveryNotificationMap
+            }
         }
 
         return if (containsKey(itemId, map)) {
