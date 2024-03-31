@@ -41,7 +41,6 @@ dependencies:
   firebase_auth: ^4.16.0
   firebase_messaging: ^14.7.10
   equatable: ^2.0.5
-  flow_builder: ^0.0.10
   dio: ^5.4.1
   go_router: ^13.2.0
 
