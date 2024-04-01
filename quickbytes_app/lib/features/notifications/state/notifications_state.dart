@@ -1,16 +1,21 @@
 part of 'notifications_bloc.dart';
 
+// ignore: must_be_immutable
 final class NotificationState extends Equatable {
-  const NotificationState._({
+  NotificationState._({
     required this.notificationData,
-  });
+  }) {
+    if (notificationData.isEmpty) return;
+    notification = BaseNotification.fromJson(jsonDecode(notificationData));
+  }
 
-  const NotificationState.withData({required String notificationData})
+  NotificationState.withData({required String notificationData})
       : this._(notificationData: notificationData);
 
-  const NotificationState.initial() : this._(notificationData: '');
+  NotificationState.initial() : this._(notificationData: '');
 
   final String notificationData;
+  late BaseNotification notification;
 
   @override
   List<Object> get props => [notificationData];
