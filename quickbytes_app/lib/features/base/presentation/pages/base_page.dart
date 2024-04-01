@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quickbytes_app/core/navigation/routes.dart';
 import 'package:quickbytes_app/core/utils/platform_channel_handler.dart';
+import 'package:quickbytes_app/features/news/state/news_bloc.dart';
+import 'package:quickbytes_app/features/notifications/data/models/news/news_notification.dart';
 import 'package:quickbytes_app/features/notifications/state/notifications_bloc.dart';
 
 class BasePage extends StatefulWidget {
@@ -51,10 +53,16 @@ class _BasePageState extends State<BasePage> {
         ),
       ),
       listener: (context, state) {
-        // print('inside of the listener');
         if (state.notificationData.isNotEmpty) {
-          print("navigating to auth page");
-          AuthPageRoute().go(context);
+          if (state.notification is NewsNotification) {
+            HomePageRoute().go(context);
+
+            context.read<NewsBloc>().add(
+                  AddToTopRequested(
+                    (state.notification as NewsNotification).article,
+                  ),
+                );
+          }
         }
       },
     );

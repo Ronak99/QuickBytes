@@ -10,6 +10,7 @@ _$ArticleImpl _$$ArticleImplFromJson(Map<String, dynamic> json) =>
     _$ArticleImpl(
       id: json['id'] as String,
       title: json['title'] as String,
+      content: json['content'] as String,
       image: json['image'] as String,
       categoryList: (json['category_list'] as List<dynamic>)
           .map((e) => e as String)
@@ -23,6 +24,7 @@ Map<String, dynamic> _$$ArticleImplToJson(_$ArticleImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'title': instance.title,
+      'content': instance.content,
       'image': instance.image,
       'category_list': instance.categoryList,
       'source_url': instance.sourceUrl,

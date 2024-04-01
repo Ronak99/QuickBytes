@@ -22,6 +22,7 @@ Article _$ArticleFromJson(Map<String, dynamic> json) {
 mixin _$Article {
   String get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
+  String get content => throw _privateConstructorUsedError;
   String get image => throw _privateConstructorUsedError;
   @JsonKey(name: 'category_list')
   List<String> get categoryList => throw _privateConstructorUsedError;
@@ -44,6 +45,7 @@ abstract class $ArticleCopyWith<$Res> {
   $Res call(
       {String id,
       String title,
+      String content,
       String image,
       @JsonKey(name: 'category_list') List<String> categoryList,
       @JsonKey(name: 'source_url') String sourceUrl,
@@ -66,6 +68,7 @@ class _$ArticleCopyWithImpl<$Res, $Val extends Article>
   $Res call({
     Object? id = null,
     Object? title = null,
+    Object? content = null,
     Object? image = null,
     Object? categoryList = null,
     Object? sourceUrl = null,
@@ -80,6 +83,10 @@ class _$ArticleCopyWithImpl<$Res, $Val extends Article>
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      content: null == content
+          ? _value.content
+          : content // ignore: cast_nullable_to_non_nullable
               as String,
       image: null == image
           ? _value.image
@@ -115,6 +122,7 @@ abstract class _$$ArticleImplCopyWith<$Res> implements $ArticleCopyWith<$Res> {
   $Res call(
       {String id,
       String title,
+      String content,
       String image,
       @JsonKey(name: 'category_list') List<String> categoryList,
       @JsonKey(name: 'source_url') String sourceUrl,
@@ -135,6 +143,7 @@ class __$$ArticleImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? title = null,
+    Object? content = null,
     Object? image = null,
     Object? categoryList = null,
     Object? sourceUrl = null,
@@ -149,6 +158,10 @@ class __$$ArticleImplCopyWithImpl<$Res>
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      content: null == content
+          ? _value.content
+          : content // ignore: cast_nullable_to_non_nullable
               as String,
       image: null == image
           ? _value.image
@@ -180,6 +193,7 @@ class _$ArticleImpl extends _Article with DiagnosticableTreeMixin {
   const _$ArticleImpl(
       {required this.id,
       required this.title,
+      required this.content,
       required this.image,
       @JsonKey(name: 'category_list') required final List<String> categoryList,
       @JsonKey(name: 'source_url') required this.sourceUrl,
@@ -195,6 +209,8 @@ class _$ArticleImpl extends _Article with DiagnosticableTreeMixin {
   final String id;
   @override
   final String title;
+  @override
+  final String content;
   @override
   final String image;
   final List<String> _categoryList;
@@ -217,7 +233,7 @@ class _$ArticleImpl extends _Article with DiagnosticableTreeMixin {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Article(id: $id, title: $title, image: $image, categoryList: $categoryList, sourceUrl: $sourceUrl, relevancy: $relevancy, publishedOn: $publishedOn)';
+    return 'Article(id: $id, title: $title, content: $content, image: $image, categoryList: $categoryList, sourceUrl: $sourceUrl, relevancy: $relevancy, publishedOn: $publishedOn)';
   }
 
   @override
@@ -227,6 +243,7 @@ class _$ArticleImpl extends _Article with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('type', 'Article'))
       ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('title', title))
+      ..add(DiagnosticsProperty('content', content))
       ..add(DiagnosticsProperty('image', image))
       ..add(DiagnosticsProperty('categoryList', categoryList))
       ..add(DiagnosticsProperty('sourceUrl', sourceUrl))
@@ -241,6 +258,7 @@ class _$ArticleImpl extends _Article with DiagnosticableTreeMixin {
             other is _$ArticleImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title) &&
+            (identical(other.content, content) || other.content == content) &&
             (identical(other.image, image) || other.image == image) &&
             const DeepCollectionEquality()
                 .equals(other._categoryList, _categoryList) &&
@@ -258,6 +276,7 @@ class _$ArticleImpl extends _Article with DiagnosticableTreeMixin {
       runtimeType,
       id,
       title,
+      content,
       image,
       const DeepCollectionEquality().hash(_categoryList),
       sourceUrl,
@@ -282,6 +301,7 @@ abstract class _Article extends Article {
   const factory _Article(
       {required final String id,
       required final String title,
+      required final String content,
       required final String image,
       @JsonKey(name: 'category_list') required final List<String> categoryList,
       @JsonKey(name: 'source_url') required final String sourceUrl,
@@ -296,6 +316,8 @@ abstract class _Article extends Article {
   String get id;
   @override
   String get title;
+  @override
+  String get content;
   @override
   String get image;
   @override

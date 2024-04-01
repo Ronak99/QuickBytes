@@ -8,6 +8,7 @@ import 'package:quickbytes_app/features/base/state/app_bloc.dart';
 
 GoRouter appRouter(AppStatus appStatus) => GoRouter(
       routes: $appRoutes,
+      initialLocation: '/home',
       redirect: (BuildContext context, GoRouterState state) {
         switch (appStatus) {
           case AppStatus.authenticated:
