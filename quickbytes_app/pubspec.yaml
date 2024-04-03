@@ -55,6 +55,7 @@ dependencies:
 
   news_repository:
     path: packages/news_repository
+  logger: ^2.2.0
 
 dev_dependencies:
   flutter_test:

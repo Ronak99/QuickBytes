@@ -1,4 +1,5 @@
 import 'package:flutter/services.dart';
+import 'package:quickbytes_app/core/logs/logs.dart';
 
 class PlatformChannelHandler {
   final _platformChannel =
@@ -15,7 +16,7 @@ class PlatformChannelHandler {
           .listen((_) {})
         ..onData((data) => onData(data))
         ..onError((err) {
-          print("FlutterLog: $err");
+          Logger.instance.e("FlutterLog: $err");
         });
     }
   }

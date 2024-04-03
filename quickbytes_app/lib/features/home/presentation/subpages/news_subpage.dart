@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:news_repository/news_repository.dart';
+import 'package:quickbytes_app/core/logs/logs.dart';
 import 'package:quickbytes_app/core/widgets/blur_view.dart';
 import 'package:quickbytes_app/core/widgets/cached_image.dart';
 import 'package:quickbytes_app/features/news/state/news_bloc.dart';
-
-final CardSwiperController cardSwiperController = CardSwiperController();
 
 class NewsSubpage extends StatelessWidget {
   const NewsSubpage({super.key});
@@ -19,50 +18,57 @@ class NewsSubpage extends StatelessWidget {
           final newsBloc = context.read<NewsBloc>();
           newsBloc.add(CardSwitched(index: 0));
           newsBloc.add(
-            ArticleSelected(newsBloc.state.articles[0]),
+            ArticleSelectedAtIndex(0),
           );
         },
       ),
       body: BlocBuilder<NewsBloc, NewsState>(
         builder: (context, state) {
+          Logger.instance.i(state.index, stackTrace: StackTrace.empty);
+          final newsBloc = context.read<NewsBloc>();
+
+          AllowedSwipeDirection a = state.index == 0
+              ? const AllowedSwipeDirection.only(up: true, down: false)
+              : const AllowedSwipeDirection.only(down: true, up: false);
+
+          print(a.toString());
+
           return Stack(
             children: [
-              if (state.selectedArticle == null)
-                const SizedBox.shrink()
-              else
-                BlurView(
-                  height: MediaQuery.of(context).size.height,
-                  width: MediaQuery.of(context).size.width,
-                  sigmaX: 2,
-                  sigmaY: 2,
-                  color: Colors.black54,
-                  child: SizedBox(
-                    child: CachedImage(
-                      state.selectedArticle!.image,
-                      fit: BoxFit.cover,
-                      useOldImageOnUrlChange: true,
-                      placeholder: Container(
-                        decoration: const BoxDecoration(
-                          color: Color(0xff191818),
-                        ),
+              BlurView(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                sigmaX: 2,
+                sigmaY: 2,
+                color: Colors.black54,
+                child: SizedBox(
+                  child: CachedImage(
+                    state.selectedArticle.image,
+                    fit: BoxFit.cover,
+                    useOldImageOnUrlChange: true,
+                    placeholder: Container(
+                      decoration: const BoxDecoration(
+                        color: Color(0xff191818),
                       ),
                     ),
                   ),
                 ),
+              ),
               if (state.articles.isEmpty)
                 const Center(child: Text('You are all caught up!'))
               else
                 CardSwiper(
                   cardsCount: state.articles.length,
                   padding: EdgeInsets.zero,
-                  controller: context.read<NewsBloc>().cardSwiperController,
-                  allowedSwipeDirection:
-                      const AllowedSwipeDirection.symmetric(vertical: true),
+                  controller: newsBloc.cardSwiperController,
+                  allowedSwipeDirection: state.index == 0
+                      ? const AllowedSwipeDirection.only(up: true)
+                      : const AllowedSwipeDirection.symmetric(vertical: true),
                   onSwipe: (previousIndex, currentIndex, direction) {
                     if (currentIndex != null) {
-                      context.read<NewsBloc>().add(
-                            ArticleSelected(state.articles[currentIndex]),
-                          );
+                      Logger.instance
+                          .w(currentIndex, stackTrace: StackTrace.empty);
+                      newsBloc.add(ArticleSelectedAtIndex(currentIndex));
                     }
 
                     return true;
@@ -73,16 +79,6 @@ class NewsSubpage extends StatelessWidget {
                               .map((e) => NewsCard(article: e))
                               .toList()[index],
                 ),
-              Center(
-                child: Text(
-                  state.selectedArticle?.id ?? 'null',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 28,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
             ],
           );
         },
@@ -186,7 +182,8 @@ class NewsCard extends StatelessWidget {
                       Text(
                         article.content,
                         style: const TextStyle(
-                          fontSize: 20,
+                          fontSize: 18,
+                          height: 1.5,
                           color: Colors.white70,
                           fontWeight: FontWeight.w300,
                         ),

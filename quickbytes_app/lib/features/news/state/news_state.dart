@@ -27,21 +27,23 @@ List<Article> articleList = [
 ];
 
 final class NewsState extends Equatable {
-  final Article? selectedArticle;
   final List<Article> articles;
+  final int index;
 
   const NewsState({
     required this.articles,
-    this.selectedArticle,
+    this.index = 0,
   });
 
-  @override
-  List<Object?> get props => [articles, selectedArticle];
+  Article get selectedArticle => articles[index];
 
-  NewsState copyWith({List<Article>? articles, Article? selectedArticle}) {
+  @override
+  List<Object?> get props => [articles, selectedArticle, index];
+
+  NewsState copyWith({List<Article>? articles, int index = 0}) {
     return NewsState(
       articles: articles ?? this.articles,
-      selectedArticle: selectedArticle ?? this.selectedArticle,
+      index: index,
     );
   }
 }

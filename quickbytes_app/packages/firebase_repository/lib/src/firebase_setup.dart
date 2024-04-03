@@ -17,9 +17,7 @@ class FirebaseSetup {
           sslEnabled: false,
           persistenceEnabled: false,
         );
-      } catch (e) {
-        print(e);
-      }
+      } catch (e) {}
     }
   }
 }

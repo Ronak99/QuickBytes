@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quickbytes_app/features/home/presentation/subpages/dashboard_subpage.dart';
 import 'package:quickbytes_app/features/home/presentation/subpages/news_subpage.dart';
+import 'package:quickbytes_app/features/home/state/bloc/home_bloc.dart';
+import 'package:quickbytes_app/features/news/state/news_bloc.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -9,7 +12,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageView(
-        controller: PageController(initialPage: 1),
+        controller: context.read<HomeBloc>().state.pageController,
         children: const [
           DashboardSubpage(),
           NewsSubpage(),

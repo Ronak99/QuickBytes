@@ -15,8 +15,8 @@ class CardSwitched extends NewsEvent {
   CardSwitched({required this.index});
 }
 
-class ArticleSelected extends NewsEvent {
-  final Article article;
+class ArticleSelectedAtIndex extends NewsEvent {
+  final int index;
 
-  ArticleSelected(this.article);
+  ArticleSelectedAtIndex(this.index);
 }

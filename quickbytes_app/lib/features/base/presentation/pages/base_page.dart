@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:quickbytes_app/core/navigation/app_router.dart';
 import 'package:quickbytes_app/core/navigation/routes.dart';
 import 'package:quickbytes_app/core/utils/platform_channel_handler.dart';
+import 'package:quickbytes_app/features/home/state/bloc/home_bloc.dart';
 import 'package:quickbytes_app/features/news/state/news_bloc.dart';
 import 'package:quickbytes_app/features/notifications/data/models/news/news_notification.dart';
 import 'package:quickbytes_app/features/notifications/state/notifications_bloc.dart';
@@ -57,7 +60,12 @@ class _BasePageState extends State<BasePage> {
             children: [
               TextButton(
                 child: const Text('Go to relevancy page'),
-                onPressed: () => RelevancyPageRoute().go(context),
+                onPressed: () =>
+                    context.read<HomeBloc>().add(HomePageSwitched()),
+              ),
+              TextButton(
+                child: const Text('Go to relevancy page'),
+                onPressed: () => HomePageRoute().go(context),
               )
             ],
           ),
@@ -71,9 +79,13 @@ class _BasePageState extends State<BasePage> {
             final notification = state.notification as NewsNotification;
 
             final newsBloc = context.read<NewsBloc>();
-            newsBloc.add(CardSwitched(index: 0));
             newsBloc.add(AddToTopRequested(notification.article));
-            newsBloc.add(ArticleSelected(notification.article));
+            newsBloc.add(ArticleSelectedAtIndex(0));
+
+            if (GoRouter.of(context).location() == '/home') {
+              context.read<HomeBloc>().add(HomePageSwitched());
+            }
+            // newsBloc.add(CardSwitched(index: 0));
           }
         }
       },
