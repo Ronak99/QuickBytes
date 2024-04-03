@@ -1,8 +1,7 @@
-import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:meta/meta.dart';
-import 'package:news_repository/news_repository.dart';
 
 part 'home_event.dart';
 part 'home_state.dart';

@@ -2,7 +2,6 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:news_repository/news_repository.dart';
-import 'package:quickbytes_app/features/news/data/models/news_article.dart';
 
 part 'news_event.dart';
 part 'news_state.dart';

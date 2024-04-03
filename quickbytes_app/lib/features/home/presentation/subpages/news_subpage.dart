@@ -4,7 +4,6 @@ import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:news_repository/news_repository.dart';
 import 'package:quickbytes_app/core/widgets/blur_view.dart';
 import 'package:quickbytes_app/core/widgets/cached_image.dart';
-import 'package:quickbytes_app/features/home/state/bloc/home_bloc.dart';
 import 'package:quickbytes_app/features/news/state/news_bloc.dart';
 
 final CardSwiperController cardSwiperController = CardSwiperController();
