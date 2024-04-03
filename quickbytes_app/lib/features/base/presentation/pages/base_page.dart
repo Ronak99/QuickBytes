@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quickbytes_app/core/navigation/routes.dart';
 import 'package:quickbytes_app/core/utils/platform_channel_handler.dart';
+import 'package:quickbytes_app/features/home/state/bloc/home_bloc.dart';
 import 'package:quickbytes_app/features/news/state/news_bloc.dart';
 import 'package:quickbytes_app/features/notifications/data/models/news/news_notification.dart';
 import 'package:quickbytes_app/features/notifications/state/notifications_bloc.dart';
@@ -24,10 +25,21 @@ class _BasePageState extends State<BasePage> {
   }
 
   _initialize() async {
+    final notificationsBloc = context.read<NotificationsBloc>();
+
+    List<String> notificationList =
+        await _channelHandler.getPendingNotifications();
+
+    if (notificationList.isNotEmpty) {
+      notificationsBloc.add(
+        NotificationTapped(
+          notificationList[0],
+        ),
+      );
+    }
+
     _channelHandler.initializeEventStream(onData: (notificationData) {
-      context
-          .read<NotificationsBloc>()
-          .add(NotificationTapped(notificationData));
+      notificationsBloc.add(NotificationTapped(notificationData));
     });
   }
 
@@ -57,11 +69,12 @@ class _BasePageState extends State<BasePage> {
           if (state.notification is NewsNotification) {
             HomePageRoute().go(context);
 
-            context.read<NewsBloc>().add(
-                  AddToTopRequested(
-                    (state.notification as NewsNotification).article,
-                  ),
-                );
+            final notification = state.notification as NewsNotification;
+
+            final newsBloc = context.read<NewsBloc>();
+            newsBloc.add(CardSwitched(index: 0));
+            newsBloc.add(AddToTopRequested(notification.article));
+            context.read<HomeBloc>().add(ArticleSelected(notification.article));
           }
         }
       },
