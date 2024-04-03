@@ -74,7 +74,7 @@ class _BasePageState extends State<BasePage> {
             final newsBloc = context.read<NewsBloc>();
             newsBloc.add(CardSwitched(index: 0));
             newsBloc.add(AddToTopRequested(notification.article));
-            context.read<HomeBloc>().add(ArticleSelected(notification.article));
+            newsBloc.add(ArticleSelected(notification.article));
           }
         }
       },

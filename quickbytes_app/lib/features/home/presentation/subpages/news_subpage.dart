@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:news_repository/news_repository.dart';
+import 'package:quickbytes_app/core/widgets/blur_view.dart';
 import 'package:quickbytes_app/core/widgets/cached_image.dart';
+import 'package:quickbytes_app/features/home/state/bloc/home_bloc.dart';
 import 'package:quickbytes_app/features/news/state/news_bloc.dart';
+
+final CardSwiperController cardSwiperController = CardSwiperController();
 
 class NewsSubpage extends StatelessWidget {
   const NewsSubpage({super.key});
@@ -11,98 +15,82 @@ class NewsSubpage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          final newsBloc = context.read<NewsBloc>();
+          newsBloc.add(CardSwitched(index: 0));
+          newsBloc.add(
+            ArticleSelected(newsBloc.state.articles[0]),
+          );
+        },
+      ),
       body: BlocBuilder<NewsBloc, NewsState>(
         builder: (context, state) {
-          if (state.articles.isEmpty) {
-            return const Center(child: Text('You are all caught up!'));
-          }
+          return Stack(
+            children: [
+              if (state.selectedArticle == null)
+                const SizedBox.shrink()
+              else
+                BlurView(
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
+                  sigmaX: 2,
+                  sigmaY: 2,
+                  color: Colors.black54,
+                  child: SizedBox(
+                    child: CachedImage(
+                      state.selectedArticle!.image,
+                      fit: BoxFit.cover,
+                      useOldImageOnUrlChange: true,
+                      placeholder: Container(
+                        decoration: const BoxDecoration(
+                          color: Color(0xff191818),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              if (state.articles.isEmpty)
+                const Center(child: Text('You are all caught up!'))
+              else
+                CardSwiper(
+                  cardsCount: state.articles.length,
+                  padding: EdgeInsets.zero,
+                  controller: context.read<NewsBloc>().cardSwiperController,
+                  allowedSwipeDirection:
+                      const AllowedSwipeDirection.symmetric(vertical: true),
+                  onSwipe: (previousIndex, currentIndex, direction) {
+                    if (currentIndex != null) {
+                      context.read<NewsBloc>().add(
+                            ArticleSelected(state.articles[currentIndex]),
+                          );
+                    }
 
-          return CardSwiper(
-            cardsCount: state.articles.length,
-            padding: EdgeInsets.zero,
-            allowedSwipeDirection:
-                const AllowedSwipeDirection.symmetric(vertical: true),
-            onSwipe: (previousIndex, currentIndex, direction) {
-              if (currentIndex != null) {
-                // setState(() {
-                //   _selectedNewsArticle = articleList[currentIndex];
-                // });
-              }
-
-              return true;
-            },
-            cardBuilder: (context, index, percentThresholdX,
-                    percentThresholdY) =>
-                state.articles.map((e) => NewsCard(article: e)).toList()[index],
+                    return true;
+                  },
+                  cardBuilder:
+                      (context, index, percentThresholdX, percentThresholdY) =>
+                          state.articles
+                              .map((e) => NewsCard(article: e))
+                              .toList()[index],
+                ),
+              Center(
+                child: Text(
+                  state.selectedArticle?.id ?? 'null',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 28,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ],
           );
         },
       ),
     );
   }
 }
-// class NewsSubpage extends StatefulWidget {
-//   const NewsSubpage({super.key});
-
-//   @override
-//   State<NewsSubpage> createState() => _NewsSubpageState();
-// }
-
-// class _NewsSubpageState extends State<NewsSubpage> {
-//   late NewsArticle _selectedNewsArticle;
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     _selectedNewsArticle = articleList[0];
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: Stack(
-//         children: [
-//           BlurView(
-//             height: MediaQuery.of(context).size.height,
-//             width: MediaQuery.of(context).size.width,
-//             sigmaX: 2,
-//             sigmaY: 2,
-//             color: Colors.black54,
-//             child: SizedBox(
-//               child: CachedImage(
-//                 _selectedNewsArticle.image,
-//                 fit: BoxFit.cover,
-//                 useOldImageOnUrlChange: true,
-//                 placeholder: Container(
-//                   decoration: const BoxDecoration(
-//                     color: Color(0xff191818),
-//                   ),
-//                 ),
-//               ),
-//             ),
-//           ),
-//           CardSwiper(
-//             cardsCount: articleList.length,
-//             padding: EdgeInsets.zero,
-//             allowedSwipeDirection:
-//                 const AllowedSwipeDirection.symmetric(vertical: true),
-//             onSwipe: (previousIndex, currentIndex, direction) {
-//               if (currentIndex != null) {
-//                 setState(() {
-//                   _selectedNewsArticle = articleList[currentIndex];
-//                 });
-//               }
-
-//               return true;
-//             },
-//             cardBuilder: (context, index, percentThresholdX,
-//                     percentThresholdY) =>
-//                 articleList.map((e) => NewsCard(article: e)).toList()[index],
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
 
 class NewsCard extends StatelessWidget {
   final Article article;
