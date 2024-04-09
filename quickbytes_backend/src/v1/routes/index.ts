@@ -3,6 +3,7 @@ import { categoryController } from "../controllers";
 import articlesRoute from "./article.route";
 import userRoute from "./user.route";
 import categoryRoute from "./category.route";
+import notificationRoute from "./notification.route";
 
 const router = express.Router();
 
@@ -18,6 +19,10 @@ const defaultRoutes = [
   {
     path: "/categories",
     route: categoryRoute,
+  },
+  {
+    path: "/notifications",
+    route: notificationRoute,
   },
 ];
 
