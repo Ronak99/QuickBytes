@@ -22,6 +22,9 @@ const createUser = async (user: User) => {
 };
 
 const queryUser = async (userId: string) => {
+  if (!userId) {
+    throw new ApiError(httpStatus.BAD_REQUEST, "User ID was not provided.");
+  }
   return prisma.user.findUnique({
     where: {
       id: userId,

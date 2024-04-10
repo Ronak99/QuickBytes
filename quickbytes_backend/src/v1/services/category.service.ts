@@ -2,7 +2,7 @@ import { newsCategory } from "@prisma/client";
 import httpStatus from "http-status";
 import prisma from "../../client";
 import ApiError from "../../utils/ApiError";
-import { NewsCategory } from "../models/news_category";
+import { NewsCategory, Relevancy } from "../models/news_category";
 
 const createCategory = async (category: NewsCategory) => {
   if (await getCategoryByName(category.name)) {
@@ -34,7 +34,40 @@ const getCategoryByName = async <Key extends keyof newsCategory>(
   }) as Promise<Pick<newsCategory, Key> | null>;
 };
 
+const createCategories = async () => {
+  const categoryNames = [
+    "Politics",
+    "Business",
+    "Technology",
+    "Entertainment",
+    "Health",
+    "Science",
+    "Sports",
+    "Environment",
+    "Education",
+    "Lifestyle",
+  ];
+
+  for (const c of categoryNames) {
+    for (const r of [Relevancy.all, Relevancy.major]) {
+      const category: NewsCategory = {
+        name: `${c.toLowerCase()}_${r}`,
+        label: c,
+        relevancy: r,
+      };
+
+      await prisma.newsCategory.create({ data: category });
+    }
+  }
+};
+
+const testing = async () => {
+  // createCategories();
+  return "Done";
+};
+
 export default {
   createCategory,
   queryCategories,
+  testing,
 };

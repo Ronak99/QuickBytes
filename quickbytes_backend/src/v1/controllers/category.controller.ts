@@ -25,7 +25,19 @@ const queryCategories = catchAsync(async (req, res) => {
   );
 });
 
+const testing = catchAsync(async (req, res) => {
+  const response = await categoryService.testing();
+
+  res.status(httpStatus.OK).send(
+    ApiSuccess({
+      message: `Category Testing.`,
+      data: response,
+    })
+  );
+});
+
 export default {
   createCategory,
   queryCategories,
+  testing,
 };

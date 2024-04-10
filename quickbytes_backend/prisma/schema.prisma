@@ -8,14 +8,14 @@ datasource db {
 }
 
 model newsCategory {
-  id                String           @id @default(auto()) @map("_id") @db.ObjectId
-  name              String           @unique
-  label             String
-  relevancy         relevancy
-  article_ids       String[]         @db.ObjectId
-  articles          article[]        @relation(fields: [article_ids], references: [id])
-  userPreferences   userPreferences? @relation(fields: [userPreferencesId], references: [id])
-  userPreferencesId String?          @db.ObjectId
+  id                  String           @id @default(auto()) @map("_id") @db.ObjectId
+  name                String           @unique
+  label               String
+  relevancy           relevancy
+  article_ids         String[]         @db.ObjectId
+  articles            article[]        @relation(fields: [article_ids], references: [id])
+  user_preferences    userPreferences? @relation(fields: [user_preferences_id], references: [id])
+  user_preferences_id String?          @db.ObjectId
 }
 
 enum relevancy {
@@ -37,23 +37,24 @@ model article {
 }
 
 model user {
-  id      String    @id @default(auto()) @map("_id") @db.ObjectId
-  name    String
-  email   String    @unique
-  image   String
-  article article[]
-  token   token[]
+  id               String            @id @default(auto()) @map("_id") @db.ObjectId
+  name             String
+  email            String            @unique
+  image            String
+  article          article[]
+  auth_token       authToken[]
+  user_preferences userPreferences[]
 }
 
-model token {
+model authToken {
   id          String    @id @default(auto()) @map("_id") @db.ObjectId
   token       String
   type        TokenType
   expires     DateTime
   blacklisted Boolean
-  user        user      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId      String    @db.ObjectId
-  createdOn   DateTime  @default(now())
+  user        user      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id     String    @db.ObjectId
+  created_on  DateTime  @default(now())
 }
 
 enum TokenType {
@@ -65,7 +66,8 @@ enum TokenType {
 
 model userPreferences {
   id         String         @id @default(auto()) @map("_id") @db.ObjectId
-  userId     String         @db.ObjectId
-  updatedOn  DateTime       @default(now())
+  user       user           @relation(fields: [user_id], references: [id])
+  updated_on DateTime       @default(now())
   categories newsCategory[]
+  user_id    String         @db.ObjectId
 }
