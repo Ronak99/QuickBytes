@@ -15,4 +15,6 @@ An app that provides byte sized news right at your fingertips.
    1. MongoDB
    2. Express
    3. Prisma
-4. Android 5. Kotlin 6. Notification Remote View
+4. Android
+   1. Kotlin
+   2. Notification Remote View
