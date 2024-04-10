@@ -1,3 +1,4 @@
+import 'package:api_repository/api_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
@@ -14,12 +15,16 @@ class NewsSubpage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          final newsBloc = context.read<NewsBloc>();
-          newsBloc.add(CardSwitched(index: 0));
-          newsBloc.add(
-            ArticleSelectedAtIndex(0),
-          );
+        onPressed: () async {
+          print('hello');
+          List response = await ApiRepository.instance.articles.queryArticles();
+          print(response.length);
+
+          // final newsBloc = context.read<NewsBloc>();
+          // newsBloc.add(CardSwitched(index: 0));
+          // newsBloc.add(
+          //   ArticleSelectedAtIndex(0),
+          // );
         },
       ),
       body: BlocBuilder<NewsBloc, NewsState>(

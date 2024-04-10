@@ -50,6 +50,9 @@ dependencies:
   authentication_repository:
     path: packages/authentication_repository
 
+  api_repository:
+    path: packages/api_repository
+
   firebase_repository:
     path: packages/firebase_repository
 
