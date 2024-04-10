@@ -11,3 +11,5 @@ export const articleKeys = [
   "user_id",
   "categories",
 ];
+
+export const categoryKeys = ["id", "name", "label", "relevancy"];

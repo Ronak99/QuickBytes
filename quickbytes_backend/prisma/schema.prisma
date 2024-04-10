@@ -7,26 +7,33 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model category {
-  id          String    @id @default(auto()) @map("_id") @db.ObjectId
-  name        String    @unique
-  label       String
-  relevancy   relevancy
-  article_ids String[]  @db.ObjectId
-  articles    article[] @relation(fields: [article_ids], references: [id])
+model newsCategory {
+  id                String           @id @default(auto()) @map("_id") @db.ObjectId
+  name              String           @unique
+  label             String
+  relevancy         relevancy
+  article_ids       String[]         @db.ObjectId
+  articles          article[]        @relation(fields: [article_ids], references: [id])
+  userPreferences   userPreferences? @relation(fields: [userPreferencesId], references: [id])
+  userPreferencesId String?          @db.ObjectId
+}
+
+enum relevancy {
+  major
+  all
 }
 
 model article {
-  id           String     @id @default(auto()) @map("_id") @db.ObjectId
+  id           String         @id @default(auto()) @map("_id") @db.ObjectId
   title        String
   content      String
   image        String
   published_on DateTime
   source_url   String
-  author       user       @relation(fields: [user_id], references: [id])
-  user_id      String     @db.ObjectId
-  category_ids String[]   @db.ObjectId
-  categories   category[] @relation(fields: [category_ids], references: [id])
+  author       user           @relation(fields: [user_id], references: [id])
+  user_id      String         @db.ObjectId
+  category_ids String[]       @db.ObjectId
+  categories   newsCategory[] @relation(fields: [category_ids], references: [id])
 }
 
 model user {
@@ -38,26 +45,6 @@ model user {
   token   token[]
 }
 
-enum relevancy {
-  major
-  all
-}
-
-model Post {
-  id          String         @id @default(auto()) @map("_id") @db.ObjectId
-  title       String
-  content     String
-  categoryIDs String[]       @db.ObjectId
-  categories  PostCategory[] @relation(fields: [categoryIDs], references: [id])
-}
-
-model PostCategory {
-  id      String   @id @default(auto()) @map("_id") @db.ObjectId
-  name    String
-  postIDs String[] @db.ObjectId
-  posts   Post[]   @relation(fields: [postIDs], references: [id])
-}
-
 model token {
   id          String    @id @default(auto()) @map("_id") @db.ObjectId
   token       String
@@ -66,7 +53,7 @@ model token {
   blacklisted Boolean
   user        user      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String    @db.ObjectId
-  createdAt   DateTime  @default(now())
+  createdOn   DateTime  @default(now())
 }
 
 enum TokenType {
@@ -74,4 +61,11 @@ enum TokenType {
   REFRESH
   RESET_PASSWORD
   VERIFY_EMAIL
+}
+
+model userPreferences {
+  id         String         @id @default(auto()) @map("_id") @db.ObjectId
+  userId     String         @db.ObjectId
+  updatedOn  DateTime       @default(now())
+  categories newsCategory[]
 }

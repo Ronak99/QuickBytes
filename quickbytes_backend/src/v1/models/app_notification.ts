@@ -1,6 +1,6 @@
 import { Article } from "./article";
 
-enum Category {
+enum NotificationCategory {
   deliverNews = "deliverNews",
   cancelNews = "cancelNews",
   randomUpdates = "randomUpdates",
@@ -14,8 +14,8 @@ interface BaseNotification {
 interface NewsNotification extends BaseNotification {
   payload: {
     article: Article;
-    category: Category;
+    category: NotificationCategory;
   };
 }
 
-export { NewsNotification, BaseNotification, Category };
+export { NewsNotification, BaseNotification, NotificationCategory };

@@ -1,7 +1,5 @@
-export enum Relevancy {
-  all = "all",
-  major = "major",
-}
+import { Prisma } from "@prisma/client";
+import { NewsCategory, Relevancy } from "./news_category";
 
 export interface Article {
   id?: string;
@@ -9,7 +7,7 @@ export interface Article {
   content: string;
   image: string;
   published_on: Date;
-  category_list: string[];
-  relevancy: Relevancy;
+  categories: string[] | Prisma.article$categoriesArgs;
   source_url: string;
+  user_id: string;
 }

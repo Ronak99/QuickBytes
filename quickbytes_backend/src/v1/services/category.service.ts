@@ -1,30 +1,20 @@
-import { category, user } from "@prisma/client";
+import { newsCategory } from "@prisma/client";
 import httpStatus from "http-status";
 import prisma from "../../client";
 import ApiError from "../../utils/ApiError";
+import { NewsCategory } from "../models/news_category";
 
-enum Relevancy {
-  all = "all",
-  major = "major",
-}
-
-interface Category {
-  name: string;
-  relevancy: Relevancy;
-  label: string;
-}
-
-const createCategory = async (category: Category) => {
+const createCategory = async (category: NewsCategory) => {
   if (await getCategoryByName(category.name)) {
     throw new ApiError(httpStatus.BAD_REQUEST, "Category exists!");
   }
-  return prisma.category.create({
+  return prisma.newsCategory.create({
     data: category,
   });
 };
 
 const queryCategories = () => {
-  return prisma.category.findMany({
+  return prisma.newsCategory.findMany({
     select: {
       name: true,
       id: true,
@@ -34,14 +24,14 @@ const queryCategories = () => {
   });
 };
 
-const getCategoryByName = async <Key extends keyof category>(
+const getCategoryByName = async <Key extends keyof newsCategory>(
   name: string,
   keys: Key[] = ["name", "relevancy", "label"] as Key[]
-): Promise<Pick<category, Key> | null> => {
-  return prisma.category.findUnique({
+): Promise<Pick<newsCategory, Key> | null> => {
+  return prisma.newsCategory.findUnique({
     where: { name },
     select: keys.reduce((obj, k) => ({ ...obj, [k]: true }), {}),
-  }) as Promise<Pick<category, Key> | null>;
+  }) as Promise<Pick<newsCategory, Key> | null>;
 };
 
 export default {
