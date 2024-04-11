@@ -12,11 +12,10 @@ _$ArticleImpl _$$ArticleImplFromJson(Map<String, dynamic> json) =>
       title: json['title'] as String,
       content: json['content'] as String,
       image: json['image'] as String,
-      categoryList: (json['category_list'] as List<dynamic>)
-          .map((e) => e as String)
+      categoryList: (json['categories'] as List<dynamic>)
+          .map((e) => NewsCategory.fromJson(e as Map<String, dynamic>))
           .toList(),
       sourceUrl: json['source_url'] as String,
-      relevancy: $enumDecode(_$RelevancyEnumMap, json['relevancy']),
       publishedOn: DateTime.parse(json['published_on'] as String),
     );
 
@@ -26,13 +25,7 @@ Map<String, dynamic> _$$ArticleImplToJson(_$ArticleImpl instance) =>
       'title': instance.title,
       'content': instance.content,
       'image': instance.image,
-      'category_list': instance.categoryList,
+      'categories': instance.categoryList,
       'source_url': instance.sourceUrl,
-      'relevancy': _$RelevancyEnumMap[instance.relevancy]!,
       'published_on': instance.publishedOn.toIso8601String(),
     };
-
-const _$RelevancyEnumMap = {
-  Relevancy.all: 'all',
-  Relevancy.major: 'major',
-};

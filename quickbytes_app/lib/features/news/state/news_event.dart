@@ -20,3 +20,7 @@ class ArticleSelectedAtIndex extends NewsEvent {
 
   ArticleSelectedAtIndex(this.index);
 }
+
+class AllArticlesRequested extends NewsEvent {
+  AllArticlesRequested();
+}

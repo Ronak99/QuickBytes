@@ -10,7 +10,6 @@ List<Article> articleList = [
     image: "https://www.picsum.photos/500",
     categoryList: [],
     publishedOn: DateTime.now(),
-    relevancy: Relevancy.all,
     sourceUrl: "https://www.google.com",
   ),
   Article(
@@ -21,16 +20,29 @@ List<Article> articleList = [
     image: "https://www.picsum.photos/700",
     categoryList: [],
     publishedOn: DateTime.now(),
-    relevancy: Relevancy.all,
     sourceUrl: "https://www.google.com",
   ),
 ];
 
-final class NewsState extends Equatable {
+sealed class NewsState extends Equatable {
+  const NewsState();
+}
+
+class NewsInitial extends NewsState {
+  @override
+  List<Object?> get props => [];
+}
+
+class NewsLoading extends NewsState {
+  @override
+  List<Object?> get props => [];
+}
+
+final class NewsLoaded extends NewsState {
   final List<Article> articles;
   final int index;
 
-  const NewsState({
+  const NewsLoaded({
     required this.articles,
     this.index = 0,
   });
@@ -40,8 +52,8 @@ final class NewsState extends Equatable {
   @override
   List<Object?> get props => [articles, selectedArticle, index];
 
-  NewsState copyWith({List<Article>? articles, int index = 0}) {
-    return NewsState(
+  NewsLoaded copyWith({List<Article>? articles, int index = 0}) {
+    return NewsLoaded(
       articles: articles ?? this.articles,
       index: index,
     );

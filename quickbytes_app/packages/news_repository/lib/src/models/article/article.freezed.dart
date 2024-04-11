@@ -24,11 +24,10 @@ mixin _$Article {
   String get title => throw _privateConstructorUsedError;
   String get content => throw _privateConstructorUsedError;
   String get image => throw _privateConstructorUsedError;
-  @JsonKey(name: 'category_list')
-  List<String> get categoryList => throw _privateConstructorUsedError;
+  @JsonKey(name: 'categories')
+  List<NewsCategory> get categoryList => throw _privateConstructorUsedError;
   @JsonKey(name: 'source_url')
   String get sourceUrl => throw _privateConstructorUsedError;
-  Relevancy get relevancy => throw _privateConstructorUsedError;
   @JsonKey(name: 'published_on')
   DateTime get publishedOn => throw _privateConstructorUsedError;
 
@@ -47,9 +46,8 @@ abstract class $ArticleCopyWith<$Res> {
       String title,
       String content,
       String image,
-      @JsonKey(name: 'category_list') List<String> categoryList,
+      @JsonKey(name: 'categories') List<NewsCategory> categoryList,
       @JsonKey(name: 'source_url') String sourceUrl,
-      Relevancy relevancy,
       @JsonKey(name: 'published_on') DateTime publishedOn});
 }
 
@@ -72,7 +70,6 @@ class _$ArticleCopyWithImpl<$Res, $Val extends Article>
     Object? image = null,
     Object? categoryList = null,
     Object? sourceUrl = null,
-    Object? relevancy = null,
     Object? publishedOn = null,
   }) {
     return _then(_value.copyWith(
@@ -95,15 +92,11 @@ class _$ArticleCopyWithImpl<$Res, $Val extends Article>
       categoryList: null == categoryList
           ? _value.categoryList
           : categoryList // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+              as List<NewsCategory>,
       sourceUrl: null == sourceUrl
           ? _value.sourceUrl
           : sourceUrl // ignore: cast_nullable_to_non_nullable
               as String,
-      relevancy: null == relevancy
-          ? _value.relevancy
-          : relevancy // ignore: cast_nullable_to_non_nullable
-              as Relevancy,
       publishedOn: null == publishedOn
           ? _value.publishedOn
           : publishedOn // ignore: cast_nullable_to_non_nullable
@@ -124,9 +117,8 @@ abstract class _$$ArticleImplCopyWith<$Res> implements $ArticleCopyWith<$Res> {
       String title,
       String content,
       String image,
-      @JsonKey(name: 'category_list') List<String> categoryList,
+      @JsonKey(name: 'categories') List<NewsCategory> categoryList,
       @JsonKey(name: 'source_url') String sourceUrl,
-      Relevancy relevancy,
       @JsonKey(name: 'published_on') DateTime publishedOn});
 }
 
@@ -147,7 +139,6 @@ class __$$ArticleImplCopyWithImpl<$Res>
     Object? image = null,
     Object? categoryList = null,
     Object? sourceUrl = null,
-    Object? relevancy = null,
     Object? publishedOn = null,
   }) {
     return _then(_$ArticleImpl(
@@ -170,15 +161,11 @@ class __$$ArticleImplCopyWithImpl<$Res>
       categoryList: null == categoryList
           ? _value._categoryList
           : categoryList // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+              as List<NewsCategory>,
       sourceUrl: null == sourceUrl
           ? _value.sourceUrl
           : sourceUrl // ignore: cast_nullable_to_non_nullable
               as String,
-      relevancy: null == relevancy
-          ? _value.relevancy
-          : relevancy // ignore: cast_nullable_to_non_nullable
-              as Relevancy,
       publishedOn: null == publishedOn
           ? _value.publishedOn
           : publishedOn // ignore: cast_nullable_to_non_nullable
@@ -195,9 +182,9 @@ class _$ArticleImpl extends _Article with DiagnosticableTreeMixin {
       required this.title,
       required this.content,
       required this.image,
-      @JsonKey(name: 'category_list') required final List<String> categoryList,
+      @JsonKey(name: 'categories')
+      required final List<NewsCategory> categoryList,
       @JsonKey(name: 'source_url') required this.sourceUrl,
-      required this.relevancy,
       @JsonKey(name: 'published_on') required this.publishedOn})
       : _categoryList = categoryList,
         super._();
@@ -213,10 +200,10 @@ class _$ArticleImpl extends _Article with DiagnosticableTreeMixin {
   final String content;
   @override
   final String image;
-  final List<String> _categoryList;
+  final List<NewsCategory> _categoryList;
   @override
-  @JsonKey(name: 'category_list')
-  List<String> get categoryList {
+  @JsonKey(name: 'categories')
+  List<NewsCategory> get categoryList {
     if (_categoryList is EqualUnmodifiableListView) return _categoryList;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_categoryList);
@@ -226,14 +213,12 @@ class _$ArticleImpl extends _Article with DiagnosticableTreeMixin {
   @JsonKey(name: 'source_url')
   final String sourceUrl;
   @override
-  final Relevancy relevancy;
-  @override
   @JsonKey(name: 'published_on')
   final DateTime publishedOn;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Article(id: $id, title: $title, content: $content, image: $image, categoryList: $categoryList, sourceUrl: $sourceUrl, relevancy: $relevancy, publishedOn: $publishedOn)';
+    return 'Article(id: $id, title: $title, content: $content, image: $image, categoryList: $categoryList, sourceUrl: $sourceUrl, publishedOn: $publishedOn)';
   }
 
   @override
@@ -247,7 +232,6 @@ class _$ArticleImpl extends _Article with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('image', image))
       ..add(DiagnosticsProperty('categoryList', categoryList))
       ..add(DiagnosticsProperty('sourceUrl', sourceUrl))
-      ..add(DiagnosticsProperty('relevancy', relevancy))
       ..add(DiagnosticsProperty('publishedOn', publishedOn));
   }
 
@@ -264,8 +248,6 @@ class _$ArticleImpl extends _Article with DiagnosticableTreeMixin {
                 .equals(other._categoryList, _categoryList) &&
             (identical(other.sourceUrl, sourceUrl) ||
                 other.sourceUrl == sourceUrl) &&
-            (identical(other.relevancy, relevancy) ||
-                other.relevancy == relevancy) &&
             (identical(other.publishedOn, publishedOn) ||
                 other.publishedOn == publishedOn));
   }
@@ -280,7 +262,6 @@ class _$ArticleImpl extends _Article with DiagnosticableTreeMixin {
       image,
       const DeepCollectionEquality().hash(_categoryList),
       sourceUrl,
-      relevancy,
       publishedOn);
 
   @JsonKey(ignore: true)
@@ -299,15 +280,15 @@ class _$ArticleImpl extends _Article with DiagnosticableTreeMixin {
 
 abstract class _Article extends Article {
   const factory _Article(
-      {required final String id,
-      required final String title,
-      required final String content,
-      required final String image,
-      @JsonKey(name: 'category_list') required final List<String> categoryList,
-      @JsonKey(name: 'source_url') required final String sourceUrl,
-      required final Relevancy relevancy,
-      @JsonKey(name: 'published_on')
-      required final DateTime publishedOn}) = _$ArticleImpl;
+          {required final String id,
+          required final String title,
+          required final String content,
+          required final String image,
+          @JsonKey(name: 'categories')
+          required final List<NewsCategory> categoryList,
+          @JsonKey(name: 'source_url') required final String sourceUrl,
+          @JsonKey(name: 'published_on') required final DateTime publishedOn}) =
+      _$ArticleImpl;
   const _Article._() : super._();
 
   factory _Article.fromJson(Map<String, dynamic> json) = _$ArticleImpl.fromJson;
@@ -321,13 +302,11 @@ abstract class _Article extends Article {
   @override
   String get image;
   @override
-  @JsonKey(name: 'category_list')
-  List<String> get categoryList;
+  @JsonKey(name: 'categories')
+  List<NewsCategory> get categoryList;
   @override
   @JsonKey(name: 'source_url')
   String get sourceUrl;
-  @override
-  Relevancy get relevancy;
   @override
   @JsonKey(name: 'published_on')
   DateTime get publishedOn;

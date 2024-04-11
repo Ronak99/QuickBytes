@@ -9,28 +9,45 @@ part 'news_event.dart';
 part 'news_state.dart';
 
 class NewsBloc extends Bloc<NewsEvent, NewsState> {
-  NewsBloc()
-      : super(
-          NewsState(articles: articleList),
-        ) {
+  NewsBloc({required NewsRepository newsRepository})
+      : _newsRepository = newsRepository,
+        super(NewsInitial()) {
     on<AddToTopRequested>(_onAddToTopRequested);
     on<CardSwitched>(_onCardSwitch);
     on<ArticleSelectedAtIndex>(_onArticleSelect);
+    on<AllArticlesRequested>(_onAllArticlesRequest);
   }
+
+  final NewsRepository _newsRepository;
 
   final CardSwiperController cardSwiperController = CardSwiperController();
 
   void _onAddToTopRequested(AddToTopRequested event, Emitter<NewsState> emit) {
-    emit(state.copyWith(articles: [event.article, ...state.articles]));
+    if (state is NewsLoaded) {
+      NewsLoaded s = state as NewsLoaded;
+      emit(s.copyWith(articles: [event.article, ...s.articles]));
+    }
   }
 
   void _onArticleSelect(ArticleSelectedAtIndex event, Emitter<NewsState> emit) {
-    emit(state.copyWith(index: event.index));
+    if (state is NewsLoaded) {
+      NewsLoaded s = state as NewsLoaded;
+      emit(s.copyWith(index: event.index));
+    }
   }
 
   void _onCardSwitch(CardSwitched event, Emitter<NewsState> emit) {
     cardSwiperController.moveTo(event.index);
     emit(state);
+  }
+
+  void _onAllArticlesRequest(
+    AllArticlesRequested event,
+    Emitter<NewsState> emit,
+  ) async {
+    emit(NewsLoading());
+    List<Article> articles = await _newsRepository.queryAllArticles();
+    emit(NewsLoaded(articles: articles));
   }
 
   @override

@@ -4,7 +4,6 @@ import 'package:dio/dio.dart';
 class ArticleEndpoint {
   Future<List<dynamic>> queryArticles() async {
     try {
-      print('Hitting Endpoint: ${APIRoutes.article.index}');
       Response<Map<String, dynamic>> response =
           await Dio().getUri<Map<String, dynamic>>(APIRoutes.article.index);
 

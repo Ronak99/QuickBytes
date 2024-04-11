@@ -3,13 +3,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../news_category/news_category.dart';
+
 part 'article.freezed.dart';
 part 'article.g.dart';
-
-enum Relevancy {
-  all,
-  major,
-}
 
 @freezed
 class Article with _$Article {
@@ -20,9 +17,8 @@ class Article with _$Article {
     required String title,
     required String content,
     required String image,
-    @JsonKey(name: 'category_list') required List<String> categoryList,
+    @JsonKey(name: 'categories') required List<NewsCategory> categoryList,
     @JsonKey(name: 'source_url') required String sourceUrl,
-    required Relevancy relevancy,
     @JsonKey(name: 'published_on') required DateTime publishedOn,
   }) = _Article;
 

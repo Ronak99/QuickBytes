@@ -1,6 +1,7 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:news_repository/news_repository.dart';
 import 'package:quickbytes_app/core/navigation/app_router.dart';
 import 'package:quickbytes_app/features/home/state/bloc/home_bloc.dart';
 import 'package:quickbytes_app/features/news/state/news_bloc.dart';
@@ -11,10 +12,13 @@ import '../../state/app_bloc.dart';
 class App extends StatelessWidget {
   const App({
     required AuthenticationRepository authenticationRepository,
+    required NewsRepository newsRepository,
     super.key,
-  }) : _authenticationRepository = authenticationRepository;
+  })  : _authenticationRepository = authenticationRepository,
+        _newsRepository = newsRepository;
 
   final AuthenticationRepository _authenticationRepository;
+  final NewsRepository _newsRepository;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +35,9 @@ class App extends StatelessWidget {
             create: (BuildContext context) => HomeBloc(),
           ),
           BlocProvider<NewsBloc>(
-            create: (BuildContext context) => NewsBloc(),
+            create: (BuildContext context) => NewsBloc(
+              newsRepository: _newsRepository,
+            ),
           ),
           BlocProvider<NotificationsBloc>(
             create: (BuildContext context) => NotificationsBloc(),

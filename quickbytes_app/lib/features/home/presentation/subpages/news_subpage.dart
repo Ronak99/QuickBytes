@@ -1,4 +1,5 @@
 import 'package:api_repository/api_repository.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
@@ -8,8 +9,19 @@ import 'package:quickbytes_app/core/widgets/blur_view.dart';
 import 'package:quickbytes_app/core/widgets/cached_image.dart';
 import 'package:quickbytes_app/features/news/state/news_bloc.dart';
 
-class NewsSubpage extends StatelessWidget {
+class NewsSubpage extends StatefulWidget {
   const NewsSubpage({super.key});
+
+  @override
+  State<NewsSubpage> createState() => _NewsSubpageState();
+}
+
+class _NewsSubpageState extends State<NewsSubpage> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<NewsBloc>().add(AllArticlesRequested());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,62 +41,71 @@ class NewsSubpage extends StatelessWidget {
       ),
       body: BlocBuilder<NewsBloc, NewsState>(
         builder: (context, state) {
-          Logger.instance.i(state.index, stackTrace: StackTrace.empty);
-          final newsBloc = context.read<NewsBloc>();
+          if (state is NewsLoading) {
+            return const Center(
+              child: CupertinoActivityIndicator(),
+            );
+          } else if (state is NewsLoaded) {
+            Logger.instance.i(state.index, stackTrace: StackTrace.empty);
+            final newsBloc = context.read<NewsBloc>();
 
-          AllowedSwipeDirection a = state.index == 0
-              ? const AllowedSwipeDirection.only(up: true, down: false)
-              : const AllowedSwipeDirection.only(down: true, up: false);
+            AllowedSwipeDirection a = state.index == 0
+                ? const AllowedSwipeDirection.only(up: true, down: false)
+                : const AllowedSwipeDirection.only(down: true, up: false);
 
-          print(a.toString());
+            print(a.toString());
 
-          return Stack(
-            children: [
-              BlurView(
-                height: MediaQuery.of(context).size.height,
-                width: MediaQuery.of(context).size.width,
-                sigmaX: 2,
-                sigmaY: 2,
-                color: Colors.black54,
-                child: SizedBox(
-                  child: CachedImage(
-                    state.selectedArticle.image,
-                    fit: BoxFit.cover,
-                    useOldImageOnUrlChange: true,
-                    placeholder: Container(
-                      decoration: const BoxDecoration(
-                        color: Color(0xff191818),
+            return Stack(
+              children: [
+                BlurView(
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
+                  sigmaX: 2,
+                  sigmaY: 2,
+                  color: Colors.black54,
+                  child: SizedBox(
+                    child: CachedImage(
+                      state.selectedArticle.image,
+                      fit: BoxFit.cover,
+                      useOldImageOnUrlChange: true,
+                      placeholder: Container(
+                        decoration: const BoxDecoration(
+                          color: Color(0xff191818),
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-              if (state.articles.isEmpty)
-                const Center(child: Text('You are all caught up!'))
-              else
-                CardSwiper(
-                  cardsCount: state.articles.length,
-                  padding: EdgeInsets.zero,
-                  controller: newsBloc.cardSwiperController,
-                  allowedSwipeDirection: state.index == 0
-                      ? const AllowedSwipeDirection.only(up: true)
-                      : const AllowedSwipeDirection.symmetric(vertical: true),
-                  onSwipe: (previousIndex, currentIndex, direction) {
-                    if (currentIndex != null) {
-                      Logger.instance
-                          .w(currentIndex, stackTrace: StackTrace.empty);
-                      newsBloc.add(ArticleSelectedAtIndex(currentIndex));
-                    }
+                if (state.articles.isEmpty)
+                  const Center(child: Text('You are all caught up!'))
+                else
+                  CardSwiper(
+                    cardsCount: state.articles.length,
+                    padding: EdgeInsets.zero,
+                    controller: newsBloc.cardSwiperController,
+                    allowedSwipeDirection: state.index == 0
+                        ? const AllowedSwipeDirection.only(up: true)
+                        : const AllowedSwipeDirection.symmetric(vertical: true),
+                    onSwipe: (previousIndex, currentIndex, direction) {
+                      if (currentIndex != null) {
+                        Logger.instance
+                            .w(currentIndex, stackTrace: StackTrace.empty);
+                        newsBloc.add(ArticleSelectedAtIndex(currentIndex));
+                      }
 
-                    return true;
-                  },
-                  cardBuilder:
-                      (context, index, percentThresholdX, percentThresholdY) =>
-                          state.articles
-                              .map((e) => NewsCard(article: e))
-                              .toList()[index],
-                ),
-            ],
+                      return true;
+                    },
+                    cardBuilder: (context, index, percentThresholdX,
+                            percentThresholdY) =>
+                        state.articles
+                            .map((e) => NewsCard(article: e))
+                            .toList()[index],
+                  ),
+              ],
+            );
+          }
+          return const Center(
+            child: Text('No Articles Found'),
           );
         },
       ),
