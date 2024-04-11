@@ -8,6 +8,8 @@ router
   .post(articleController.createArticle)
   .get(articleController.queryArticles);
 
+router.route("/:articleId").get(articleController.queryArticle);
+
 router.route("/testing").post(articleController.testing);
 
 export default router;

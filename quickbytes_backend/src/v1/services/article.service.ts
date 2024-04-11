@@ -25,9 +25,7 @@ const notifyUsers = async (article: any) => {
       },
     };
 
-    console.log(JSON.stringify(newsNotification.payload));
-
-    // notificationService.notifyTopic(newsNotification);
+    notificationService.notifyTopic(newsNotification);
   }
 };
 
@@ -56,13 +54,24 @@ const createArticle = async (article: Article) => {
 const queryArticles = () => {
   return prisma.article.findMany({
     select: {
-      id: true,
-      title: true,
-      content: true,
-      categories: true,
-      author: true,
+      ...articleKeys.reduce((obj, k) => ({ ...obj, [k]: true }), {}),
     },
   });
+};
+
+const queryArticle = async (articleId: string) => {
+  const article = await prisma.article.findUnique({
+    where: {
+      id: articleId,
+    },
+    select: {
+      ...articleKeys.reduce((obj, k) => ({ ...obj, [k]: true }), {}),
+    },
+  });
+
+  notifyUsers(article);
+
+  return article;
 };
 
 const createArticles = async () => {
@@ -384,4 +393,5 @@ export default {
   createArticle,
   queryArticles,
   testing,
+  queryArticle,
 };

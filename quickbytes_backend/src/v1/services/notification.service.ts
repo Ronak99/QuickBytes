@@ -11,6 +11,7 @@ const notifyTopic = async (notification: BaseNotification) => {
         data: JSON.stringify(notification.payload),
       },
     });
+    console.log(response);
     // return notification;
     return response;
   } catch (e: any) {

@@ -8,7 +8,6 @@ export const articleKeys = [
   "published_on",
   "source_url",
   "author",
-  "user_id",
   "categories",
 ];
 

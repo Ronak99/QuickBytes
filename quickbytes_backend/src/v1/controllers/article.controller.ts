@@ -25,6 +25,19 @@ const queryArticles = catchAsync(async (req, res) => {
   );
 });
 
+const queryArticle = catchAsync(async (req, res) => {
+  const { articleId }: any = req.params;
+
+  const response = await articleService.queryArticle(articleId);
+
+  res.status(httpStatus.OK).send(
+    ApiSuccess({
+      message: `Query Articles.`,
+      data: response,
+    })
+  );
+});
+
 const testing = catchAsync(async (req, res) => {
   const response = await articleService.testing();
 
@@ -40,4 +53,5 @@ export default {
   createArticle,
   queryArticles,
   testing,
+  queryArticle,
 };
