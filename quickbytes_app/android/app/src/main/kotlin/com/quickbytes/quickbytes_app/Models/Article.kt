@@ -1,3 +1,4 @@
+import com.quickbytes.quickbytes_app.Models.NewsCategory
 import kotlinx.serialization.*
 
 @Serializable
@@ -10,10 +11,8 @@ data class Article (
     @SerialName("published_on")
     val publishedOn: String,
 
-    @SerialName("category_list")
-    val categoryList: List<String>,
-
-    val relevancy: String,
+    @SerialName("categories")
+    val categories: List<NewsCategory>,
 
     @SerialName("source_url")
     val sourceURL: String

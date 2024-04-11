@@ -28,6 +28,7 @@ class FCMBroadcastReceiver : FirebaseMessagingService() {
 
         Log.d(TAG, "Payload is not empty")
         val payload = remoteMessage.data
+
         val newsNotification = json.decodeFromString<NewsNotification>(payload["data"] as String)
 
         if (newsNotification.isValid) {
