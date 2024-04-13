@@ -5,10 +5,8 @@ class ApiConfig {
 
 class ApiUrl {
   static Uri apiUrl(String url) {
-    // var urlObject =
-    //     Uri.parse(ApiConfig.version + url).replace(host: ApiConfig.baseUrl);
-    return Uri.parse("http://192.168.0.101:8081/v1/$url");
-    // return Uri.parse("http://192.168.0.101:8081/v1/$url");
+    var urlObject = Uri.parse(ApiConfig.baseUrl + ApiConfig.version + url);
+    return urlObject;
   }
 }
 
@@ -28,7 +26,5 @@ class APIRoutes {
 }
 
 class ArticleRoutes {
-  final _baseRoute = '/articles';
-  Uri get index => Uri.parse("http://192.168.0.103:8081/v1/articles");
-  // Uri get index => ApiUrl.apiUrl("http://localhost:8081/v1/articles");
+  Uri get articles => ApiUrl.apiUrl("/articles");
 }
