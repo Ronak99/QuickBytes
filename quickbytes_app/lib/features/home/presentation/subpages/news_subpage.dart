@@ -49,33 +49,32 @@ class _NewsSubpageState extends State<NewsSubpage> {
             Logger.instance.i(state.index, stackTrace: StackTrace.empty);
             final newsBloc = context.read<NewsBloc>();
 
-            AllowedSwipeDirection a = state.index == 0
-                ? const AllowedSwipeDirection.only(up: true, down: false)
-                : const AllowedSwipeDirection.only(down: true, up: false);
-
-            print(a.toString());
+            // AllowedSwipeDirection a = state.index == 0
+            //     ? const AllowedSwipeDirection.only(up: true, down: false)
+            //     : const AllowedSwipeDirection.only(down: true, up: false);
 
             return Stack(
               children: [
-                BlurView(
-                  height: MediaQuery.of(context).size.height,
-                  width: MediaQuery.of(context).size.width,
-                  sigmaX: 2,
-                  sigmaY: 2,
-                  color: Colors.black54,
-                  child: SizedBox(
-                    child: CachedImage(
-                      state.selectedArticle.image,
-                      fit: BoxFit.cover,
-                      useOldImageOnUrlChange: true,
-                      placeholder: Container(
-                        decoration: const BoxDecoration(
-                          color: Color(0xff191818),
+                if (state.selectedArticle != null)
+                  BlurView(
+                    height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width,
+                    sigmaX: 2,
+                    sigmaY: 2,
+                    color: Colors.black54,
+                    child: SizedBox(
+                      child: CachedImage(
+                        state.selectedArticle!.image,
+                        fit: BoxFit.cover,
+                        useOldImageOnUrlChange: true,
+                        placeholder: Container(
+                          decoration: const BoxDecoration(
+                            color: Color(0xff191818),
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
                 if (state.articles.isEmpty)
                   const Center(child: Text('You are all caught up!'))
                 else
@@ -83,9 +82,9 @@ class _NewsSubpageState extends State<NewsSubpage> {
                     cardsCount: state.articles.length,
                     padding: EdgeInsets.zero,
                     controller: newsBloc.cardSwiperController,
-                    allowedSwipeDirection: state.index == 0
-                        ? const AllowedSwipeDirection.only(up: true)
-                        : const AllowedSwipeDirection.symmetric(vertical: true),
+                    // allowedSwipeDirection: state.index == 0
+                    //     ? const AllowedSwipeDirection.only(up: true)
+                    //     : const AllowedSwipeDirection.symmetric(vertical: true),
                     onSwipe: (previousIndex, currentIndex, direction) {
                       if (currentIndex != null) {
                         Logger.instance
