@@ -47,7 +47,7 @@ final class NewsLoaded extends NewsState {
     this.index = 0,
   });
 
-  Article get selectedArticle => articles[index];
+  Article? get selectedArticle => articles.isNotEmpty ? articles[index] : null;
 
   @override
   List<Object?> get props => [articles, selectedArticle, index];
