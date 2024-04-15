@@ -51,19 +51,18 @@ const createArticle = async (article: Article) => {
   return response;
 };
 
-const queryArticles = ({ categoryIdList }: { categoryIdList?: string[] }) => {
+const queryArticles = ({ categoryIds }: { categoryIds?: string }) => {
   return prisma.article.findMany({
     select: {
       ...articleKeys.reduce((obj, k) => ({ ...obj, [k]: true }), {}),
     },
-    where:
-      categoryIdList && categoryIdList.length > 0
-        ? {
-            category_ids: {
-              hasSome: categoryIdList,
-            },
-          }
-        : {},
+    where: categoryIds
+      ? {
+          category_ids: {
+            hasSome: categoryIds.split(","),
+          },
+        }
+      : {},
   });
 };
 

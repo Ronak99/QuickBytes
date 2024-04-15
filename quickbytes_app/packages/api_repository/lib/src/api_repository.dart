@@ -1,4 +1,4 @@
-import 'package:api_repository/src/article/article_endpoint.dart';
+import 'package:api_repository/src/endpoints/article_endpoint.dart';
 
 class ApiRepository {
   static ApiRepository? _instance;

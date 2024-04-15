@@ -4,27 +4,27 @@ class ApiConfig {
 }
 
 class ApiUrl {
-  static Uri apiUrl(String url) {
-    var urlObject = Uri.parse(ApiConfig.baseUrl + ApiConfig.version + url);
+  static Uri parse({
+    required String endpoint,
+    Map<String, dynamic>? queryParameters,
+  }) {
+    var urlObject = Uri.parse(ApiConfig.baseUrl + ApiConfig.version + endpoint);
+    if (queryParameters != null) {
+      urlObject = urlObject.replace(queryParameters: queryParameters);
+    }
+
     return urlObject;
   }
 }
 
 class APIRoutes {
   static ArticleRoutes article = ArticleRoutes();
-  static Uri get uploadImage => ApiUrl.apiUrl("/utils/image/upload");
-
-  static Uri createConversation(String id) =>
-      ApiUrl.apiUrl("/conversations/$id");
-  static Uri getConversation(String id) => ApiUrl.apiUrl("/conversations/$id");
-  static Uri generateImages(String conversationId) =>
-      ApiUrl.apiUrl("/ad_creatives/generate-images/$conversationId");
-  static Uri queryInfinite() => ApiUrl.apiUrl("/conversations");
-  static Uri queryVariants() => ApiUrl.apiUrl("/conversations/variants");
-  static Uri getMessages(String conversationId) =>
-      ApiUrl.apiUrl("/conversations/$conversationId/messages");
 }
 
 class ArticleRoutes {
-  Uri get articles => ApiUrl.apiUrl("/articles");
+  Uri articles({Map<String, dynamic>? queryParameters}) => ApiUrl.parse(
+        endpoint: "/articles",
+        queryParameters: queryParameters,
+      );
+  Uri get categories => ApiUrl.parse(endpoint: "/categories");
 }

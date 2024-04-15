@@ -18,7 +18,7 @@ const queryArticles = catchAsync(async (req, res) => {
   const { category_ids }: any = req.query;
 
   const response = await articleService.queryArticles({
-    categoryIdList: category_ids,
+    categoryIds: category_ids,
   });
 
   res.status(httpStatus.OK).send(
