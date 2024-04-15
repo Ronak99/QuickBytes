@@ -2,6 +2,7 @@ import { newsCategory } from "@prisma/client";
 import httpStatus from "http-status";
 import prisma from "../../client";
 import ApiError from "../../utils/ApiError";
+import { categoryKeys } from "../constants/fields";
 import { NewsCategory, Relevancy } from "../models/news_category";
 
 const createCategory = async (category: NewsCategory) => {
@@ -23,6 +24,34 @@ const queryCategories = () => {
     },
   });
 };
+
+// const queryCategories = (categoryIds: any) => {
+//   if (categoryIds) {
+//     const parsedList: string[] = JSON.parse(categoryIds.replace(/'/g, '"'));
+
+//     return prisma.newsCategory.findMany({
+//       where: {
+//         id: {
+//           in: parsedList as string[],
+//         },
+//       },
+//       select: {
+//         articles: true,
+//       },
+//     });
+
+//     // throw new ApiError(
+//     //   httpStatus.BAD_REQUEST,
+//     //   "q is an invalid list of category IDs"
+//     // );
+//   } else {
+//     return prisma.newsCategory.findMany({
+//       select: {
+//         articles: true,
+//       },
+//     });
+//   }
+// };
 
 const getCategoryByName = async <Key extends keyof newsCategory>(
   name: string,
