@@ -20,13 +20,13 @@ class AppBlocObserver extends BlocObserver {
   void onChange(BlocBase bloc, Change change) {
     super.onChange(bloc, change);
     if (change.currentState.runtimeType == NewsState) return;
-    Logger.instance.t(change);
+    // Logger.instance.t(change);
   }
 
   @override
   void onTransition(Bloc bloc, Transition transition) {
     super.onTransition(bloc, transition);
     if (transition.currentState.runtimeType == NewsState) return;
-    Logger.instance.t(transition);
+    // Logger.instance.t(transition);
   }
 }
