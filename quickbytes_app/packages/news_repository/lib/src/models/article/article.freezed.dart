@@ -24,12 +24,12 @@ mixin _$Article {
   String get title => throw _privateConstructorUsedError;
   String get content => throw _privateConstructorUsedError;
   String get image => throw _privateConstructorUsedError;
-  @JsonKey(name: 'categories')
-  List<NewsCategory> get categoryList => throw _privateConstructorUsedError;
   @JsonKey(name: 'source_url')
   String get sourceUrl => throw _privateConstructorUsedError;
   @JsonKey(name: 'published_on')
   DateTime get publishedOn => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: _categoriesFromJson)
+  List<NewsCategory> get categories => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -46,9 +46,9 @@ abstract class $ArticleCopyWith<$Res> {
       String title,
       String content,
       String image,
-      @JsonKey(name: 'categories') List<NewsCategory> categoryList,
       @JsonKey(name: 'source_url') String sourceUrl,
-      @JsonKey(name: 'published_on') DateTime publishedOn});
+      @JsonKey(name: 'published_on') DateTime publishedOn,
+      @JsonKey(fromJson: _categoriesFromJson) List<NewsCategory> categories});
 }
 
 /// @nodoc
@@ -68,9 +68,9 @@ class _$ArticleCopyWithImpl<$Res, $Val extends Article>
     Object? title = null,
     Object? content = null,
     Object? image = null,
-    Object? categoryList = null,
     Object? sourceUrl = null,
     Object? publishedOn = null,
+    Object? categories = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -89,10 +89,6 @@ class _$ArticleCopyWithImpl<$Res, $Val extends Article>
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
               as String,
-      categoryList: null == categoryList
-          ? _value.categoryList
-          : categoryList // ignore: cast_nullable_to_non_nullable
-              as List<NewsCategory>,
       sourceUrl: null == sourceUrl
           ? _value.sourceUrl
           : sourceUrl // ignore: cast_nullable_to_non_nullable
@@ -101,6 +97,10 @@ class _$ArticleCopyWithImpl<$Res, $Val extends Article>
           ? _value.publishedOn
           : publishedOn // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      categories: null == categories
+          ? _value.categories
+          : categories // ignore: cast_nullable_to_non_nullable
+              as List<NewsCategory>,
     ) as $Val);
   }
 }
@@ -117,9 +117,9 @@ abstract class _$$ArticleImplCopyWith<$Res> implements $ArticleCopyWith<$Res> {
       String title,
       String content,
       String image,
-      @JsonKey(name: 'categories') List<NewsCategory> categoryList,
       @JsonKey(name: 'source_url') String sourceUrl,
-      @JsonKey(name: 'published_on') DateTime publishedOn});
+      @JsonKey(name: 'published_on') DateTime publishedOn,
+      @JsonKey(fromJson: _categoriesFromJson) List<NewsCategory> categories});
 }
 
 /// @nodoc
@@ -137,9 +137,9 @@ class __$$ArticleImplCopyWithImpl<$Res>
     Object? title = null,
     Object? content = null,
     Object? image = null,
-    Object? categoryList = null,
     Object? sourceUrl = null,
     Object? publishedOn = null,
+    Object? categories = null,
   }) {
     return _then(_$ArticleImpl(
       id: null == id
@@ -158,10 +158,6 @@ class __$$ArticleImplCopyWithImpl<$Res>
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
               as String,
-      categoryList: null == categoryList
-          ? _value._categoryList
-          : categoryList // ignore: cast_nullable_to_non_nullable
-              as List<NewsCategory>,
       sourceUrl: null == sourceUrl
           ? _value.sourceUrl
           : sourceUrl // ignore: cast_nullable_to_non_nullable
@@ -170,6 +166,10 @@ class __$$ArticleImplCopyWithImpl<$Res>
           ? _value.publishedOn
           : publishedOn // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      categories: null == categories
+          ? _value._categories
+          : categories // ignore: cast_nullable_to_non_nullable
+              as List<NewsCategory>,
     ));
   }
 }
@@ -182,11 +182,11 @@ class _$ArticleImpl extends _Article with DiagnosticableTreeMixin {
       required this.title,
       required this.content,
       required this.image,
-      @JsonKey(name: 'categories')
-      required final List<NewsCategory> categoryList,
       @JsonKey(name: 'source_url') required this.sourceUrl,
-      @JsonKey(name: 'published_on') required this.publishedOn})
-      : _categoryList = categoryList,
+      @JsonKey(name: 'published_on') required this.publishedOn,
+      @JsonKey(fromJson: _categoriesFromJson)
+      required final List<NewsCategory> categories})
+      : _categories = categories,
         super._();
 
   factory _$ArticleImpl.fromJson(Map<String, dynamic> json) =>
@@ -200,25 +200,24 @@ class _$ArticleImpl extends _Article with DiagnosticableTreeMixin {
   final String content;
   @override
   final String image;
-  final List<NewsCategory> _categoryList;
-  @override
-  @JsonKey(name: 'categories')
-  List<NewsCategory> get categoryList {
-    if (_categoryList is EqualUnmodifiableListView) return _categoryList;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_categoryList);
-  }
-
   @override
   @JsonKey(name: 'source_url')
   final String sourceUrl;
   @override
   @JsonKey(name: 'published_on')
   final DateTime publishedOn;
+  final List<NewsCategory> _categories;
+  @override
+  @JsonKey(fromJson: _categoriesFromJson)
+  List<NewsCategory> get categories {
+    if (_categories is EqualUnmodifiableListView) return _categories;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_categories);
+  }
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Article(id: $id, title: $title, content: $content, image: $image, categoryList: $categoryList, sourceUrl: $sourceUrl, publishedOn: $publishedOn)';
+    return 'Article(id: $id, title: $title, content: $content, image: $image, sourceUrl: $sourceUrl, publishedOn: $publishedOn, categories: $categories)';
   }
 
   @override
@@ -230,9 +229,9 @@ class _$ArticleImpl extends _Article with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('title', title))
       ..add(DiagnosticsProperty('content', content))
       ..add(DiagnosticsProperty('image', image))
-      ..add(DiagnosticsProperty('categoryList', categoryList))
       ..add(DiagnosticsProperty('sourceUrl', sourceUrl))
-      ..add(DiagnosticsProperty('publishedOn', publishedOn));
+      ..add(DiagnosticsProperty('publishedOn', publishedOn))
+      ..add(DiagnosticsProperty('categories', categories));
   }
 
   @override
@@ -244,25 +243,18 @@ class _$ArticleImpl extends _Article with DiagnosticableTreeMixin {
             (identical(other.title, title) || other.title == title) &&
             (identical(other.content, content) || other.content == content) &&
             (identical(other.image, image) || other.image == image) &&
-            const DeepCollectionEquality()
-                .equals(other._categoryList, _categoryList) &&
             (identical(other.sourceUrl, sourceUrl) ||
                 other.sourceUrl == sourceUrl) &&
             (identical(other.publishedOn, publishedOn) ||
-                other.publishedOn == publishedOn));
+                other.publishedOn == publishedOn) &&
+            const DeepCollectionEquality()
+                .equals(other._categories, _categories));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      id,
-      title,
-      content,
-      image,
-      const DeepCollectionEquality().hash(_categoryList),
-      sourceUrl,
-      publishedOn);
+  int get hashCode => Object.hash(runtimeType, id, title, content, image,
+      sourceUrl, publishedOn, const DeepCollectionEquality().hash(_categories));
 
   @JsonKey(ignore: true)
   @override
@@ -280,15 +272,14 @@ class _$ArticleImpl extends _Article with DiagnosticableTreeMixin {
 
 abstract class _Article extends Article {
   const factory _Article(
-          {required final String id,
-          required final String title,
-          required final String content,
-          required final String image,
-          @JsonKey(name: 'categories')
-          required final List<NewsCategory> categoryList,
-          @JsonKey(name: 'source_url') required final String sourceUrl,
-          @JsonKey(name: 'published_on') required final DateTime publishedOn}) =
-      _$ArticleImpl;
+      {required final String id,
+      required final String title,
+      required final String content,
+      required final String image,
+      @JsonKey(name: 'source_url') required final String sourceUrl,
+      @JsonKey(name: 'published_on') required final DateTime publishedOn,
+      @JsonKey(fromJson: _categoriesFromJson)
+      required final List<NewsCategory> categories}) = _$ArticleImpl;
   const _Article._() : super._();
 
   factory _Article.fromJson(Map<String, dynamic> json) = _$ArticleImpl.fromJson;
@@ -302,14 +293,14 @@ abstract class _Article extends Article {
   @override
   String get image;
   @override
-  @JsonKey(name: 'categories')
-  List<NewsCategory> get categoryList;
-  @override
   @JsonKey(name: 'source_url')
   String get sourceUrl;
   @override
   @JsonKey(name: 'published_on')
   DateTime get publishedOn;
+  @override
+  @JsonKey(fromJson: _categoriesFromJson)
+  List<NewsCategory> get categories;
   @override
   @JsonKey(ignore: true)
   _$$ArticleImplCopyWith<_$ArticleImpl> get copyWith =>

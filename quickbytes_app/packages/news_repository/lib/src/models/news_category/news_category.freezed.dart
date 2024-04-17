@@ -22,8 +22,8 @@ NewsCategory _$NewsCategoryFromJson(Map<String, dynamic> json) {
 mixin _$NewsCategory {
   String get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
-  Relevancy get relevancy => throw _privateConstructorUsedError;
   String get label => throw _privateConstructorUsedError;
+  Relevancy get relevancy => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -37,7 +37,7 @@ abstract class $NewsCategoryCopyWith<$Res> {
           NewsCategory value, $Res Function(NewsCategory) then) =
       _$NewsCategoryCopyWithImpl<$Res, NewsCategory>;
   @useResult
-  $Res call({String id, String name, Relevancy relevancy, String label});
+  $Res call({String id, String name, String label, Relevancy relevancy});
 }
 
 /// @nodoc
@@ -55,8 +55,8 @@ class _$NewsCategoryCopyWithImpl<$Res, $Val extends NewsCategory>
   $Res call({
     Object? id = null,
     Object? name = null,
-    Object? relevancy = null,
     Object? label = null,
+    Object? relevancy = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -67,14 +67,14 @@ class _$NewsCategoryCopyWithImpl<$Res, $Val extends NewsCategory>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      relevancy: null == relevancy
-          ? _value.relevancy
-          : relevancy // ignore: cast_nullable_to_non_nullable
-              as Relevancy,
       label: null == label
           ? _value.label
           : label // ignore: cast_nullable_to_non_nullable
               as String,
+      relevancy: null == relevancy
+          ? _value.relevancy
+          : relevancy // ignore: cast_nullable_to_non_nullable
+              as Relevancy,
     ) as $Val);
   }
 }
@@ -87,7 +87,7 @@ abstract class _$$NewsCategoryImplCopyWith<$Res>
       __$$NewsCategoryImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String name, Relevancy relevancy, String label});
+  $Res call({String id, String name, String label, Relevancy relevancy});
 }
 
 /// @nodoc
@@ -103,8 +103,8 @@ class __$$NewsCategoryImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? name = null,
-    Object? relevancy = null,
     Object? label = null,
+    Object? relevancy = null,
   }) {
     return _then(_$NewsCategoryImpl(
       id: null == id
@@ -115,14 +115,14 @@ class __$$NewsCategoryImplCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      relevancy: null == relevancy
-          ? _value.relevancy
-          : relevancy // ignore: cast_nullable_to_non_nullable
-              as Relevancy,
       label: null == label
           ? _value.label
           : label // ignore: cast_nullable_to_non_nullable
               as String,
+      relevancy: null == relevancy
+          ? _value.relevancy
+          : relevancy // ignore: cast_nullable_to_non_nullable
+              as Relevancy,
     ));
   }
 }
@@ -133,8 +133,8 @@ class _$NewsCategoryImpl extends _NewsCategory {
   const _$NewsCategoryImpl(
       {required this.id,
       required this.name,
-      required this.relevancy,
-      required this.label})
+      required this.label,
+      required this.relevancy})
       : super._();
 
   factory _$NewsCategoryImpl.fromJson(Map<String, dynamic> json) =>
@@ -145,13 +145,13 @@ class _$NewsCategoryImpl extends _NewsCategory {
   @override
   final String name;
   @override
-  final Relevancy relevancy;
-  @override
   final String label;
+  @override
+  final Relevancy relevancy;
 
   @override
   String toString() {
-    return 'NewsCategory(id: $id, name: $name, relevancy: $relevancy, label: $label)';
+    return 'NewsCategory(id: $id, name: $name, label: $label, relevancy: $relevancy)';
   }
 
   @override
@@ -161,14 +161,14 @@ class _$NewsCategoryImpl extends _NewsCategory {
             other is _$NewsCategoryImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
+            (identical(other.label, label) || other.label == label) &&
             (identical(other.relevancy, relevancy) ||
-                other.relevancy == relevancy) &&
-            (identical(other.label, label) || other.label == label));
+                other.relevancy == relevancy));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, name, relevancy, label);
+  int get hashCode => Object.hash(runtimeType, id, name, label, relevancy);
 
   @JsonKey(ignore: true)
   @override
@@ -188,8 +188,8 @@ abstract class _NewsCategory extends NewsCategory {
   const factory _NewsCategory(
       {required final String id,
       required final String name,
-      required final Relevancy relevancy,
-      required final String label}) = _$NewsCategoryImpl;
+      required final String label,
+      required final Relevancy relevancy}) = _$NewsCategoryImpl;
   const _NewsCategory._() : super._();
 
   factory _NewsCategory.fromJson(Map<String, dynamic> json) =
@@ -200,9 +200,9 @@ abstract class _NewsCategory extends NewsCategory {
   @override
   String get name;
   @override
-  Relevancy get relevancy;
-  @override
   String get label;
+  @override
+  Relevancy get relevancy;
   @override
   @JsonKey(ignore: true)
   _$$NewsCategoryImplCopyWith<_$NewsCategoryImpl> get copyWith =>

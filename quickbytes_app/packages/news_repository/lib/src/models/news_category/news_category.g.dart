@@ -10,16 +10,16 @@ _$NewsCategoryImpl _$$NewsCategoryImplFromJson(Map<String, dynamic> json) =>
     _$NewsCategoryImpl(
       id: json['id'] as String,
       name: json['name'] as String,
-      relevancy: $enumDecode(_$RelevancyEnumMap, json['relevancy']),
       label: json['label'] as String,
+      relevancy: $enumDecode(_$RelevancyEnumMap, json['relevancy']),
     );
 
 Map<String, dynamic> _$$NewsCategoryImplToJson(_$NewsCategoryImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
-      'relevancy': _$RelevancyEnumMap[instance.relevancy]!,
       'label': instance.label,
+      'relevancy': _$RelevancyEnumMap[instance.relevancy]!,
     };
 
 const _$RelevancyEnumMap = {

@@ -17,11 +17,23 @@ class Article with _$Article {
     required String title,
     required String content,
     required String image,
-    @JsonKey(name: 'categories') required List<NewsCategory> categoryList,
     @JsonKey(name: 'source_url') required String sourceUrl,
     @JsonKey(name: 'published_on') required DateTime publishedOn,
+    @JsonKey(fromJson: _categoriesFromJson)
+    required List<NewsCategory> categories,
   }) = _Article;
 
   factory Article.fromJson(Map<String, dynamic> json) =>
       _$ArticleFromJson(json);
+}
+
+List<NewsCategory> _categoriesFromJson(dynamic json) {
+  final List<dynamic> categoriesJson = json;
+
+  final List<Map<String, dynamic>> categoriesMapList = categoriesJson
+      .map((e) =>
+          (e as Map).map((key, value) => MapEntry(key.toString(), value)))
+      .toList();
+
+  return categoriesMapList.map((e) => NewsCategory.fromJson(e)).toList();
 }

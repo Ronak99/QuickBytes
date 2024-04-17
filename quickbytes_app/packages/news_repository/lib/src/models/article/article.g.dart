@@ -12,11 +12,9 @@ _$ArticleImpl _$$ArticleImplFromJson(Map<String, dynamic> json) =>
       title: json['title'] as String,
       content: json['content'] as String,
       image: json['image'] as String,
-      categoryList: (json['categories'] as List<dynamic>)
-          .map((e) => NewsCategory.fromJson(e as Map<String, dynamic>))
-          .toList(),
       sourceUrl: json['source_url'] as String,
       publishedOn: DateTime.parse(json['published_on'] as String),
+      categories: _categoriesFromJson(json['categories']),
     );
 
 Map<String, dynamic> _$$ArticleImplToJson(_$ArticleImpl instance) =>
@@ -25,7 +23,7 @@ Map<String, dynamic> _$$ArticleImplToJson(_$ArticleImpl instance) =>
       'title': instance.title,
       'content': instance.content,
       'image': instance.image,
-      'categories': instance.categoryList,
       'source_url': instance.sourceUrl,
       'published_on': instance.publishedOn.toIso8601String(),
+      'categories': instance.categories,
     };

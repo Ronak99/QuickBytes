@@ -17,8 +17,8 @@ class NewsCategory with _$NewsCategory {
   const factory NewsCategory({
     required String id,
     required String name,
-    required Relevancy relevancy,
     required String label,
+    required Relevancy relevancy,
   }) = _NewsCategory;
 
   factory NewsCategory.fromJson(Map<String, dynamic> json) =>
