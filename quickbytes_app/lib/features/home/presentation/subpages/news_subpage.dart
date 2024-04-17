@@ -20,7 +20,9 @@ class _NewsSubpageState extends State<NewsSubpage> {
   @override
   void initState() {
     super.initState();
-    context.read<NewsBloc>().add(AllArticlesRequested());
+    Future.delayed(const Duration(seconds: 2), () {
+      context.read<NewsBloc>().add(AllArticlesRequested());
+    });
   }
 
   @override
@@ -193,6 +195,7 @@ class NewsCard extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(22),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         article.title,
@@ -213,6 +216,46 @@ class NewsCard extends StatelessWidget {
                           fontWeight: FontWeight.w300,
                         ),
                       ),
+                      Text(
+                        article.publishedOn.toIso8601String(),
+                        style: const TextStyle(
+                          fontSize: 18,
+                          height: 1.5,
+                          color: Colors.white70,
+                          fontWeight: FontWeight.w300,
+                        ),
+                      ),
+                      Text(
+                        article.sourceUrl,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          height: 1.5,
+                          color: Colors.white70,
+                          fontWeight: FontWeight.w300,
+                        ),
+                      ),
+                      Text(
+                        article.categories.length.toString(),
+                        style: const TextStyle(
+                          fontSize: 18,
+                          height: 1.5,
+                          color: Colors.white70,
+                          fontWeight: FontWeight.w300,
+                        ),
+                      ),
+                      ...article.categories
+                          .map(
+                            (e) => Text(
+                              e.label,
+                              style: const TextStyle(
+                                fontSize: 18,
+                                height: 1.5,
+                                color: Colors.white70,
+                                fontWeight: FontWeight.w300,
+                              ),
+                            ),
+                          )
+                          .toList(),
                     ],
                   ),
                 ),

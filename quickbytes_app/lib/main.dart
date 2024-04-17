@@ -14,6 +14,7 @@ void main() async {
 
   final authenticationRepository = AuthenticationRepository();
   final newsRepository = NewsRepository();
+  await newsRepository.init();
 
   await authenticationRepository.user.first;
 
