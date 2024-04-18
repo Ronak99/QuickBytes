@@ -13,11 +13,15 @@ class NewsRepository {
     _apiRepository = ApiRepository.instance;
   }
 
-  Future<List<Article>> queryAllArticles() async {
+  Future<List<Article>> queryAllArticles({
+    required List<String> categoryIdList,
+  }) async {
     List<dynamic> articleList = await _cacheRepository.articles.queryArticles();
 
     if (articleList.isEmpty) {
-      articleList = await _apiRepository.articles.queryArticles();
+      articleList = await _apiRepository.articles.queryArticles(
+        categoryIdList: categoryIdList,
+      );
       _cacheRepository.articles.saveArticles(
         articleList.map((e) => e as Map<String, dynamic>).toList(),
       );

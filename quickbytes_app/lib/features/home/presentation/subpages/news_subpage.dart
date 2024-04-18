@@ -20,9 +20,7 @@ class _NewsSubpageState extends State<NewsSubpage> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 2), () {
-      context.read<NewsBloc>().add(AllArticlesRequested());
-    });
+    context.read<NewsBloc>().add(AllArticlesRequested());
   }
 
   @override
@@ -30,11 +28,12 @@ class _NewsSubpageState extends State<NewsSubpage> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          print('hello');
-          List response = await ApiRepository.instance.articles.queryArticles();
-          print(response.length);
+          // print('hello');
+          // List response = await ApiRepository.instance.articles.queryArticles();
+          // print(response.length);
 
-          // final newsBloc = context.read<NewsBloc>();
+          final newsBloc = context.read<NewsBloc>();
+          newsBloc.add(AllArticlesRequested());
           // newsBloc.add(CardSwitched(index: 0));
           // newsBloc.add(
           //   ArticleSelectedAtIndex(0),

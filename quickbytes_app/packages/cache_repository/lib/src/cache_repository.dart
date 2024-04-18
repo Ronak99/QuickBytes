@@ -11,14 +11,9 @@ class CacheRepository {
     return _instance!;
   }
 
-  late ArticleEndpoint articles;
+  ArticleEndpoint articles = ArticleEndpoint();
 
   Future<void> init() async {
-    try {
-      await Hive.initFlutter();
-      articles = ArticleEndpoint();
-    } catch (e) {
-      print(e);
-    }
+    await Hive.initFlutter();
   }
 }

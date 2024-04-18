@@ -51,7 +51,7 @@ const createArticle = async (article: Article) => {
   return response;
 };
 
-const queryArticles = ({ categoryIds }: { categoryIds?: string }) => {
+const queryArticles = ({ categoryIds }: { categoryIds?: string[] }) => {
   return prisma.article.findMany({
     select: {
       ...articleKeys.reduce((obj, k) => ({ ...obj, [k]: true }), {}),
@@ -59,7 +59,7 @@ const queryArticles = ({ categoryIds }: { categoryIds?: string }) => {
     where: categoryIds
       ? {
           category_ids: {
-            hasSome: categoryIds.split(","),
+            hasSome: categoryIds,
           },
         }
       : {},

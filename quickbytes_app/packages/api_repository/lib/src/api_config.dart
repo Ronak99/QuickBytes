@@ -1,5 +1,5 @@
 class ApiConfig {
-  static const String baseUrl = "http://192.168.0.101:8081";
+  static const String baseUrl = "http://192.168.0.105:8081";
   static const String version = "/v1";
 }
 

@@ -8,6 +8,9 @@ import 'package:quickbytes_app/core/logs/logs.dart';
 part 'news_event.dart';
 part 'news_state.dart';
 
+const businessAll = '6616ae11754e1ade06474027';
+const technologyAll = '6616ae12754e1ade06474029';
+
 class NewsBloc extends Bloc<NewsEvent, NewsState> {
   NewsBloc({required NewsRepository newsRepository})
       : _newsRepository = newsRepository,
@@ -46,7 +49,9 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
     Emitter<NewsState> emit,
   ) async {
     emit(NewsLoading());
-    List<Article> articles = await _newsRepository.queryAllArticles();
+    List<String> categoryIdList = [businessAll, technologyAll];
+    List<Article> articles =
+        await _newsRepository.queryAllArticles(categoryIdList: categoryIdList);
     emit(NewsLoaded(articles: articles));
   }
 
