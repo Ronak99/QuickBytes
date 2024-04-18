@@ -101,6 +101,7 @@ class NotificationService(val context: Context) {
             .setCustomBigContentView(expandedNotificationView)
             .setContent(collapsedNotificationView)
             .setContentIntent(pendingIntent)
+            .setAutoCancel(true)
             .build()
 
         // Show the notification
