@@ -22,6 +22,8 @@ void main() async {
   Bloc.observer = const AppBlocObserver();
   FirebaseRepository.instance.setup.useEmulatorInDebug();
 
+  NotificationService.instance.initialize();
+
   runApp(
     App(
       authenticationRepository: authenticationRepository,
