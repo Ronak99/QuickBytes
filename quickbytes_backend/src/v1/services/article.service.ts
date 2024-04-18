@@ -46,7 +46,7 @@ const createArticle = async (article: Article) => {
   });
 
   // notify others
-  // notifyUsers(response);
+  notifyUsers(response);
 
   return response;
 };

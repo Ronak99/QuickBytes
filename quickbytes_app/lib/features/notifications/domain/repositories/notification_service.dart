@@ -15,6 +15,8 @@ class NotificationService {
       badge: true,
       sound: true,
     );
+
+    requestPermissions();
   }
 
   requestPermissions() async {
