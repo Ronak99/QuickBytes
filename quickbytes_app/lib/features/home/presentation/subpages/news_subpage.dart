@@ -1,4 +1,5 @@
 import 'package:api_repository/api_repository.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,20 +27,6 @@ class _NewsSubpageState extends State<NewsSubpage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          // print('hello');
-          // List response = await ApiRepository.instance.articles.queryArticles();
-          // print(response.length);
-
-          final newsBloc = context.read<NewsBloc>();
-          newsBloc.add(AllArticlesRequested());
-          // newsBloc.add(CardSwitched(index: 0));
-          // newsBloc.add(
-          //   ArticleSelectedAtIndex(0),
-          // );
-        },
-      ),
       body: BlocBuilder<NewsBloc, NewsState>(
         builder: (context, state) {
           if (state is NewsLoading) {
@@ -49,10 +36,6 @@ class _NewsSubpageState extends State<NewsSubpage> {
           } else if (state is NewsLoaded) {
             Logger.instance.i(state.index, stackTrace: StackTrace.empty);
             final newsBloc = context.read<NewsBloc>();
-
-            // AllowedSwipeDirection a = state.index == 0
-            //     ? const AllowedSwipeDirection.only(up: true, down: false)
-            //     : const AllowedSwipeDirection.only(down: true, up: false);
 
             return Stack(
               children: [
@@ -83,9 +66,17 @@ class _NewsSubpageState extends State<NewsSubpage> {
                     cardsCount: state.articles.length,
                     padding: EdgeInsets.zero,
                     controller: newsBloc.cardSwiperController,
+                    isLoop: true,
                     // allowedSwipeDirection: state.index == 0
                     //     ? const AllowedSwipeDirection.only(up: true)
                     //     : const AllowedSwipeDirection.symmetric(vertical: true),
+                    onUndo: (
+                      int? previousIndex,
+                      int currentIndex,
+                      CardSwiperDirection direction,
+                    ) {
+                      return false;
+                    },
                     onSwipe: (previousIndex, currentIndex, direction) {
                       if (currentIndex != null) {
                         Logger.instance
@@ -98,7 +89,7 @@ class _NewsSubpageState extends State<NewsSubpage> {
                     cardBuilder: (context, index, percentThresholdX,
                             percentThresholdY) =>
                         state.articles
-                            .map((e) => NewsCard(article: e))
+                            .map((e) => ArticleCard(article: e))
                             .toList()[index],
                   ),
               ],
@@ -113,10 +104,10 @@ class _NewsSubpageState extends State<NewsSubpage> {
   }
 }
 
-class NewsCard extends StatelessWidget {
+class ArticleCard extends StatelessWidget {
   final Article article;
 
-  const NewsCard({
+  const ArticleCard({
     Key? key,
     required this.article,
   }) : super(key: key);
@@ -233,28 +224,21 @@ class NewsCard extends StatelessWidget {
                           fontWeight: FontWeight.w300,
                         ),
                       ),
-                      Text(
-                        article.categories.length.toString(),
-                        style: const TextStyle(
-                          fontSize: 18,
-                          height: 1.5,
-                          color: Colors.white70,
-                          fontWeight: FontWeight.w300,
-                        ),
-                      ),
-                      ...article.categories
-                          .map(
-                            (e) => Text(
-                              e.label,
-                              style: const TextStyle(
-                                fontSize: 18,
-                                height: 1.5,
-                                color: Colors.white70,
-                                fontWeight: FontWeight.w300,
-                              ),
-                            ),
-                          )
-                          .toList(),
+                      const Spacer(),
+                      // ...article.categories
+                      //   .map(
+                      //     (e) => Text(
+                      //       e.label,
+                      //       style: const TextStyle(
+                      //         fontSize: 18,
+                      //         height: 1.5,
+                      //         color: Colors.white70,
+                      //         fontWeight: FontWeight.w300,
+                      //       ),
+                      //     ),
+                      //   )
+                      //   .toList(),
+                      const ArticleFooter(),
                     ],
                   ),
                 ),
@@ -264,6 +248,48 @@ class NewsCard extends StatelessWidget {
           const SizedBox(height: 20),
         ],
       ),
+    );
+  }
+}
+
+class ArticleFooter extends StatelessWidget {
+  const ArticleFooter({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(50),
+            color: Colors.white10,
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                height: 25,
+                width: 25,
+                decoration: const BoxDecoration(
+                  color: Colors.amber,
+                  shape: BoxShape.circle,
+                ),
+                margin: const EdgeInsets.only(right: 5),
+              ),
+              const Text(
+                'Relevancy',
+                style: TextStyle(
+                  color: Colors.white70,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 16,
+                ),
+              )
+            ],
+          ),
+        )
+      ],
     );
   }
 }
