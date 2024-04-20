@@ -1,5 +1,6 @@
 import 'package:api_repository/api_repository.dart';
 import 'package:cache_repository/cache_repository.dart';
+import 'package:news_repository/src/exceptions/news_exceptions.dart';
 import 'package:news_repository/src/models/models.dart';
 
 class NewsRepository {
@@ -16,17 +17,27 @@ class NewsRepository {
   Future<List<Article>> queryAllArticles({
     required List<String> categoryIdList,
   }) async {
-    List<dynamic> articleList = await _cacheRepository.articles.queryArticles();
+    try {
+      List<dynamic> articleList =
+          await _cacheRepository.articles.queryArticles();
 
-    if (articleList.isEmpty) {
-      articleList = await _apiRepository.articles.queryArticles(
-        categoryIdList: categoryIdList,
-      );
-      _cacheRepository.articles.saveArticles(
-        articleList.map((e) => e as Map<String, dynamic>).toList(),
-      );
+      if (articleList.isEmpty) {
+        articleList = await _apiRepository.articles.queryArticles(
+          categoryIdList: categoryIdList,
+        );
+        _cacheRepository.articles.saveArticles(
+          articleList.map((e) => e as Map<String, dynamic>).toList(),
+        );
+      }
+
+      return articleList.map((e) => Article.fromJson(e)).toList();
+    } catch (e) {
+      if (e is QueryArticleApiException) {
+        throw QueryArticleNewsException(message: e.message);
+      } else if (e is QueryArticleCacheException) {
+        throw QueryArticleNewsException(message: e.message);
+      }
+      return [];
     }
-
-    return articleList.map((e) => Article.fromJson(e)).toList();
   }
 }

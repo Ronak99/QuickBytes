@@ -1,4 +1,5 @@
 import 'package:api_repository/src/api_config.dart';
+import 'package:api_repository/src/exceptions/exceptions.dart';
 import 'package:dio/dio.dart';
 
 class ArticleEndpoint {
@@ -20,8 +21,7 @@ class ArticleEndpoint {
 
       return response.data!["data"];
     } on DioException catch (e) {
-      print(e.message);
-      return [];
+      throw QueryArticleApiException.fromDioException(e);
     }
   }
 }

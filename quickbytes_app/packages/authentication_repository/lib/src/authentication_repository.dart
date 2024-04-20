@@ -12,14 +12,12 @@ import 'models/models.dart';
 /// Repository which manages user authentication.
 /// {@endtemplate}
 class AuthenticationRepository {
-  /// {@macro authentication_repository}
   AuthenticationRepository({
     firebase_auth.FirebaseAuth? firebaseAuth,
     GoogleSignIn? googleSignIn,
   })  : _firebaseAuth = firebaseAuth ?? firebase_auth.FirebaseAuth.instance,
         _googleSignIn = googleSignIn ?? GoogleSignIn.standard();
 
-  // final CacheClient _cache;
   final firebase_auth.FirebaseAuth _firebaseAuth;
   final GoogleSignIn _googleSignIn;
 
@@ -30,18 +28,12 @@ class AuthenticationRepository {
   bool isWeb = kIsWeb;
 
   /// User cache key.
-  /// Should only be used for testing purposes.
   @visibleForTesting
   static const userCacheKey = '__user_cache_key__';
 
-  /// Stream of [User] which will emit the current user when
-  /// the authentication state changes.
-  ///
-  /// Emits [User.empty] if the user is not authenticated.
   Stream<User> get user {
     return _firebaseAuth.authStateChanges().map((firebaseUser) {
       final user = firebaseUser == null ? User.empty : firebaseUser.toUser;
-      // _cache.write(key: userCacheKey, value: user);
       return user;
     });
   }
@@ -55,7 +47,6 @@ class AuthenticationRepository {
   }
 
   /// Starts the Sign In with Google Flow.
-  ///
   /// Throws a [LogInWithGoogleFailure] if an exception occurs.
   Future<void> logInWithGoogle() async {
     try {
