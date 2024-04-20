@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:quickbytes_app/core/navigation/app_router.dart';
 import 'package:quickbytes_app/core/navigation/routes.dart';
-import 'package:quickbytes_app/core/utils/platform_channel_handler.dart';
+import 'package:quickbytes_app/shared/utils/platform_channel_handler.dart';
 import 'package:quickbytes_app/features/home/state/bloc/home_bloc.dart';
 import 'package:quickbytes_app/features/news/state/news_bloc.dart';
 import 'package:quickbytes_app/features/notifications/data/models/news/news_notification.dart';

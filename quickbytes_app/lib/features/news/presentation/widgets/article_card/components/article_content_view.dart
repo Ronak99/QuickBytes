@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:quickbytes_app/core/utils/constants.dart';
+import 'package:quickbytes_app/shared/utils/constants.dart';
 
 import 'article_footer.dart';
 
