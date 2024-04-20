@@ -9,6 +9,7 @@ import 'package:quickbytes_app/core/logs/logs.dart';
 import 'package:quickbytes_app/core/widgets/blur_view.dart';
 import 'package:quickbytes_app/core/widgets/cached_image.dart';
 import 'package:quickbytes_app/features/news/state/news_bloc.dart';
+import 'package:quickbytes_app/core/theme/state/theme_cubit.dart';
 
 class NewsSubpage extends StatefulWidget {
   const NewsSubpage({super.key});
@@ -161,7 +162,7 @@ class ArticleCard extends StatelessWidget {
               children: [
                 Container(
                   decoration: BoxDecoration(
-                    color: const Color(0xff191818),
+                    color: Theme.of(context).cardColor,
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(
                       color: Colors.white30,
@@ -189,41 +190,22 @@ class ArticleCard extends StatelessWidget {
                     children: [
                       Text(
                         article.title,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 24,
-                          color: Colors.white,
-                          height: 1.2,
-                        ),
+                        style: Theme.of(context).textTheme.displayLarge,
                       ),
                       const SizedBox(height: 12),
                       Text(
                         article.content,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          height: 1.5,
-                          color: Colors.white70,
-                          fontWeight: FontWeight.w300,
-                        ),
+                        style: Theme.of(context).textTheme.displayMedium,
                       ),
-                      Text(
-                        article.publishedOn.toIso8601String(),
-                        style: const TextStyle(
-                          fontSize: 18,
-                          height: 1.5,
-                          color: Colors.white70,
-                          fontWeight: FontWeight.w300,
-                        ),
-                      ),
-                      Text(
-                        article.sourceUrl,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          height: 1.5,
-                          color: Colors.white70,
-                          fontWeight: FontWeight.w300,
-                        ),
-                      ),
+                      // Text(
+                      //   article.publishedOn.toIso8601String(),
+                      //   style: const TextStyle(
+                      //     fontSize: 18,
+                      //     height: 1.5,
+                      //     color: Colors.white70,
+                      //     fontWeight: FontWeight.w300,
+                      //   ),
+                      // ),
                       const Spacer(),
                       // ...article.categories
                       //   .map(
@@ -257,38 +239,55 @@ class ArticleFooter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color itemBackground = Theme.of(context).colorScheme.secondary;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(50),
-            color: Colors.white10,
+            color: itemBackground,
           ),
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+          padding: const EdgeInsets.all(8),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
                 height: 25,
                 width: 25,
-                decoration: const BoxDecoration(
-                  color: Colors.amber,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.onPrimary,
                   shape: BoxShape.circle,
                 ),
                 margin: const EdgeInsets.only(right: 5),
               ),
-              const Text(
+              Text(
                 'Relevancy',
-                style: TextStyle(
-                  color: Colors.white70,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 16,
-                ),
+                style: Theme.of(context).textTheme.displaySmall!.copyWith(
+                      color: Theme.of(context).colorScheme.onTertiary,
+                    ),
               )
             ],
           ),
-        )
+        ),
+        const SizedBox(width: 8),
+        GestureDetector(
+          onTap: () => context.read<ThemeCubit>().toggleTheme(),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(50),
+              color: itemBackground,
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+            child: Icon(
+              Theme.of(context).brightness == Brightness.light
+                  ? Icons.dark_mode_rounded
+                  : Icons.light_mode_rounded,
+              color: Theme.of(context).colorScheme.onPrimary,
+            ),
+          ),
+        ),
       ],
     );
   }
