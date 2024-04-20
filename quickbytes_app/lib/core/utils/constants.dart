@@ -32,3 +32,7 @@ class TextStyleConstants {
     fontSize: 16,
   );
 }
+
+class AssetConstants {
+  static const articleCardBackground = "assets/images/article_bg_pattern.png";
+}
