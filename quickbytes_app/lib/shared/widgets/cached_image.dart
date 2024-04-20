@@ -1,6 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
+/// A wrapper for CachedNetworkImage which is implemented throughout the app.
+/// This widget adds further functionalities to CachedNetworkImage and generalises it's usage
+/// It adds support for specifying height, width, radius and even round pictures all from one widget.
 class CachedImage extends StatelessWidget {
   final String url;
   final bool isRound;
@@ -21,7 +24,11 @@ class CachedImage extends StatelessWidget {
     this.fit = BoxFit.cover,
     this.useOldImageOnUrlChange = false,
     this.placeholder,
-  });
+  }) :
+        // if an image is supposed to be round, then there is no point in proving the height and the width.
+        assert(
+          isRound == false || isRound && (height == null && width == null),
+        );
 
   @override
   Widget build(BuildContext context) {

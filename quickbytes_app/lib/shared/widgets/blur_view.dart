@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
+/// This widget applies a background filter around it's child.
 class BlurView extends StatelessWidget {
   final Widget child;
   final double height;
