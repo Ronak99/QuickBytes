@@ -4,7 +4,7 @@ import 'package:news_repository/news_repository.dart';
 
 import 'package:quickbytes_app/core/theme/state/theme_cubit.dart';
 import 'package:quickbytes_app/core/utils/constants.dart';
-import 'package:quickbytes_app/core/widgets/cached_image.dart';
+import 'package:quickbytes_app/shared/widgets/cached_image.dart';
 
 class ArticleCard extends StatelessWidget {
   final Article article;

@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:quickbytes_app/core/logs/logs.dart';
-import 'package:quickbytes_app/core/widgets/blur_view.dart';
-import 'package:quickbytes_app/core/widgets/cached_image.dart';
+import 'package:quickbytes_app/shared/widgets/blur_view.dart';
+import 'package:quickbytes_app/shared/widgets/cached_image.dart';
 import 'package:quickbytes_app/features/news/presentation/widgets/article_card.dart';
 import 'package:quickbytes_app/features/news/state/news_bloc.dart';
 
