@@ -1,6 +1,6 @@
 # QuickBytes
 
-An app that provides byte sized news right at your fingertips. (https://drive.google.com/file/d/1lv9WZKT-lMlmrJaxUPk0fcIdkmd9Zv00/view?usp=sharing)[Demo]
+An app that provides byte sized news right at your fingertips. [Demo](https://drive.google.com/file/d/1lv9WZKT-lMlmrJaxUPk0fcIdkmd9Zv00/view?usp=sharing)
 
 ## Tech Stack
 
