@@ -44,15 +44,15 @@ class _NewsPageState extends State<NewsPage> {
                     width: MediaQuery.of(context).size.width,
                     sigmaX: 2,
                     sigmaY: 2,
-                    color: Colors.black54,
+                    color: Theme.of(context).cardColor.withOpacity(.3),
                     child: SizedBox(
                       child: CachedImage(
                         state.selectedArticle!.image,
                         fit: BoxFit.cover,
                         useOldImageOnUrlChange: true,
                         placeholder: Container(
-                          decoration: const BoxDecoration(
-                            color: Color(0xff191818),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).cardColor,
                           ),
                         ),
                       ),
