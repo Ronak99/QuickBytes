@@ -34,6 +34,10 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
 
   void _onArticleSelect(ArticleSelectedAtIndex event, Emitter<NewsState> emit) {
     if (state is NewsLoaded) {
+      Logger.instance.d(
+        'class NewsBloc, function _onArticleSelect: Article selected at index: ${event.index}',
+        stackTrace: StackTrace.empty,
+      );
       NewsLoaded s = state as NewsLoaded;
       emit(s.copyWith(index: event.index));
     }
