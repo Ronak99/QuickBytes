@@ -1,9 +1,10 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:news_repository/news_repository.dart';
 import 'package:quickbytes_app/core/logs/logs.dart';
-import 'package:quickbytes_app/core/navigation/app_router.dart';
+import 'package:quickbytes_app/core/navigation/app_router.dart' as router;
 import 'package:quickbytes_app/shared/utils/utils.dart';
 import 'package:quickbytes_app/features/home/state/bloc/home_bloc.dart';
 import 'package:quickbytes_app/features/news/state/news_bloc.dart';
@@ -56,8 +57,21 @@ class App extends StatelessWidget {
   }
 }
 
-class AppView extends StatelessWidget {
+class AppView extends StatefulWidget {
   const AppView({super.key});
+
+  @override
+  State<AppView> createState() => _AppViewState();
+}
+
+class _AppViewState extends State<AppView> {
+  late GoRouter appRouter;
+
+  @override
+  void initState() {
+    super.initState();
+    appRouter = router.appRouter;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,11 +85,9 @@ class AppView extends StatelessWidget {
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
           scaffoldMessengerKey: Utils.scaffoldMessengerKey,
-          routerConfig: appRouter(
-            context.select(
-              (AppBloc bloc) => bloc.state.status,
-            ),
-          ),
+          routeInformationProvider: appRouter.routeInformationProvider,
+          routeInformationParser: appRouter.routeInformationParser,
+          routerDelegate: appRouter.routerDelegate,
         );
       },
     );

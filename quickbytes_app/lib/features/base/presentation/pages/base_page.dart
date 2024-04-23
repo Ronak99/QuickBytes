@@ -63,10 +63,10 @@ class _BasePageState extends State<BasePage> {
                 onPressed: () =>
                     context.read<HomeBloc>().add(HomePageSwitched()),
               ),
-              TextButton(
-                child: const Text('Go to relevancy page'),
-                onPressed: () => HomePageRoute().go(context),
-              )
+              // TextButton(
+              //   child: const Text('Go to relevancy page'),
+              //   onPressed: () => HomePageRoute().go(context),
+              // )
             ],
           ),
         ),
@@ -74,17 +74,17 @@ class _BasePageState extends State<BasePage> {
       listener: (context, state) {
         if (state.notificationData.isNotEmpty) {
           if (state.notification is NewsNotification) {
-            HomePageRoute().go(context);
+            // HomePageRoute().go(context);
 
-            final notification = state.notification as NewsNotification;
+            // final notification = state.notification as NewsNotification;
 
-            final newsBloc = context.read<NewsBloc>();
-            newsBloc.add(AddToTopRequested(notification.article));
-            newsBloc.add(ArticleSelectedAtIndex(0));
+            // final newsBloc = context.read<NewsBloc>();
+            // newsBloc.add(AddToTopRequested(notification.article));
+            // newsBloc.add(ArticleSelectedAtIndex(0));
 
-            if (GoRouter.of(context).location() == '/home') {
-              context.read<HomeBloc>().add(HomePageSwitched());
-            }
+            // if (GoRouter.of(context).location() == '/home') {
+            //   context.read<HomeBloc>().add(HomePageSwitched());
+            // }
             // newsBloc.add(CardSwitched(index: 0));
           }
         }

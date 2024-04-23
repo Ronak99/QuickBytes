@@ -26,10 +26,10 @@ class LoginForm extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Image.asset(
-                'assets/bloc_logo_small.png',
-                height: 120,
-              ),
+              // Image.asset(
+              //   'assets/bloc_logo_small.png',
+              //   height: 120,
+              // ),
               const SizedBox(height: 16),
               // _EmailInput(),
               // const SizedBox(height: 8),
@@ -55,7 +55,6 @@ class _GoogleLoginButton extends StatelessWidget {
       key: const Key('loginForm_googleLogin_raisedButton'),
       label: const Text(
         'SIGN IN WITH GOOGLE',
-        style: TextStyle(color: Colors.white),
       ),
       style: ElevatedButton.styleFrom(
         shape: RoundedRectangleBorder(
@@ -63,7 +62,7 @@ class _GoogleLoginButton extends StatelessWidget {
         ),
         backgroundColor: theme.colorScheme.secondary,
       ),
-      icon: const Icon(Icons.games, color: Colors.white),
+      icon: const Icon(Icons.games),
       onPressed: () => context.read<LoginCubit>().logInWithGoogle(),
     );
   }
