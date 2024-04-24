@@ -25,7 +25,7 @@ class CachedImage extends StatelessWidget {
     this.useOldImageOnUrlChange = false,
     this.placeholder,
   }) :
-        // if an image is supposed to be round, then there is no point in proving the height and the width.
+        // if an image is supposed to be round, then there is no point in providing the height and the width.
         assert(
           isRound == false || isRound && (height == null && width == null),
         );
