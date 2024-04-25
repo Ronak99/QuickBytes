@@ -33,9 +33,7 @@ part 'routes.g.dart';
 class BasePageRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    bool isLoggedIn = context.select((AppBloc bloc) => bloc.isLoggedIn);
-
-    return isLoggedIn ? const HomePage() : const AuthPage();
+    return const BasePage();
   }
 }
 

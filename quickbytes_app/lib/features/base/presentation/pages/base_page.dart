@@ -3,6 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:quickbytes_app/core/navigation/app_router.dart';
 import 'package:quickbytes_app/core/navigation/routes.dart';
+import 'package:quickbytes_app/features/auth/presentation/pages/login_page.dart';
+import 'package:quickbytes_app/features/base/state/app_bloc.dart';
+import 'package:quickbytes_app/features/home/presentation/pages/home_page.dart';
 import 'package:quickbytes_app/shared/utils/platform_channel_handler.dart';
 import 'package:quickbytes_app/features/home/state/bloc/home_bloc.dart';
 import 'package:quickbytes_app/features/news/state/news_bloc.dart';
@@ -49,43 +52,24 @@ class _BasePageState extends State<BasePage> {
   Widget build(BuildContext context) {
     return BlocListener<NotificationsBloc, NotificationState>(
       bloc: context.read<NotificationsBloc>(),
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Base Page'),
-        ),
-        body: SizedBox(
-          width: double.infinity,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextButton(
-                child: const Text('Go to relevancy page'),
-                onPressed: () =>
-                    context.read<HomeBloc>().add(HomePageSwitched()),
-              ),
-              // TextButton(
-              //   child: const Text('Go to relevancy page'),
-              //   onPressed: () => HomePageRoute().go(context),
-              // )
-            ],
-          ),
-        ),
-      ),
+      child: const HomePage(),
       listener: (context, state) {
         if (state.notificationData.isNotEmpty) {
           if (state.notification is NewsNotification) {
             // HomePageRoute().go(context);
 
-            // final notification = state.notification as NewsNotification;
+            final notification = state.notification as NewsNotification;
 
-            // final newsBloc = context.read<NewsBloc>();
-            // newsBloc.add(AddToTopRequested(notification.article));
-            // newsBloc.add(ArticleSelectedAtIndex(0));
+            final newsBloc = context.read<NewsBloc>();
+            final homeBloc = context.read<HomeBloc>();
+
+            newsBloc.add(AddToTopRequested(notification.article));
+            newsBloc.add(ArticleSelectedAtIndex(0));
 
             // if (GoRouter.of(context).location() == '/home') {
-            //   context.read<HomeBloc>().add(HomePageSwitched());
             // }
-            // newsBloc.add(CardSwitched(index: 0));
+            homeBloc.add(SwitchToNewsPageRequested());
+            newsBloc.add(CardSwitchedRequested(index: 0));
           }
         }
       },

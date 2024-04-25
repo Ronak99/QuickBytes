@@ -11,12 +11,15 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: PageView(
-        controller: context.read<HomeBloc>().state.pageController,
-        children: const [
-          DashboardSubpage(),
-          NewsPage(),
-        ],
+      body: PageStorage(
+        bucket: PageStorageBucket(),
+        child: PageView(
+          controller: context.read<HomeBloc>().state.pageController,
+          children: const [
+            DashboardPage(),
+            NewsPage(),
+          ],
+        ),
       ),
     );
   }
