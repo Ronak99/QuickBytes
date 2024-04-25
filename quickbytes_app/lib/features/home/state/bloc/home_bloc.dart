@@ -10,10 +10,10 @@ part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc() : super(HomeState()) {
-    on<HomePageSwitched>(_onHomePageSwitch);
+    on<SwitchToNewsPageRequested>(_switchToNewsPage);
   }
 
-  _onHomePageSwitch(HomePageSwitched event, Emitter<HomeState> emit) {
+  _switchToNewsPage(SwitchToNewsPageRequested event, Emitter<HomeState> emit) {
     state.goToNewsSubpage();
   }
 
