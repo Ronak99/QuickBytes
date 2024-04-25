@@ -16,14 +16,14 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
       : _newsRepository = newsRepository,
         super(NewsInitial()) {
     on<AddToTopRequested>(_onAddToTopRequested);
-    on<CardSwitched>(_onCardSwitch);
+    on<CardSwitchedRequested>(_onCardSwitch);
     on<ArticleSelectedAtIndex>(_onArticleSelect);
     on<AllArticlesRequested>(_onAllArticlesRequest);
   }
 
   final NewsRepository _newsRepository;
 
-  final CardSwiperController cardSwiperController = CardSwiperController();
+  final PageController cardSwiperController = PageController();
 
   void _onAddToTopRequested(AddToTopRequested event, Emitter<NewsState> emit) {
     if (state is NewsLoaded) {
@@ -43,9 +43,9 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
     }
   }
 
-  void _onCardSwitch(CardSwitched event, Emitter<NewsState> emit) {
-    cardSwiperController.moveTo(event.index);
-    emit(state);
+  void _onCardSwitch(CardSwitchedRequested event, Emitter<NewsState> emit) {
+    if (!cardSwiperController.hasClients) return;
+    cardSwiperController.jumpToPage(event.index);
   }
 
   void _onAllArticlesRequest(

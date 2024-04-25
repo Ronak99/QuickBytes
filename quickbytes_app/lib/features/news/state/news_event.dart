@@ -4,17 +4,19 @@ sealed class NewsEvent {
   const NewsEvent();
 }
 
+/// Adds article to the top of the article list
 final class AddToTopRequested extends NewsEvent {
   const AddToTopRequested(this.article);
   final Article article;
 }
 
-class CardSwitched extends NewsEvent {
+class CardSwitchedRequested extends NewsEvent {
   final int index;
 
-  CardSwitched({required this.index});
+  CardSwitchedRequested({required this.index});
 }
 
+/// Selects article at given index, which updates the background image
 class ArticleSelectedAtIndex extends NewsEvent {
   final int index;
 
