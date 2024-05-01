@@ -7,6 +7,7 @@ import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:news_repository/news_repository.dart';
 
 import 'package:quickbytes_app/core/logs/logs.dart';
+import 'package:quickbytes_app/features/categories/state/cubit/news_category_cubit.dart';
 import 'package:quickbytes_app/features/news/presentation/widgets/article_card/article_card.dart';
 import 'package:quickbytes_app/features/news/state/news_bloc.dart';
 import 'package:quickbytes_app/shared/widgets/blur_view.dart';
@@ -28,6 +29,7 @@ class _NewsPageState extends State<NewsPage>
   @override
   void initState() {
     super.initState();
+    context.read<NewsCategoryCubit>().queryAllCategories();
     context.read<NewsBloc>().add(AllArticlesRequested());
   }
 

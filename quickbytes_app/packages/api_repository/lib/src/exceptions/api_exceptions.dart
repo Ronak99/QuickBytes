@@ -1,20 +1,20 @@
 import 'package:dio/dio.dart';
 
-class QueryArticleApiException implements Exception {
-  const QueryArticleApiException({
+class ApiException implements Exception {
+  const ApiException({
     this.message = 'An unknown exception occurred.',
   });
 
-  factory QueryArticleApiException.fromDioException(DioException dioException) {
+  factory ApiException.fromDioException(DioException dioException) {
     switch (dioException.type) {
       case DioExceptionType.connectionTimeout:
-        return const QueryArticleApiException(message: "Connection Timeout!");
+        return const ApiException(message: "Connection Timeout!");
       case DioExceptionType.sendTimeout:
-        return const QueryArticleApiException(message: "Sent Timeout!");
+        return const ApiException(message: "Sent Timeout!");
       case DioExceptionType.receiveTimeout:
-        return const QueryArticleApiException(message: "Received Timeout!");
+        return const ApiException(message: "Received Timeout!");
       case DioExceptionType.badCertificate:
-        return const QueryArticleApiException(message: "Bad Certificate!");
+        return const ApiException(message: "Bad Certificate!");
       case DioExceptionType.badResponse:
         String message = 'Bad Response!';
         if (dioException.response != null) {
@@ -23,14 +23,14 @@ class QueryArticleApiException implements Exception {
             message = dioException.response!.data['message'];
           }
         }
-        return QueryArticleApiException(message: message);
+        return ApiException(message: message);
       case DioExceptionType.cancel:
-        return const QueryArticleApiException(message: "Request Cancelled!");
+        return const ApiException(message: "Request Cancelled!");
       case DioExceptionType.connectionError:
-        return const QueryArticleApiException(message: "Connection Error!");
+        return const ApiException(message: "Connection Error!");
       case DioExceptionType.unknown:
       default:
-        return const QueryArticleApiException(
+        return const ApiException(
           message: "An unknown error occurred!",
         );
     }

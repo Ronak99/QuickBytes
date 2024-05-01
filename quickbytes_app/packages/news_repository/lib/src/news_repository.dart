@@ -1,5 +1,6 @@
 import 'package:api_repository/api_repository.dart';
 import 'package:cache_repository/cache_repository.dart';
+import 'package:news_repository/src/exceptions/category_exceptions.dart';
 import 'package:news_repository/src/exceptions/news_exceptions.dart';
 import 'package:news_repository/src/models/models.dart';
 
@@ -22,7 +23,7 @@ class NewsRepository {
           await _cacheRepository.articles.queryArticles();
 
       if (articleList.isEmpty) {
-        articleList = await _apiRepository.articles.queryArticles(
+        List<dynamic> articleList = await _apiRepository.articles.queryArticles(
           categoryIdList: categoryIdList,
         );
         _cacheRepository.articles.saveArticles(
@@ -32,10 +33,51 @@ class NewsRepository {
 
       return articleList.map((e) => Article.fromJson(e)).toList();
     } catch (e) {
-      if (e is QueryArticleApiException) {
+      if (e is ApiException) {
         throw QueryArticleNewsException(message: e.message);
       } else if (e is QueryArticleCacheException) {
         throw QueryArticleNewsException(message: e.message);
+      }
+      return [];
+    }
+  }
+
+  Future<List<NewsCategory>> queryAllCategories() async {
+    try {
+      List<dynamic> categoryList =
+          await _apiRepository.categories.queryCategories();
+
+      return categoryList.map((e) => NewsCategory.fromJson(e)).toList();
+    } catch (e) {
+      if (e is ApiException) {
+        throw QueryNewsCategoryException(message: e.message);
+      }
+      return [];
+    }
+  }
+
+  Future<List<NewsCategory>> queryUserCategories({
+    required List<NewsCategory> allCategories,
+  }) async {
+    try {
+      List<dynamic> categoryList =
+          await _cacheRepository.categories.queryCategories();
+
+      if (categoryList.isEmpty) {
+        // parse out categories that are all of major category
+        List<NewsCategory> categoriesToSave =
+            allCategories.where((category) => !category.isAll).toList();
+        // save a default set of categories and return that
+        // await _cacheRepository.categories.saveCategories(
+        //   categoriesToSave.map((e) => e as Map<String, dynamic>).toList(),
+        // );
+        return categoriesToSave;
+      }
+
+      return categoryList.map((e) => NewsCategory.fromJson(e)).toList();
+    } catch (e) {
+      if (e is ApiException) {
+        throw QueryNewsCategoryException(message: e.message);
       }
       return [];
     }

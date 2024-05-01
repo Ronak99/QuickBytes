@@ -2,15 +2,10 @@ import 'package:api_repository/src/api_config.dart';
 import 'package:api_repository/src/exceptions/exceptions.dart';
 import 'package:dio/dio.dart';
 
-class ArticleEndpoint {
-  Future<List<dynamic>> queryArticles(
-      {required List<String> categoryIdList}) async {
+class CategoryEndpoint {
+  Future<List<dynamic>> queryCategories() async {
     try {
-      Uri uri = APIRoutes.articles(
-        queryParameters: {
-          "category_ids": categoryIdList,
-        },
-      );
+      Uri uri = APIRoutes.categories();
 
       Response<Map<String, dynamic>> response =
           await Dio().getUri<Map<String, dynamic>>(uri);

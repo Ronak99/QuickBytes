@@ -1,7 +1,5 @@
 part of 'news_bloc.dart';
 
-List<Article> articleList = [];
-
 sealed class NewsState extends Equatable {
   const NewsState();
 }

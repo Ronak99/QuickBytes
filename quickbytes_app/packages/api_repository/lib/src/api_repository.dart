@@ -1,4 +1,5 @@
 import 'package:api_repository/src/endpoints/article_endpoint.dart';
+import 'package:api_repository/src/endpoints/category_endpoint.dart';
 
 /// {@template authentication_repository}
 /// Repository which manages all API related calls
@@ -12,4 +13,5 @@ class ApiRepository {
   }
 
   ArticleEndpoint articles = ArticleEndpoint();
+  CategoryEndpoint categories = CategoryEndpoint();
 }

@@ -1,5 +1,5 @@
 class ApiConfig {
-  static const String baseUrl = "http://192.168.0.105:8081";
+  static const String baseUrl = "http://192.168.0.101:8081";
   static const String version = "/v1";
 }
 
@@ -18,13 +18,18 @@ class ApiUrl {
 }
 
 class APIRoutes {
-  static ArticleRoutes article = ArticleRoutes();
-}
-
-class ArticleRoutes {
-  Uri articles({Map<String, dynamic>? queryParameters}) => ApiUrl.parse(
+  static Uri articles({Map<String, dynamic>? queryParameters}) => ApiUrl.parse(
         endpoint: "/articles",
         queryParameters: queryParameters,
       );
-  Uri get categories => ApiUrl.parse(endpoint: "/categories");
+
+  static Uri categories({Map<String, dynamic>? queryParameters}) =>
+      ApiUrl.parse(
+        endpoint: "/categories",
+        queryParameters: queryParameters,
+      );
 }
+
+class Routes {}
+
+class CategoryRoutes {}
