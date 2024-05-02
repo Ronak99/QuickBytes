@@ -26,4 +26,5 @@ class NewsCategory with _$NewsCategory {
       _$NewsCategoryFromJson(json);
 
   bool get isAll => relevancy == Relevancy.all;
+  bool get isNone => relevancy == Relevancy.none;
 }

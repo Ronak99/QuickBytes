@@ -30,4 +30,12 @@ class NotificationService {
       sound: true,
     );
   }
+
+  subscribeToTopic(String topic) async {
+    await messaging.subscribeToTopic(topic);
+  }
+
+  unsubscribeFromTopic(String topic) async {
+    await messaging.unsubscribeFromTopic(topic);
+  }
 }

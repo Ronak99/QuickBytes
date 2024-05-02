@@ -25,4 +25,5 @@ Map<String, dynamic> _$$NewsCategoryImplToJson(_$NewsCategoryImpl instance) =>
 const _$RelevancyEnumMap = {
   Relevancy.all: 'all',
   Relevancy.major: 'major',
+  Relevancy.none: 'none',
 };

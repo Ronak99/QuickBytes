@@ -1,10 +1,12 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_repository/news_repository.dart';
 
 import 'package:quickbytes_app/features/categories/state/cubit/news_category_cubit.dart';
 import 'package:quickbytes_app/features/dashboard/state/bloc/dashboard_bloc.dart';
+import 'package:quickbytes_app/features/notifications/domain/repositories/notification_service.dart';
+import 'package:quickbytes_app/shared/utils/utils.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -42,10 +44,14 @@ class _DashboardPageState extends State<DashboardPage> {
               ),
             ),
             GestureDetector(
-              onTap: () {
-                final categories =
-                    context.read<DashboardBloc>().state.selectedCategoryList;
-                print(categories.map((e) => e.name).toList());
+              onTap: () async {
+                final dashboardBloc = context.read<DashboardBloc>();
+                final newsCategoryCubit = context.read<NewsCategoryCubit>();
+
+                final categories = dashboardBloc.state.selectedCategoryList;
+                await newsCategoryCubit.updateUserCategories(categories);
+
+                Utils.showSnackbar(message: "Categories Updated!!!");
               },
               child: Container(
                 height: 50,
@@ -85,14 +91,15 @@ class ListViewBuilder extends StatefulWidget {
 }
 
 class _ListViewBuilderState extends State<ListViewBuilder> {
-  List<NewsCategory> selectedCategoryList = [];
-
   @override
   void initState() {
     super.initState();
 
     context.read<DashboardBloc>().add(
-        IntializCategoryListRequested(newsCategoryList: widget.userCategories));
+          IntializeCategoryListRequested(
+            newsCategoryList: List.from(widget.userCategories),
+          ),
+        );
   }
 
   @override
@@ -179,7 +186,6 @@ class _CategoryListItemState extends State<CategoryListItem> {
       onTap: () {
         _selectedCategory = category;
         widget.onCategorySelect(_selectedCategory);
-        setState(() {});
       },
       child: Container(
         color: Colors.transparent,
@@ -236,8 +242,10 @@ class _CategoryListItemState extends State<CategoryListItem> {
                   (e) => selectionView(category: e),
                 ),
                 selectionView(
-                  category: widget.categoryTypes[0]
-                      .copyWith(relevancy: Relevancy.none),
+                  category: widget.categoryTypes[0].copyWith(
+                    relevancy: Relevancy.none,
+                    name: "${widget.categoryTypes[0].name.split('_')[0]}_none",
+                  ),
                 ),
               ],
             ),

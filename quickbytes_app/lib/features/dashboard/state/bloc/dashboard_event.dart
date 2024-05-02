@@ -8,8 +8,8 @@ class NewsCategorySelected extends DashboardEvent {
   NewsCategorySelected({required this.newsCategory});
 }
 
-class IntializCategoryListRequested extends DashboardEvent {
+class IntializeCategoryListRequested extends DashboardEvent {
   final List<NewsCategory> newsCategoryList;
 
-  IntializCategoryListRequested({required this.newsCategoryList});
+  IntializeCategoryListRequested({required this.newsCategoryList});
 }

@@ -4,3 +4,10 @@ class QueryNewsCategoryException implements Exception {
   });
   final String message;
 }
+
+class SaveNewsCategoryException implements Exception {
+  const SaveNewsCategoryException({
+    this.message = 'An unknown exception occurred.',
+  });
+  final String message;
+}

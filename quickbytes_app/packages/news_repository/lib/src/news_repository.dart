@@ -68,9 +68,9 @@ class NewsRepository {
         List<NewsCategory> categoriesToSave =
             allCategories.where((category) => !category.isAll).toList();
         // save a default set of categories and return that
-        // await _cacheRepository.categories.saveCategories(
-        //   categoriesToSave.map((e) => e as Map<String, dynamic>).toList(),
-        // );
+        await _cacheRepository.categories.saveCategories(
+          categoriesToSave.map((e) => e.toJson()).toList(),
+        );
         return categoriesToSave;
       }
 
@@ -80,6 +80,16 @@ class NewsRepository {
         throw QueryNewsCategoryException(message: e.message);
       }
       return [];
+    }
+  }
+
+  Future<void> saveCategories(List<NewsCategory> categoryList) async {
+    try {
+      _cacheRepository.categories.saveCategories(
+        categoryList.map((e) => e.toJson()).toList(),
+      );
+    } catch (e) {
+      throw SaveNewsCategoryException(message: e.toString());
     }
   }
 }

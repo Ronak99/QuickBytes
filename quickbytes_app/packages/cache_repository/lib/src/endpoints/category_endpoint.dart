@@ -41,7 +41,10 @@ class CategoryEndpoint {
           message: 'Category box is not open',
         );
       }
-      _categoryBox!.addAll(categoryList);
+      await _categoryBox!.clear();
+
+      print("Value length: ${_categoryBox!.values.length}");
+      await _categoryBox!.addAll(categoryList);
     } catch (e) {
       throw const SaveCategoryCacheException();
     }
