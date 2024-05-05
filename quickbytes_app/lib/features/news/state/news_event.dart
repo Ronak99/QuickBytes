@@ -23,6 +23,28 @@ class ArticleSelectedAtIndex extends NewsEvent {
   ArticleSelectedAtIndex(this.index);
 }
 
+class UserArticlesRequested extends NewsEvent {
+  final List<NewsCategory> userCategories;
+
+  UserArticlesRequested({required this.userCategories});
+
+  List<String> get userCategoriesId =>
+      userCategories.where((e) => !e.isNone).map((e) => e.id).toList();
+}
+
 class AllArticlesRequested extends NewsEvent {
   AllArticlesRequested();
+}
+
+class NewsEventUserCategoriesChanged extends NewsEvent {
+  final List<NewsCategory> categoriesAdded;
+  final List<NewsCategory> categoriesRemoved;
+
+  List<String> get categoriesAddedIds =>
+      categoriesAdded.map((e) => e.id).toList();
+
+  NewsEventUserCategoriesChanged({
+    required this.categoriesRemoved,
+    required this.categoriesAdded,
+  });
 }

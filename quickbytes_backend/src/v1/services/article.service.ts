@@ -52,6 +52,8 @@ const createArticle = async (article: Article) => {
 };
 
 const queryArticles = ({ categoryIds }: { categoryIds?: string[] }) => {
+  console.log(categoryIds);
+
   return prisma.article.findMany({
     select: {
       ...articleKeys.reduce((obj, k) => ({ ...obj, [k]: true }), {}),
@@ -63,6 +65,9 @@ const queryArticles = ({ categoryIds }: { categoryIds?: string[] }) => {
           },
         }
       : {},
+    orderBy: {
+      published_on: "desc",
+    },
   });
 };
 

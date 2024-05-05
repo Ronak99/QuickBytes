@@ -19,22 +19,24 @@ class NewsRepository {
     required List<String> categoryIdList,
   }) async {
     try {
-      List<dynamic> articleList =
-          await _cacheRepository.articles.queryArticles();
-
-      if (articleList.isEmpty) {
-        List<dynamic> articleList = await _apiRepository.articles.queryArticles(
-          categoryIdList: categoryIdList,
-        );
-        _cacheRepository.articles.saveArticles(
-          articleList.map((e) => e as Map<String, dynamic>).toList(),
-        );
-      }
+      List<dynamic> articleList = await _apiRepository.articles.queryArticles(
+        categoryIdList: categoryIdList,
+      );
+      _cacheRepository.articles.saveArticles(
+        articleList.map((e) => e as Map<String, dynamic>).toList(),
+      );
 
       return articleList.map((e) => Article.fromJson(e)).toList();
     } catch (e) {
       if (e is ApiException) {
-        throw QueryArticleNewsException(message: e.message);
+        List<dynamic> articleList =
+            await _cacheRepository.articles.queryArticles();
+
+        if (articleList.isEmpty) {
+          throw const QueryArticleNewsException(
+              message: "No articles found even in cache");
+        }
+        return articleList.map((e) => Article.fromJson(e)).toList();
       } else if (e is QueryArticleCacheException) {
         throw QueryArticleNewsException(message: e.message);
       }

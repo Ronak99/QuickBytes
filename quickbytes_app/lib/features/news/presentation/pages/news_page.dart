@@ -29,8 +29,21 @@ class _NewsPageState extends State<NewsPage>
   @override
   void initState() {
     super.initState();
-    context.read<NewsCategoryCubit>().queryAllCategories();
-    context.read<NewsBloc>().add(AllArticlesRequested());
+
+    _initialize();
+  }
+
+  _initialize() async {
+    final newsCategoryCubit = context.read<NewsCategoryCubit>();
+    final newsBloc = context.read<NewsBloc>();
+
+    await newsCategoryCubit.queryAllCategories();
+    newsBloc.add(
+      UserArticlesRequested(
+        userCategories:
+            (newsCategoryCubit.state as NewsCategoryStateLoaded).userCategories,
+      ),
+    );
   }
 
   @override

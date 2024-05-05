@@ -5,6 +5,7 @@ import 'package:news_repository/news_repository.dart';
 
 import 'package:quickbytes_app/features/categories/state/cubit/news_category_cubit.dart';
 import 'package:quickbytes_app/features/dashboard/state/bloc/dashboard_bloc.dart';
+import 'package:quickbytes_app/features/news/state/news_bloc.dart';
 import 'package:quickbytes_app/features/notifications/domain/repositories/notification_service.dart';
 import 'package:quickbytes_app/shared/utils/utils.dart';
 
@@ -47,9 +48,17 @@ class _DashboardPageState extends State<DashboardPage> {
               onTap: () async {
                 final dashboardBloc = context.read<DashboardBloc>();
                 final newsCategoryCubit = context.read<NewsCategoryCubit>();
+                final newsBloc = context.read<NewsBloc>();
 
                 final categories = dashboardBloc.state.selectedCategoryList;
-                await newsCategoryCubit.updateUserCategories(categories);
+                CategoryChange? change =
+                    await newsCategoryCubit.updateUserCategories(categories);
+
+                if (change != null) {
+                  newsBloc.add(NewsEventUserCategoriesChanged(
+                      categoriesAdded: change.categoriesAdded,
+                      categoriesRemoved: change.categoriesRemoved));
+                }
 
                 Utils.showSnackbar(message: "Categories Updated!!!");
               },

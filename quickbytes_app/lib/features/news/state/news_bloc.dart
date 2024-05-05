@@ -19,6 +19,8 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
     on<CardSwitchedRequested>(_onCardSwitch);
     on<ArticleSelectedAtIndex>(_onArticleSelect);
     on<AllArticlesRequested>(_onAllArticlesRequest);
+    on<UserArticlesRequested>(_onUserArticlesRequest);
+    on<NewsEventUserCategoriesChanged>(_onCategoryChange);
   }
 
   final NewsRepository _newsRepository;
@@ -56,6 +58,46 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
     List<String> categoryIdList = [businessAll, technologyAll];
     List<Article> articles =
         await _newsRepository.queryAllArticles(categoryIdList: categoryIdList);
+    articles.sort((a, b) => a.publishedOn.compareTo(b.publishedOn));
+    emit(NewsLoaded(articles: articles));
+  }
+
+  void _onCategoryChange(
+    NewsEventUserCategoriesChanged event,
+    Emitter<NewsState> emit,
+  ) async {
+    List<Article> articles = (state as NewsLoaded).articles;
+
+    if (event.categoriesRemoved.isNotEmpty) {
+      articles.removeWhere((article) {
+        return event.categoriesRemoved.any(
+            (removedCategory) => article.categories.contains(removedCategory));
+      });
+    }
+
+    emit(NewsLoading());
+
+    if (event.categoriesAdded.isNotEmpty) {
+      List<Article> newArticles = await _newsRepository.queryAllArticles(
+        categoryIdList: event.categoriesAddedIds,
+      );
+
+      articles.addAll(newArticles);
+
+      articles.sort((a, b) => a.publishedOn.compareTo(b.publishedOn));
+    }
+
+    emit(NewsLoaded(articles: articles));
+  }
+
+  void _onUserArticlesRequest(
+    UserArticlesRequested event,
+    Emitter<NewsState> emit,
+  ) async {
+    emit(NewsLoading());
+    List<Article> articles = await _newsRepository.queryAllArticles(
+      categoryIdList: event.userCategoriesId,
+    );
     emit(NewsLoaded(articles: articles));
   }
 

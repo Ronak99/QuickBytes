@@ -5,6 +5,16 @@ import 'package:quickbytes_app/features/notifications/domain/repositories/notifi
 
 part 'news_category_state.dart';
 
+class CategoryChange {
+  List<NewsCategory> categoriesAdded;
+  List<NewsCategory> categoriesRemoved;
+
+  CategoryChange({
+    required this.categoriesRemoved,
+    required this.categoriesAdded,
+  });
+}
+
 class NewsCategoryCubit extends Cubit<NewsCategoryState> {
   NewsCategoryCubit({required NewsRepository newsRepository})
       : _newsRepository = newsRepository,
@@ -12,7 +22,7 @@ class NewsCategoryCubit extends Cubit<NewsCategoryState> {
 
   final NewsRepository _newsRepository;
 
-  void queryAllCategories() async {
+  Future<void> queryAllCategories() async {
     emit(NewsCategoryStateLoading());
 
     List<NewsCategory> allCategories =
@@ -42,46 +52,61 @@ class NewsCategoryCubit extends Cubit<NewsCategoryState> {
     }
   }
 
-  void _handleNotificationSubscription({
+  CategoryChange calculateChange({
     required List<NewsCategory> userSelectedCategories,
-  }) async {
-    if (state is NewsCategoryStateLoaded) {
-      List<NewsCategory> currentUserCategories =
-          (state as NewsCategoryStateLoaded).userCategories;
+    required List<NewsCategory> currentUserCategories,
+  }) {
+    emit((state as NewsCategoryStateLoaded)
+        .copyWith(userCategories: List.from(userSelectedCategories)));
 
-      emit((state as NewsCategoryStateLoaded)
-          .copyWith(userCategories: List.from(userSelectedCategories)));
+    // news categories to remove
+    List<NewsCategory> categoriesToRemove = currentUserCategories
+        .where((category) =>
+            !category.isNone && !userSelectedCategories.contains(category))
+        .toList();
 
-      // news categories to remove
-      List<NewsCategory> categoriesToRemove = currentUserCategories
-          .where((category) =>
-              !category.isNone && !userSelectedCategories.contains(category))
-          .toList();
+    // news categories to add
+    List<NewsCategory> categoriesToAdd = userSelectedCategories
+        .where((category) =>
+            !category.isNone && !currentUserCategories.contains(category))
+        .toList();
 
-      for (NewsCategory category in categoriesToRemove) {
-        NotificationService.instance.unsubscribeFromTopic(category.name);
-      }
+    return CategoryChange(
+        categoriesRemoved: categoriesToRemove,
+        categoriesAdded: categoriesToAdd);
+  }
 
-      // news categories to add
-      List<NewsCategory> categoriesToAdd = userSelectedCategories
-          .where((category) =>
-              !category.isNone && !currentUserCategories.contains(category))
-          .toList();
+  void _handleNotificationSubscription({required CategoryChange change}) async {
+    for (NewsCategory category in change.categoriesRemoved) {
+      NotificationService.instance.unsubscribeFromTopic(category.name);
+    }
 
-      for (NewsCategory category in categoriesToAdd) {
-        NotificationService.instance.subscribeToTopic(category.name);
-      }
+    for (NewsCategory category in change.categoriesAdded) {
+      NotificationService.instance.subscribeToTopic(category.name);
     }
   }
 
-  Future<void> updateUserCategories(List<NewsCategory> newsCategories) async {
-    try {
-      _handleNotificationSubscription(userSelectedCategories: newsCategories);
-      // await _newsRepository.saveCategories(newsCategories);
-    } catch (e) {
-      if (e is SaveNewsCategoryException) {
-        print(e.message);
+  Future<CategoryChange?> updateUserCategories(
+      List<NewsCategory> newsCategories) async {
+    if (state is NewsCategoryStateLoaded) {
+      try {
+        CategoryChange changeInCategories = calculateChange(
+          userSelectedCategories: newsCategories,
+          currentUserCategories:
+              (state as NewsCategoryStateLoaded).userCategories,
+        );
+
+        _handleNotificationSubscription(change: changeInCategories);
+
+        await _newsRepository.saveCategories(newsCategories);
+
+        return changeInCategories;
+      } catch (e) {
+        if (e is SaveNewsCategoryException) {
+          print(e.message);
+        }
       }
     }
+    return null;
   }
 }

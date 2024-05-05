@@ -8,7 +8,7 @@ class ArticleEndpoint {
     try {
       Uri uri = APIRoutes.articles(
         queryParameters: {
-          "category_ids": categoryIdList,
+          "category_ids[]": categoryIdList,
         },
       );
 
