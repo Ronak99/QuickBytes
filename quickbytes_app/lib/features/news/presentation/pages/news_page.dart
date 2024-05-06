@@ -44,6 +44,7 @@ class _NewsPageState extends State<NewsPage>
             (newsCategoryCubit.state as NewsCategoryStateLoaded).userCategories,
       ),
     );
+    newsBloc.add(AllArticlesRequested());
   }
 
   @override
@@ -53,45 +54,37 @@ class _NewsPageState extends State<NewsPage>
     return Scaffold(
       body: BlocBuilder<NewsBloc, NewsState>(
         builder: (context, state) {
-          if (state is NewsLoading) {
-            return const Center(
-              child: CupertinoActivityIndicator(),
-            );
-          } else if (state is NewsLoaded) {
-            return Stack(
-              children: [
-                // Separated out the background widget responsible for a blur background
-                if (state.selectedArticle != null)
-                  BlurView(
-                    height: MediaQuery.of(context).size.height,
-                    width: MediaQuery.of(context).size.width,
-                    sigmaX: 2,
-                    sigmaY: 2,
-                    color: Theme.of(context).cardColor.withOpacity(.3),
-                    child: SizedBox(
-                      child: CachedImage(
-                        state.selectedArticle!.image,
-                        fit: BoxFit.cover,
-                        useOldImageOnUrlChange: true,
-                        placeholder: Container(
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).cardColor,
-                          ),
+          print("News Page Bloc Builder");
+          return Stack(
+            children: [
+              // Separated out the background widget responsible for a blur background
+              if (state.selectedArticle != null)
+                BlurView(
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
+                  sigmaX: 2,
+                  sigmaY: 2,
+                  color: Theme.of(context).cardColor.withOpacity(.3),
+                  child: SizedBox(
+                    child: CachedImage(
+                      state.selectedArticle!.image,
+                      fit: BoxFit.cover,
+                      useOldImageOnUrlChange: true,
+                      placeholder: Container(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).cardColor,
                         ),
                       ),
                     ),
                   ),
-                if (state.articles.isEmpty)
-                  const Center(child: Text('You are all caught up!'))
-                else
-                  NewsPageView(
-                    articles: state.articles,
-                  ),
-              ],
-            );
-          }
-          return const Center(
-            child: Text('No Articles Found'),
+                ),
+              if (state.userArticles.isEmpty)
+                const Center(child: Text('You are all caught up!'))
+              else
+                NewsPageView(
+                  articles: state.userArticles,
+                ),
+            ],
           );
         },
       ),

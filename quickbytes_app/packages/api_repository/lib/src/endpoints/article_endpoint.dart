@@ -4,13 +4,15 @@ import 'package:dio/dio.dart';
 
 class ArticleEndpoint {
   Future<List<dynamic>> queryArticles(
-      {required List<String> categoryIdList}) async {
+      {required List<String>? categoryIdList}) async {
     try {
-      Uri uri = APIRoutes.articles(
-        queryParameters: {
-          "category_ids[]": categoryIdList,
-        },
-      );
+      Map<String, dynamic> queryParameters = {};
+
+      if (categoryIdList != null && categoryIdList.isNotEmpty) {
+        queryParameters["category_ids[]"] = categoryIdList;
+      }
+
+      Uri uri = APIRoutes.articles(queryParameters: queryParameters);
 
       Response<Map<String, dynamic>> response =
           await Dio().getUri<Map<String, dynamic>>(uri);

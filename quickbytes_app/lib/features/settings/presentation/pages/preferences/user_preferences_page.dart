@@ -72,7 +72,7 @@ class _UserPreferencesPageState extends State<UserPreferencesPage> {
 
                 Utils.showSnackbar(message: "Categories Updated!!!");
 
-                Navigator.pop(context);
+                setState(() {});
               },
               child: Container(
                 height: 50,

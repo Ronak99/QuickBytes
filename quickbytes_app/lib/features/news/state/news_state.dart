@@ -1,37 +1,36 @@
 part of 'news_bloc.dart';
 
-sealed class NewsState extends Equatable {
-  const NewsState();
-}
-
-class NewsInitial extends NewsState {
-  @override
-  List<Object?> get props => [];
-}
-
-class NewsLoading extends NewsState {
-  @override
-  List<Object?> get props => [];
-}
-
-final class NewsLoaded extends NewsState {
-  final List<Article> articles;
+final class NewsState extends Equatable {
+  final List<Article> allArticles;
+  final List<Article> userArticles;
   final int index;
+  final Article? articleToSelect;
 
-  const NewsLoaded({
-    required this.articles,
+  const NewsState({
+    this.allArticles = const [],
+    this.userArticles = const [],
     this.index = 0,
+    this.articleToSelect,
   });
 
-  Article? get selectedArticle => articles.isNotEmpty ? articles[index] : null;
+  Article? get selectedArticle =>
+      articleToSelect ?? (userArticles.isNotEmpty ? userArticles[index] : null);
 
   @override
-  List<Object?> get props => [articles, selectedArticle, index];
+  List<Object?> get props =>
+      [allArticles, selectedArticle, index, articleToSelect];
 
-  NewsLoaded copyWith({List<Article>? articles, int index = 0}) {
-    return NewsLoaded(
-      articles: articles ?? this.articles,
+  NewsState copyWith({
+    List<Article>? allArticles,
+    List<Article>? userArticles,
+    int index = 0,
+    Article? articleToSelect,
+  }) {
+    return NewsState(
+      allArticles: allArticles ?? this.allArticles,
+      userArticles: userArticles ?? this.userArticles,
       index: index,
+      articleToSelect: articleToSelect,
     );
   }
 }

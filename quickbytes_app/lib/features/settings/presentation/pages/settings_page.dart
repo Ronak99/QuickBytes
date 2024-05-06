@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:quickbytes_app/core/navigation/routes.dart';
+import 'package:quickbytes_app/features/settings/presentation/widgets/settings_footer.dart';
 
 import 'package:quickbytes_app/shared/utils/constants.dart';
 
@@ -59,6 +60,8 @@ class SettingsPage extends StatelessWidget {
                 ),
               ],
             ),
+            Spacer(),
+            SettingsFooter(),
           ],
         ),
       ),

@@ -16,7 +16,7 @@ class NewsRepository {
   }
 
   Future<List<Article>> queryAllArticles({
-    required List<String> categoryIdList,
+    List<String>? categoryIdList,
   }) async {
     try {
       List<dynamic> articleList = await _apiRepository.articles.queryArticles(

@@ -42,4 +42,12 @@ class AssetConstants {
   static const rating = "assets/images/rating.svg";
   static const feedback = "assets/images/feedback.svg";
   static const preference = "assets/images/preference.svg";
+  static const setting = "assets/images/setting.svg";
+}
+
+class AppConfig {
+  static const version = '1.0.0';
+  static const versionCode = '1';
+  static const patch = '0';
+  static const name = 'QuickBytes';
 }

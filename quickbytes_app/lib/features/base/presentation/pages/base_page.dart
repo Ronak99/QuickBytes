@@ -1,10 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
-import 'package:quickbytes_app/core/navigation/app_router.dart';
-import 'package:quickbytes_app/core/navigation/routes.dart';
-import 'package:quickbytes_app/features/auth/presentation/pages/login_page.dart';
-import 'package:quickbytes_app/features/base/state/app_bloc.dart';
 import 'package:quickbytes_app/features/home/presentation/pages/home_page.dart';
 import 'package:quickbytes_app/shared/utils/platform_channel_handler.dart';
 import 'package:quickbytes_app/features/home/state/bloc/home_bloc.dart';

@@ -23,6 +23,12 @@ class ArticleSelectedAtIndex extends NewsEvent {
   ArticleSelectedAtIndex(this.index);
 }
 
+class ArticleSelected extends NewsEvent {
+  final Article selectedArticle;
+
+  ArticleSelected(this.selectedArticle);
+}
+
 class UserArticlesRequested extends NewsEvent {
   final List<NewsCategory> userCategories;
 

@@ -72,8 +72,9 @@ class NewsCategoryCubit extends Cubit<NewsCategoryState> {
         .toList();
 
     return CategoryChange(
-        categoriesRemoved: categoriesToRemove,
-        categoriesAdded: categoriesToAdd);
+      categoriesRemoved: categoriesToRemove,
+      categoriesAdded: categoriesToAdd,
+    );
   }
 
   void _handleNotificationSubscription({required CategoryChange change}) async {

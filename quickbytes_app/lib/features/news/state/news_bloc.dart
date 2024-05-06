@@ -8,16 +8,14 @@ import 'package:quickbytes_app/core/logs/logs.dart';
 part 'news_event.dart';
 part 'news_state.dart';
 
-const businessAll = '6616ae11754e1ade06474027';
-const technologyAll = '6616ae12754e1ade06474029';
-
 class NewsBloc extends Bloc<NewsEvent, NewsState> {
   NewsBloc({required NewsRepository newsRepository})
       : _newsRepository = newsRepository,
-        super(NewsInitial()) {
+        super(const NewsState()) {
     on<AddToTopRequested>(_onAddToTopRequested);
     on<CardSwitchedRequested>(_onCardSwitch);
-    on<ArticleSelectedAtIndex>(_onArticleSelect);
+    on<ArticleSelectedAtIndex>(_onArticleSelectAtIndex);
+    on<ArticleSelected>(_onArticleSelect);
     on<AllArticlesRequested>(_onAllArticlesRequest);
     on<UserArticlesRequested>(_onUserArticlesRequest);
     on<NewsEventUserCategoriesChanged>(_onCategoryChange);
@@ -27,22 +25,22 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
 
   final PageController cardSwiperController = PageController();
 
+  List<Article> get getUserArticles => state.userArticles;
+  List<Article> get getAllArticles => state.allArticles;
+
   void _onAddToTopRequested(AddToTopRequested event, Emitter<NewsState> emit) {
-    if (state is NewsLoaded) {
-      NewsLoaded s = state as NewsLoaded;
-      emit(s.copyWith(articles: [event.article, ...s.articles]));
-    }
+    emit(state.copyWith(userArticles: [event.article, ...state.allArticles]));
   }
 
-  void _onArticleSelect(ArticleSelectedAtIndex event, Emitter<NewsState> emit) {
-    if (state is NewsLoaded) {
-      Logger.instance.d(
-        'class NewsBloc, function _onArticleSelect: Article selected at index: ${event.index}',
-        stackTrace: StackTrace.empty,
-      );
-      NewsLoaded s = state as NewsLoaded;
-      emit(s.copyWith(index: event.index));
-    }
+  void _onArticleSelectAtIndex(
+    ArticleSelectedAtIndex event,
+    Emitter<NewsState> emit,
+  ) {
+    emit(state.copyWith(index: event.index));
+  }
+
+  void _onArticleSelect(ArticleSelected event, Emitter<NewsState> emit) {
+    emit(state.copyWith(articleToSelect: event.selectedArticle));
   }
 
   void _onCardSwitch(CardSwitchedRequested event, Emitter<NewsState> emit) {
@@ -54,19 +52,17 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
     AllArticlesRequested event,
     Emitter<NewsState> emit,
   ) async {
-    emit(NewsLoading());
-    List<String> categoryIdList = [businessAll, technologyAll];
-    List<Article> articles =
-        await _newsRepository.queryAllArticles(categoryIdList: categoryIdList);
-    articles.sort((a, b) => a.publishedOn.compareTo(b.publishedOn));
-    emit(NewsLoaded(articles: articles));
+    List<Article> allArticles = await _newsRepository.queryAllArticles();
+    allArticles.sort((a, b) => a.publishedOn.compareTo(b.publishedOn));
+
+    emit(state.copyWith(allArticles: allArticles));
   }
 
   void _onCategoryChange(
     NewsEventUserCategoriesChanged event,
     Emitter<NewsState> emit,
   ) async {
-    List<Article> articles = (state as NewsLoaded).articles;
+    List<Article> articles = state.userArticles;
 
     if (event.categoriesRemoved.isNotEmpty) {
       articles.removeWhere((article) {
@@ -75,9 +71,8 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
       });
     }
 
-    emit(NewsLoading());
-
     if (event.categoriesAdded.isNotEmpty) {
+      emit(state.copyWith(userArticles: []));
       List<Article> newArticles = await _newsRepository.queryAllArticles(
         categoryIdList: event.categoriesAddedIds,
       );
@@ -87,18 +82,18 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
       articles.sort((a, b) => a.publishedOn.compareTo(b.publishedOn));
     }
 
-    emit(NewsLoaded(articles: articles));
+    emit(state.copyWith(userArticles: articles));
   }
 
   void _onUserArticlesRequest(
     UserArticlesRequested event,
     Emitter<NewsState> emit,
   ) async {
-    emit(NewsLoading());
     List<Article> articles = await _newsRepository.queryAllArticles(
       categoryIdList: event.userCategoriesId,
     );
-    emit(NewsLoaded(articles: articles));
+
+    emit(state.copyWith(userArticles: articles));
   }
 
   @override
