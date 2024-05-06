@@ -7,6 +7,7 @@ import 'package:quickbytes_app/core/logs/logs.dart';
 import 'package:quickbytes_app/core/navigation/app_router.dart' as router;
 import 'package:quickbytes_app/features/categories/state/cubit/news_category_cubit.dart';
 import 'package:quickbytes_app/features/dashboard/state/bloc/dashboard_bloc.dart';
+import 'package:quickbytes_app/features/settings/state/bloc/settings_bloc.dart';
 import 'package:quickbytes_app/shared/utils/utils.dart';
 import 'package:quickbytes_app/features/home/state/bloc/home_bloc.dart';
 import 'package:quickbytes_app/features/news/state/news_bloc.dart';
@@ -57,8 +58,11 @@ class App extends StatelessWidget {
           BlocProvider<ThemeCubit>(
             create: (BuildContext context) => ThemeCubit(),
           ),
-          BlocProvider<DashboardBloc>(
-            create: (BuildContext context) => DashboardBloc(),
+          // BlocProvider<DashboardBloc>(
+          //   create: (BuildContext context) => DashboardBloc(),
+          // ),
+          BlocProvider<SettingsBloc>(
+            create: (BuildContext context) => SettingsBloc(),
           ),
         ],
         child: const AppView(),

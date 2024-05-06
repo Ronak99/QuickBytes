@@ -60,6 +60,7 @@ dependencies:
     path: packages/news_repository
 
   logger: ^2.2.0
+  flutter_svg: ^2.0.10+1
 
 dev_dependencies:
   flutter_test:

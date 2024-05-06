@@ -9,6 +9,8 @@ import 'package:quickbytes_app/features/news/presentation/pages/news_page.dart';
 import 'package:quickbytes_app/features/news/presentation/pages/relevancy_page.dart';
 import 'package:quickbytes_app/features/profile/presentation/pages/profile_page.dart';
 import 'package:quickbytes_app/features/search/presentation/pages/search_page.dart';
+import 'package:quickbytes_app/features/settings/presentation/pages/preferences/user_preferences_page.dart';
+import 'package:quickbytes_app/features/settings/presentation/pages/settings_page.dart';
 
 part 'routes.g.dart';
 
@@ -21,6 +23,12 @@ part 'routes.g.dart';
     TypedGoRoute<ProfilePageRoute>(path: 'profile'),
     // TypedGoRoute<AuthPageRoute>(path: 'auth'),
     TypedGoRoute<SearchPageRoute>(path: 'search'),
+    TypedGoRoute<SettingsPageRoute>(
+      path: 'settings',
+      routes: [
+        TypedGoRoute<UserPreferencesPageRoute>(path: 'preferences'),
+      ],
+    ),
     // TypedGoRoute<HomePageRoute>(
     //   path: 'home',
     //   routes: [
@@ -61,18 +69,26 @@ class ProfilePageRoute extends GoRouteData {
   }
 }
 
-// @immutable
-// class AuthPageRoute extends GoRouteData {
-//   @override
-//   Widget build(BuildContext context, GoRouterState state) {
-//     return const AuthPage();
-//   }
-// }
+@immutable
+class SettingsPageRoute extends GoRouteData {
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const SettingsPage();
+  }
+}
 
 @immutable
 class SearchPageRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const SearchPage();
+  }
+}
+
+@immutable
+class UserPreferencesPageRoute extends GoRouteData {
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const UserPreferencesPage();
   }
 }
