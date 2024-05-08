@@ -1,12 +1,9 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:news_repository/news_repository.dart';
 import 'package:quickbytes_app/core/navigation/routes.dart';
-import 'package:quickbytes_app/features/home/state/bloc/home_bloc.dart';
 import 'package:quickbytes_app/features/news/state/news_bloc.dart';
 import 'package:quickbytes_app/shared/utils/constants.dart';
 import 'package:quickbytes_app/shared/widgets/cached_image.dart';
@@ -32,7 +29,9 @@ class _DashboardPageState extends State<DashboardPage> {
     List<StaggeredConfig> staggeredConfig = [
       StaggeredConfig(crossAxisCellCount: 2, mainAxisCellCount: 2),
       StaggeredConfig(crossAxisCellCount: 2, mainAxisCellCount: 2),
-      StaggeredConfig(crossAxisCellCount: 4, mainAxisCellCount: 3),
+      StaggeredConfig(crossAxisCellCount: 4, mainAxisCellCount: 4),
+      StaggeredConfig(crossAxisCellCount: 2, mainAxisCellCount: 2),
+      StaggeredConfig(crossAxisCellCount: 2, mainAxisCellCount: 2),
     ];
 
     int index = 0;
@@ -84,7 +83,6 @@ class _DashboardPageState extends State<DashboardPage> {
         ),
       ),
       body: SingleChildScrollView(
-        restorationId: "abcd",
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 20),
           child: StaggeredGrid.count(

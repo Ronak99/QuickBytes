@@ -1,5 +1,6 @@
 part of 'news_bloc.dart';
 
+@immutable
 final class NewsState extends Equatable {
   final List<Article> allArticles;
   final List<Article> userArticles;
@@ -18,7 +19,7 @@ final class NewsState extends Equatable {
 
   @override
   List<Object?> get props =>
-      [allArticles, selectedArticle, index, articleToSelect];
+      [allArticles, userArticles, selectedArticle, index, articleToSelect];
 
   NewsState copyWith({
     List<Article>? allArticles,

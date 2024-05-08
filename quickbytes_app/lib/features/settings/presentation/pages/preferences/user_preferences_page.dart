@@ -65,9 +65,12 @@ class _UserPreferencesPageState extends State<UserPreferencesPage> {
                     await newsCategoryCubit.updateUserCategories(categories);
 
                 if (change != null) {
-                  newsBloc.add(NewsEventUserCategoriesChanged(
+                  newsBloc.add(
+                    NewsEventUserCategoriesChanged(
                       categoriesAdded: change.categoriesAdded,
-                      categoriesRemoved: change.categoriesRemoved));
+                      categoriesRemoved: change.categoriesRemoved,
+                    ),
+                  );
                 }
 
                 Utils.showSnackbar(message: "Categories Updated!!!");

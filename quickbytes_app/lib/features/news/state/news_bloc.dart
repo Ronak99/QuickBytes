@@ -82,7 +82,10 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
       articles.sort((a, b) => a.publishedOn.compareTo(b.publishedOn));
     }
 
-    emit(state.copyWith(userArticles: articles));
+    emit(state.copyWith(
+      userArticles: articles,
+      articleToSelect: articles[0],
+    ));
   }
 
   void _onUserArticlesRequest(

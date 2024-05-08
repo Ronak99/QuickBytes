@@ -28,6 +28,7 @@ class AppBlocObserver extends BlocObserver {
   @override
   void onChange(BlocBase bloc, Change change) {
     super.onChange(bloc, change);
+    print("Change occurred in ${bloc.runtimeType}");
     // if (change.currentState.runtimeType == NewsState) return;
     // Logger.instance.t(change);
   }
