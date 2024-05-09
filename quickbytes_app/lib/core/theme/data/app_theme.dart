@@ -32,6 +32,18 @@ class AppTheme {
           seedColor: ColorConstants.themeColor,
           brightness: Brightness.dark,
         ),
+        appBarTheme: AppBarTheme(
+          backgroundColor: ColorConstants.primaryDarkestDark,
+          elevation: 0,
+          centerTitle: true,
+          shape: Border(
+            bottom: BorderSide(
+              color: Colors.grey[800]!,
+              width: 0.5,
+            ),
+          ),
+        ),
+        scaffoldBackgroundColor: ColorConstants.primaryDarkestDark,
         iconTheme: ThemeConstants.primaryIcon.copyWith(
           color: ColorConstants.primaryDarkContrast.withOpacity(.7),
         ),

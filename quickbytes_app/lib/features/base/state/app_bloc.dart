@@ -37,6 +37,8 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     unawaited(_authenticationRepository.logOut());
   }
 
+  bool get isLoggedIn => state.status == AppStatus.authenticated;
+
   @override
   Future<void> close() {
     _userSubscription.cancel();

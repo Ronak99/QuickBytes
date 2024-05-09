@@ -3,14 +3,22 @@ import 'package:api_repository/src/exceptions/exceptions.dart';
 import 'package:dio/dio.dart';
 
 class ArticleEndpoint {
-  Future<List<dynamic>> queryArticles(
-      {required List<String> categoryIdList}) async {
+  Future<List<dynamic>> queryArticles({
+    required List<String>? categoryIdList,
+    String? cursorId,
+    int? limit,
+  }) async {
     try {
-      Uri uri = APIRoutes.article.articles(
-        queryParameters: {
-          "category_ids": categoryIdList,
-        },
-      );
+      Map<String, dynamic> queryParameters = {
+        "limit": limit?.toString(),
+        "cursor_id": cursorId,
+      };
+
+      if (categoryIdList != null && categoryIdList.isNotEmpty) {
+        queryParameters["category_ids[]"] = categoryIdList;
+      }
+
+      Uri uri = APIRoutes.articles(queryParameters: queryParameters);
 
       Response<Map<String, dynamic>> response =
           await Dio().getUri<Map<String, dynamic>>(uri);
@@ -21,7 +29,7 @@ class ArticleEndpoint {
 
       return response.data!["data"];
     } on DioException catch (e) {
-      throw QueryArticleApiException.fromDioException(e);
+      throw ApiException.fromDioException(e);
     }
   }
 }

@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 import httpStatus from "http-status";
 import prisma from "../../client";
 import ApiError from "../../utils/ApiError";
@@ -51,8 +52,16 @@ const createArticle = async (article: Article) => {
   return response;
 };
 
-const queryArticles = ({ categoryIds }: { categoryIds?: string[] }) => {
-  return prisma.article.findMany({
+const queryArticles = async ({
+  categoryIds,
+  limit,
+  cursorId,
+}: {
+  categoryIds?: string[];
+  limit?: number;
+  cursorId?: string;
+}) => {
+  const articleQuery: Prisma.articleFindManyArgs = {
     select: {
       ...articleKeys.reduce((obj, k) => ({ ...obj, [k]: true }), {}),
     },
@@ -63,7 +72,21 @@ const queryArticles = ({ categoryIds }: { categoryIds?: string[] }) => {
           },
         }
       : {},
-  });
+    take: limit ? +limit : 8,
+    orderBy: {
+      published_on: "desc",
+    },
+  };
+
+  if (cursorId) {
+    return prisma.article.findMany({
+      ...articleQuery,
+      cursor: { id: cursorId },
+      skip: limit ? +limit : 8,
+    });
+  }
+
+  return prisma.article.findMany(articleQuery);
 };
 
 const queryArticle = async (articleId: string) => {

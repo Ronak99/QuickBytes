@@ -8,6 +8,7 @@ part 'news_category.g.dart';
 enum Relevancy {
   all,
   major,
+  none,
 }
 
 @freezed
@@ -23,4 +24,7 @@ class NewsCategory with _$NewsCategory {
 
   factory NewsCategory.fromJson(Map<String, dynamic> json) =>
       _$NewsCategoryFromJson(json);
+
+  bool get isAll => relevancy == Relevancy.all;
+  bool get isNone => relevancy == Relevancy.none;
 }

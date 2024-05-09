@@ -4,9 +4,10 @@ class ColorConstants {
   static Color themeColor = Colors.blue;
   static Color primaryLight = Colors.white;
   static Color primaryLightContrast = Colors.black;
-  static Color primaryDark = Colors.black;
+  static Color primaryDark = const Color(0xff151313);
   static Color primaryDarkContrast = Colors.white;
   static Color newsCardDark = const Color(0xff191818);
+  static Color primaryDarkestDark = const Color(0xff0B0B0B);
   static Color newsCardLight = const Color.fromARGB(255, 245, 243, 243);
 }
 
@@ -34,5 +35,19 @@ class TextStyleConstants {
 }
 
 class AssetConstants {
+  static const back = "assets/images/back.svg";
   static const articleCardBackground = "assets/images/article_bg_pattern.png";
+  static const share = "assets/images/share.svg";
+  static const next = "assets/images/next.svg";
+  static const rating = "assets/images/rating.svg";
+  static const feedback = "assets/images/feedback.svg";
+  static const preference = "assets/images/preference.svg";
+  static const setting = "assets/images/setting.svg";
+}
+
+class AppConfig {
+  static const version = '1.0.0';
+  static const versionCode = '1';
+  static const patch = '0';
+  static const name = 'QuickBytes';
 }

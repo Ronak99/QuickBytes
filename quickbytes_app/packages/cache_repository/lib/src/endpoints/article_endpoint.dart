@@ -5,11 +5,9 @@ import 'package:hive_flutter/hive_flutter.dart';
 class ArticleEndpoint {
   Box<Map>? _newsBox;
 
-  ArticleEndpoint();
-
   init() async {
     try {
-      _newsBox = await Hive.openBox<Map>(CacheRoutes.article.articles);
+      _newsBox = await Hive.openBox<Map>(CacheRoutes.articles);
     } catch (e) {
       throw const CacheInitializationError();
     }

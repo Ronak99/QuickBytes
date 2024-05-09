@@ -15,10 +15,14 @@ const createArticle = catchAsync(async (req, res) => {
 });
 
 const queryArticles = catchAsync(async (req, res) => {
-  const { category_ids }: any = req.query;
+  const { category_ids, cursor_id, limit }: any = req.query;
+
+  console.log(req.query);
 
   const response = await articleService.queryArticles({
     categoryIds: category_ids,
+    cursorId: cursor_id,
+    limit: limit,
   });
 
   res.status(httpStatus.OK).send(

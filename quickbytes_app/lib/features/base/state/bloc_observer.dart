@@ -17,14 +17,20 @@ class AppBlocObserver extends BlocObserver {
   @override
   void onError(BlocBase bloc, Object error, StackTrace stackTrace) {
     super.onError(bloc, error, stackTrace);
+
     if (error is QueryArticleNewsException) {
       Utils.showSnackbar(message: error.message);
+    } else if (error is QueryNewsCategoryException) {
+      Utils.showSnackbar(message: error.message);
+    } else {
+      Logger.instance.e(error);
     }
   }
 
   @override
   void onChange(BlocBase bloc, Change change) {
     super.onChange(bloc, change);
+    print("Change occurred in ${bloc.runtimeType}");
     // if (change.currentState.runtimeType == NewsState) return;
     // Logger.instance.t(change);
   }
