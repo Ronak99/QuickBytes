@@ -4,16 +4,10 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:news_repository/news_repository.dart';
 import 'package:quickbytes_app/core/navigation/routes.dart';
+import 'package:quickbytes_app/features/dashboard/state/bloc/dashboard_bloc.dart';
 import 'package:quickbytes_app/features/news/state/news_bloc.dart';
 import 'package:quickbytes_app/shared/utils/constants.dart';
 import 'package:quickbytes_app/shared/widgets/cached_image.dart';
-
-class DashboardPage extends StatefulWidget {
-  const DashboardPage({super.key});
-
-  @override
-  State<DashboardPage> createState() => _DashboardPageState();
-}
 
 class StaggeredConfig {
   final int crossAxisCellCount;
@@ -23,7 +17,31 @@ class StaggeredConfig {
       {required this.crossAxisCellCount, required this.mainAxisCellCount});
 }
 
-class _DashboardPageState extends State<DashboardPage> {
+class DashboardPage extends StatefulWidget {
+  const DashboardPage({super.key});
+
+  @override
+  State<DashboardPage> createState() => _DashboardPageState();
+}
+
+class _DashboardPageState extends State<DashboardPage>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  void initState() {
+    super.initState();
+    _initialize();
+  }
+
+  _initialize() async {
+    final dashboardBloc = context.read<DashboardBloc>();
+    await dashboardBloc.initialize(onReachingEndOfTheList: _queryMoreData);
+  }
+
+  _queryMoreData() {
+    final newsBloc = context.read<NewsBloc>();
+    newsBloc.add(AllArticlesRequested());
+  }
+
   List<Widget> getChildren(BuildContext context) {
     List<Widget> widgets = [];
     List<StaggeredConfig> staggeredConfig = [
@@ -42,6 +60,7 @@ class _DashboardPageState extends State<DashboardPage> {
         index = 0;
       }
 
+      print('adding to the list again!');
       widgets.add(
         StaggeredGridTile.count(
           crossAxisCellCount: staggeredConfig[index].crossAxisCellCount,
@@ -58,6 +77,9 @@ class _DashboardPageState extends State<DashboardPage> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+    final dashboardBloc = context.read<DashboardBloc>();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -83,18 +105,36 @@ class _DashboardPageState extends State<DashboardPage> {
         ),
       ),
       body: SingleChildScrollView(
+        controller: dashboardBloc.scrollController,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 20),
-          child: StaggeredGrid.count(
-            crossAxisCount: 4,
-            mainAxisSpacing: 8,
-            crossAxisSpacing: 8,
-            children: getChildren(context),
+          child: BlocBuilder<NewsBloc, NewsState>(
+            builder: (context, state) => Column(
+              children: [
+                StaggeredGrid.count(
+                  crossAxisCount: 4,
+                  mainAxisSpacing: 8,
+                  crossAxisSpacing: 8,
+                  children: getChildren(context),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 16),
+                  child: state.isFetchingMoreData
+                      ? const AdaptiveProgressIndicator(color: Colors.white54)
+                      : const SizedBox(
+                          height: 20,
+                        ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
 class NewsTile extends StatelessWidget {

@@ -39,7 +39,11 @@ class UserArticlesRequested extends NewsEvent {
 }
 
 class AllArticlesRequested extends NewsEvent {
-  AllArticlesRequested();
+  int limit;
+
+  AllArticlesRequested({
+    this.limit = 8,
+  });
 }
 
 class NewsEventUserCategoriesChanged extends NewsEvent {

@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:news_repository/news_repository.dart';
 import 'package:quickbytes_app/core/logs/logs.dart';
 
@@ -52,10 +51,23 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
     AllArticlesRequested event,
     Emitter<NewsState> emit,
   ) async {
-    List<Article> allArticles = await _newsRepository.queryAllArticles();
-    allArticles.sort((a, b) => a.publishedOn.compareTo(b.publishedOn));
+    String? cursorId =
+        state.allArticles.isNotEmpty ? state.allArticles.last.id : null;
 
-    emit(state.copyWith(allArticles: allArticles));
+    emit(state.copyWith(isFetchingMoreData: true));
+
+    List<Article> allArticles = await _newsRepository.queryAllArticles(
+      limit: event.limit,
+      cursorId: cursorId,
+    );
+
+    List<Article> updatedArticles = [...state.allArticles, ...allArticles];
+    emit(
+      state.copyWith(
+        allArticles: updatedArticles,
+        isFetchingMoreData: false,
+      ),
+    );
   }
 
   void _onCategoryChange(
@@ -78,8 +90,6 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
       );
 
       articles.addAll(newArticles);
-
-      articles.sort((a, b) => a.publishedOn.compareTo(b.publishedOn));
     }
 
     emit(state.copyWith(

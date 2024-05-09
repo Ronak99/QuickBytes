@@ -17,30 +17,36 @@ class NewsRepository {
 
   Future<List<Article>> queryAllArticles({
     List<String>? categoryIdList,
+    String? cursorId,
+    int? limit,
   }) async {
     try {
       List<dynamic> articleList = await _apiRepository.articles.queryArticles(
         categoryIdList: categoryIdList,
+        cursorId: cursorId,
+        limit: limit,
       );
-      _cacheRepository.articles.saveArticles(
-        articleList.map((e) => e as Map<String, dynamic>).toList(),
-      );
+      // _cacheRepository.articles.saveArticles(
+      //   articleList.map((e) => e as Map<String, dynamic>).toList(),
+      // );
 
       return articleList.map((e) => Article.fromJson(e)).toList();
     } catch (e) {
       if (e is ApiException) {
-        List<dynamic> articleList =
-            await _cacheRepository.articles.queryArticles();
+        //   List<dynamic> articleList =
+        //       await _cacheRepository.articles.queryArticles();
 
-        if (articleList.isEmpty) {
-          throw const QueryArticleNewsException(
-              message: "No articles found even in cache");
-        }
-        return articleList.map((e) => Article.fromJson(e)).toList();
-      } else if (e is QueryArticleCacheException) {
+        //   if (articleList.isEmpty) {
+        //     throw const QueryArticleNewsException(
+        //         message: "No articles found even in cache");
+        //   }
+        //   return articleList.map((e) => Article.fromJson(e)).toList();
+        // } else if (e is QueryArticleCacheException) {
         throw QueryArticleNewsException(message: e.message);
       }
-      return [];
+      throw const QueryArticleNewsException(
+        message: "An unknown exception occurred!",
+      );
     }
   }
 

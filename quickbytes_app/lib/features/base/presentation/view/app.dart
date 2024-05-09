@@ -58,9 +58,9 @@ class App extends StatelessWidget {
           BlocProvider<ThemeCubit>(
             create: (BuildContext context) => ThemeCubit(),
           ),
-          // BlocProvider<DashboardBloc>(
-          //   create: (BuildContext context) => DashboardBloc(),
-          // ),
+          BlocProvider<DashboardBloc>(
+            create: (BuildContext context) => DashboardBloc(),
+          ),
           BlocProvider<SettingsBloc>(
             create: (BuildContext context) => SettingsBloc(),
           ),
