@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 /// A wrapper for CachedNetworkImage which is implemented throughout the app.
@@ -63,11 +66,13 @@ class CachedImage extends StatelessWidget {
 class AdaptiveProgressIndicator extends StatelessWidget {
   final double? value;
   final double strokeWidth;
+  final Color? color;
 
   const AdaptiveProgressIndicator({
     super.key,
     this.value,
     this.strokeWidth = 1,
+    this.color,
   });
 
   @override
@@ -76,11 +81,14 @@ class AdaptiveProgressIndicator extends StatelessWidget {
       child: SizedBox(
         height: 20,
         width: 20,
-        child: CircularProgressIndicator(
-          strokeWidth: strokeWidth,
-          valueColor: const AlwaysStoppedAnimation<Color?>(Colors.white),
-          value: value,
-        ),
+        child: Platform.isIOS
+            ? const CupertinoActivityIndicator()
+            : CircularProgressIndicator(
+                strokeWidth: strokeWidth,
+                valueColor:
+                    AlwaysStoppedAnimation<Color?>(color ?? Colors.white),
+                value: value,
+              ),
       ),
     );
   }
