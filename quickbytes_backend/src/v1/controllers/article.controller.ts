@@ -15,7 +15,6 @@ const createArticle = catchAsync(async (req, res) => {
 });
 
 const queryArticles = catchAsync(async (req, res) => {
-  console.log("**** queryArticles Function call begins *****");
   const { category_ids, cursor_id, limit }: any = req.query;
 
   console.log(req.query);

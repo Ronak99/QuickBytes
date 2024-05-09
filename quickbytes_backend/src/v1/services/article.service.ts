@@ -61,17 +61,6 @@ const queryArticles = async ({
   limit?: number;
   cursorId?: string;
 }) => {
-  if (limit) {
-    console.log("limit is not null");
-  } else {
-    console.log("limit is null");
-  }
-  if (cursorId) {
-    console.log("cursorId is not null");
-  } else {
-    console.log("cursorId is null");
-  }
-
   const articleQuery: Prisma.articleFindManyArgs = {
     select: {
       ...articleKeys.reduce((obj, k) => ({ ...obj, [k]: true }), {}),
@@ -90,7 +79,6 @@ const queryArticles = async ({
   };
 
   if (cursorId) {
-    console.log("getting cursor id");
     return prisma.article.findMany({
       ...articleQuery,
       cursor: { id: cursorId },
