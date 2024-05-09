@@ -3,10 +3,16 @@ import 'package:api_repository/src/exceptions/exceptions.dart';
 import 'package:dio/dio.dart';
 
 class ArticleEndpoint {
-  Future<List<dynamic>> queryArticles(
-      {required List<String>? categoryIdList}) async {
+  Future<List<dynamic>> queryArticles({
+    required List<String>? categoryIdList,
+    String? cursorId,
+    int? limit,
+  }) async {
     try {
-      Map<String, dynamic> queryParameters = {};
+      Map<String, dynamic> queryParameters = {
+        "limit": limit?.toString(),
+        "cursor_id": cursorId,
+      };
 
       if (categoryIdList != null && categoryIdList.isNotEmpty) {
         queryParameters["category_ids[]"] = categoryIdList;
