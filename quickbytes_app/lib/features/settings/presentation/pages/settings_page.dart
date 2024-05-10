@@ -4,6 +4,7 @@ import 'package:quickbytes_app/core/navigation/routes.dart';
 import 'package:quickbytes_app/features/settings/presentation/widgets/settings_footer.dart';
 
 import 'package:quickbytes_app/shared/utils/constants.dart';
+import 'package:quickbytes_app/shared/utils/utils.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -42,26 +43,26 @@ class SettingsPage extends StatelessWidget {
             SettingsBlock(
               title: 'Support',
               items: [
-                SettingsListItem(
+                const SettingsListItem(
                   text: "Share App",
                   icon: AssetConstants.share,
-                  onTap: () {},
+                  onTap: Utils.shareApp,
                 ),
                 SettingsListItem(
                   text: "Rate App",
                   icon: AssetConstants.rating,
                   onTap: () {},
                 ),
-                SettingsListItem(
+                const SettingsListItem(
                   text: "Feedback",
                   icon: AssetConstants.feedback,
-                  onTap: () {},
+                  onTap: Utils.userFeedback,
                   isLast: true,
                 ),
               ],
             ),
-            Spacer(),
-            SettingsFooter(),
+            const Spacer(),
+            const SettingsFooter(),
           ],
         ),
       ),
