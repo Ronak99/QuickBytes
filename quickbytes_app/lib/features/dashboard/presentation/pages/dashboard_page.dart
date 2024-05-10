@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:news_repository/news_repository.dart';
 import 'package:quickbytes_app/core/navigation/routes.dart';
 import 'package:quickbytes_app/features/dashboard/state/bloc/dashboard_bloc.dart';
+import 'package:quickbytes_app/features/home/state/bloc/home_bloc.dart';
 import 'package:quickbytes_app/features/news/state/news_bloc.dart';
 import 'package:quickbytes_app/shared/utils/constants.dart';
 import 'package:quickbytes_app/shared/widgets/cached_image.dart';
@@ -149,15 +150,11 @@ class NewsTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // final homeBloc = context.read<HomeBloc>();
-        // final newsBloc = context.read<NewsBloc>();
+        final homeBloc = context.read<HomeBloc>();
+        final newsBloc = context.read<NewsBloc>();
 
-        // homeBloc.add(SwitchToNewsPageRequested());
-        // newsBloc.add(
-        //   CardSwitchedRequested(
-        //     index: newsBloc.articles.indexOf(article),
-        //   ),
-        // );
+        newsBloc.add(ArticleSelectedFromHome(article));
+        homeBloc.add(SwitchToNewsPageRequested());
       },
       child: Container(
         decoration: BoxDecoration(

@@ -12,6 +12,7 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
       : _newsRepository = newsRepository,
         super(const NewsState()) {
     on<AddToTopRequested>(_onAddToTopRequested);
+    on<ArticleSelectedFromHome>(_handleArticleSelectedFromHome);
     on<CardSwitchedRequested>(_onCardSwitch);
     on<ArticleSelectedAtIndex>(_onArticleSelectAtIndex);
     on<ArticleSelected>(_onArticleSelect);
@@ -28,7 +29,32 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
   List<Article> get getAllArticles => state.allArticles;
 
   void _onAddToTopRequested(AddToTopRequested event, Emitter<NewsState> emit) {
-    emit(state.copyWith(userArticles: [event.article, ...state.allArticles]));
+    final List<Article> userArticles = List.from(state.userArticles);
+    userArticles.insert(0, event.article);
+    emit(state.copyWith(userArticles: userArticles));
+  }
+
+  void _handleArticleSelectedFromHome(
+      ArticleSelectedFromHome event, Emitter<NewsState> emit) {
+    final List<Article> userArticles = List.from(state.userArticles);
+
+    // check if article exists in the current userArticles, if so, at which index
+    int articleIndex = userArticles.indexOf(event.article);
+
+    if (articleIndex == -1) {
+      if (!cardSwiperController.hasClients) return;
+      int currentIndex = cardSwiperController.page!.toInt();
+
+      // add the selected article to current index, to allow users keep on scrolling without affecting
+      // previously viewed news
+      userArticles.insert(currentIndex, event.article);
+    } else {
+      // article exists
+      if (!cardSwiperController.hasClients) return;
+      cardSwiperController.jumpToPage(articleIndex);
+    }
+
+    emit(state.copyWith(userArticles: userArticles));
   }
 
   void _onArticleSelectAtIndex(

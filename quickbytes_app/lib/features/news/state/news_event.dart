@@ -10,6 +10,13 @@ final class AddToTopRequested extends NewsEvent {
   final Article article;
 }
 
+/// Adds article to the top of the article list
+final class ArticleSelectedFromHome extends NewsEvent {
+  const ArticleSelectedFromHome(this.article);
+  final Article article;
+}
+
+/// Scrolls the pageview to the point when user has requested
 class CardSwitchedRequested extends NewsEvent {
   final int index;
 
