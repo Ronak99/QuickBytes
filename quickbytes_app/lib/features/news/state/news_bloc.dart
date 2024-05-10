@@ -74,7 +74,7 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
     NewsEventUserCategoriesChanged event,
     Emitter<NewsState> emit,
   ) async {
-    List<Article> articles = state.userArticles;
+    List<Article> articles = List.from(state.userArticles);
 
     if (event.categoriesRemoved.isNotEmpty) {
       articles.removeWhere((article) {
@@ -94,7 +94,7 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
 
     emit(state.copyWith(
       userArticles: articles,
-      articleToSelect: articles[0],
+      articleToSelect: articles.isNotEmpty ? articles[0] : null,
     ));
   }
 
