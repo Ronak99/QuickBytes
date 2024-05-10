@@ -1,18 +1,18 @@
 part of 'settings_bloc.dart';
 
-class SettingsState {
+class SettingsState extends Equatable {
   // Tracks and updates the news category shown within the news category update UI
-  List<NewsCategory> selectedCategoryList = [];
+  final List<NewsCategory> selectedCategoryList;
 
-  SettingsState({required this.selectedCategoryList});
+  const SettingsState({required this.selectedCategoryList});
 
-  initialize() {}
-
-  SettingsState copyWith({
-    List<NewsCategory>? selectedCategoryList,
-  }) {
+  SettingsState copyWith(
+      {List<NewsCategory>? selectedCategoryList, int? stateVersion}) {
     return SettingsState(
       selectedCategoryList: selectedCategoryList ?? this.selectedCategoryList,
     );
   }
+
+  @override
+  List<Object?> get props => [selectedCategoryList];
 }

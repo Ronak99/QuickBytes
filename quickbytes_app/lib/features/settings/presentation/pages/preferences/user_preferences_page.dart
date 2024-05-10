@@ -8,14 +8,9 @@ import 'package:quickbytes_app/features/settings/state/bloc/settings_bloc.dart';
 import 'package:quickbytes_app/shared/utils/constants.dart';
 import 'package:quickbytes_app/shared/utils/utils.dart';
 
-class UserPreferencesPage extends StatefulWidget {
+class UserPreferencesPage extends StatelessWidget {
   const UserPreferencesPage({super.key});
 
-  @override
-  State<UserPreferencesPage> createState() => _UserPreferencesPageState();
-}
-
-class _UserPreferencesPageState extends State<UserPreferencesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,8 +69,6 @@ class _UserPreferencesPageState extends State<UserPreferencesPage> {
                 }
 
                 Utils.showSnackbar(message: "Categories Updated!!!");
-
-                setState(() {});
               },
               child: Container(
                 height: 50,
@@ -121,42 +114,43 @@ class _ListViewBuilderState extends State<ListViewBuilder> {
 
     context.read<SettingsBloc>().add(
           IntializeCategoryListRequested(
-            newsCategoryList: List.from(widget.userCategories),
-          ),
+              newsCategoryList: widget.userCategories),
         );
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SettingsBloc, SettingsState>(builder: (context, state) {
-      return ListView.builder(
-        itemCount: widget.allCategories.length,
-        padding: const EdgeInsets.symmetric(vertical: 12),
-        itemBuilder: (context, index) {
-          MapEntry<String, List<NewsCategory>> categoryMap =
-              widget.allCategories.entries.elementAt(index);
+    return BlocBuilder<SettingsBloc, SettingsState>(
+      builder: (context, state) {
+        return ListView.builder(
+          itemCount: widget.allCategories.length,
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          itemBuilder: (context, index) {
+            MapEntry<String, List<NewsCategory>> categoryMap =
+                widget.allCategories.entries.elementAt(index);
 
-          if (state.selectedCategoryList.isEmpty) {
-            return const SizedBox.shrink();
-          }
+            if (state.selectedCategoryList.isEmpty) {
+              return const SizedBox.shrink();
+            }
 
-          return CategoryListItem(
-            categoryName: categoryMap.key,
-            categoryTypes: categoryMap.value,
-            selectedCategory: state.selectedCategoryList[index],
-            onCategorySelect: (selectedNewsCategory) {
-              context.read<SettingsBloc>().add(
-                    NewsCategorySelected(newsCategory: selectedNewsCategory),
-                  );
-            },
-          );
-        },
-      );
-    });
+            return CategoryListItem(
+              categoryName: categoryMap.key,
+              categoryTypes: categoryMap.value,
+              selectedCategory: state.selectedCategoryList[index],
+              onCategorySelect: (selectedNewsCategory) {
+                context.read<SettingsBloc>().add(
+                      NewsCategorySelected(newsCategory: selectedNewsCategory),
+                    );
+              },
+            );
+          },
+        );
+      },
+    );
   }
 }
 
-class CategoryListItem extends StatefulWidget {
+class CategoryListItem extends StatelessWidget {
   final String categoryName;
   final NewsCategory selectedCategory;
   final List<NewsCategory> categoryTypes;
@@ -169,19 +163,6 @@ class CategoryListItem extends StatefulWidget {
     required this.onCategorySelect,
     required this.categoryTypes,
   }) : super(key: key);
-
-  @override
-  State<CategoryListItem> createState() => _CategoryListItemState();
-}
-
-class _CategoryListItemState extends State<CategoryListItem> {
-  late NewsCategory _selectedCategory;
-
-  @override
-  void initState() {
-    super.initState();
-    _selectedCategory = widget.selectedCategory;
-  }
 
   Widget selectionView({required NewsCategory category}) {
     Color color = Colors.red;
@@ -197,10 +178,9 @@ class _CategoryListItemState extends State<CategoryListItem> {
 
     return PreferenceCircle(
       onTap: () {
-        _selectedCategory = category;
-        widget.onCategorySelect(_selectedCategory);
+        onCategorySelect(category);
       },
-      isSelected: _selectedCategory == category,
+      isSelected: selectedCategory == category,
       color: color,
     );
   }
@@ -217,7 +197,7 @@ class _CategoryListItemState extends State<CategoryListItem> {
         children: [
           Flexible(
             child: Text(
-              widget.categoryName,
+              categoryName,
               style: const TextStyle(
                 fontWeight: FontWeight.w400,
                 fontSize: 18,
@@ -229,13 +209,13 @@ class _CategoryListItemState extends State<CategoryListItem> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                ...widget.categoryTypes.map(
+                ...categoryTypes.map(
                   (e) => selectionView(category: e),
                 ),
                 selectionView(
-                  category: widget.categoryTypes[0].copyWith(
+                  category: categoryTypes[0].copyWith(
                     relevancy: Relevancy.none,
-                    name: "${widget.categoryTypes[0].name.split('_')[0]}_none",
+                    name: "${categoryTypes[0].name.split('_')[0]}_none",
                   ),
                 ),
               ],
