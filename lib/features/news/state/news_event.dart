@@ -38,8 +38,13 @@ class ArticleSelected extends NewsEvent {
 
 class UserArticlesRequested extends NewsEvent {
   final List<NewsCategory> userCategories;
+  int limit;
 
-  UserArticlesRequested({required this.userCategories});
+  UserArticlesRequested({
+    required this.userCategories,
+    // Query 5 of user's articles by default
+    this.limit = 5,
+  });
 
   List<String> get userCategoriesId =>
       userCategories.where((e) => !e.isNone).map((e) => e.id).toList();

@@ -128,11 +128,17 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
     UserArticlesRequested event,
     Emitter<NewsState> emit,
   ) async {
+    String? cursorId =
+        state.userArticles.isNotEmpty ? state.userArticles.last.id : null;
+
     List<Article> articles = await _newsRepository.queryAllArticles(
       categoryIdList: event.userCategoriesId,
+      limit: event.limit,
+      cursorId: cursorId,
     );
 
-    emit(state.copyWith(userArticles: articles));
+    List<Article> updatedArticles = [...state.userArticles, ...articles];
+    emit(state.copyWith(userArticles: updatedArticles));
   }
 
   @override

@@ -113,6 +113,14 @@ class NewsPageView extends StatelessWidget {
       onPageChanged: (index) {
         final newsBloc = context.read<NewsBloc>();
         newsBloc.add(ArticleSelectedAtIndex(index));
+
+        if (index == articles.length - 1) {
+          final newsCategoryCubit = context.read<NewsCategoryCubit>();
+          final userCategories =
+              (newsCategoryCubit.state as NewsCategoryStateLoaded)
+                  .userCategories;
+          newsBloc.add(UserArticlesRequested(userCategories: userCategories));
+        }
       },
       itemBuilder: (context, index) =>
           articles.map((e) => ArticleCard(article: e)).toList()[index],

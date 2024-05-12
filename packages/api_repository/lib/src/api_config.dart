@@ -1,5 +1,7 @@
 class ApiConfig {
-  static const String baseUrl = "http://192.168.219.66:8081";
+  static const String baseUrl = "http://192.168.0.102:8081";
+  // static const String baseUrl =
+  //     "http://quickbytes-backend-production.up.railway.app";
   static const String version = "/v1";
 }
 
