@@ -1,1 +1,0 @@
-// export { onNewsPublish, publishNews, } from "./news.routes";

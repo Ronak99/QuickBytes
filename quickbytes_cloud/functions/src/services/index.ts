@@ -1,1 +1,0 @@
-// export { publishNews, onNewsPublish } from "./news.service";
