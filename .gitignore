@@ -114,7 +114,6 @@ app.*.map.json
 /android/app/release
 
 # generated files
-package-lock.json
 quickbytes_cloud/functions/lib/
 quickbytes_app/build/
 
