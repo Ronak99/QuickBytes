@@ -53,9 +53,6 @@ dependencies:
   api_repository:
     path: packages/api_repository
 
-  firebase_repository:
-    path: packages/firebase_repository
-
   news_repository:
     path: packages/news_repository
 

@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,8 +12,6 @@ import 'package:quickbytes_app/shared/widgets/blur_view.dart';
 import 'package:quickbytes_app/shared/widgets/cached_image.dart';
 
 final pageStorageBucket = PageStorageBucket();
-
-final cardSwiperController = CardSwiperController();
 
 class NewsPage extends StatefulWidget {
   const NewsPage({super.key});
@@ -128,31 +124,31 @@ class NewsPageView extends StatelessWidget {
   }
 }
 
-class NewsSwiper extends StatelessWidget {
-  final List<Article> articles;
+// class NewsSwiper extends StatelessWidget {
+//   final List<Article> articles;
 
-  const NewsSwiper({
-    Key? key,
-    required this.articles,
-  }) : super(key: key);
+//   const NewsSwiper({
+//     Key? key,
+//     required this.articles,
+//   }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return CardSwiper(
-      controller: cardSwiperController,
-      cardsCount: articles.length,
-      padding: EdgeInsets.zero,
-      isLoop: true,
-      onSwipe: (previousIndex, currentIndex, direction) {
-        if (currentIndex != null) {
-          final newsBloc = context.read<NewsBloc>();
-          newsBloc.add(ArticleSelectedAtIndex(currentIndex));
-        }
+//   @override
+//   Widget build(BuildContext context) {
+//     return CardSwiper(
+//       controller: cardSwiperController,
+//       cardsCount: articles.length,
+//       padding: EdgeInsets.zero,
+//       isLoop: true,
+//       onSwipe: (previousIndex, currentIndex, direction) {
+//         if (currentIndex != null) {
+//           final newsBloc = context.read<NewsBloc>();
+//           newsBloc.add(ArticleSelectedAtIndex(currentIndex));
+//         }
 
-        return true;
-      },
-      cardBuilder: (context, index, percentThresholdX, percentThresholdY) =>
-          articles.map((e) => ArticleCard(article: e)).toList()[index],
-    );
-  }
-}
+//         return true;
+//       },
+//       cardBuilder: (context, index, percentThresholdX, percentThresholdY) =>
+//           articles.map((e) => ArticleCard(article: e)).toList()[index],
+//     );
+//   }
+// }

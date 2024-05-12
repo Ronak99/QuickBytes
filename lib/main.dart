@@ -1,5 +1,6 @@
+import 'dart:io';
+
 import 'package:authentication_repository/authentication_repository.dart';
-import 'package:firebase_repository/firebase_repository.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,7 +21,6 @@ void main() async {
 
   NotificationService.instance.initialize();
   Bloc.observer = const AppBlocObserver();
-  FirebaseRepository.instance.setup.useEmulatorInDebug();
 
   NotificationService.instance.initialize();
 
