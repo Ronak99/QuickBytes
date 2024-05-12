@@ -5,6 +5,7 @@ import 'package:quickbytes_app/features/dashboard/presentation/pages/dashboard_p
 import 'package:quickbytes_app/features/home/state/bloc/home_bloc.dart';
 import 'package:quickbytes_app/features/news/presentation/pages/news_page.dart';
 import 'package:quickbytes_app/shared/widgets/no_internet_view.dart';
+import 'package:quickbytes_app/shared/widgets/webview.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -21,6 +22,7 @@ class HomePage extends StatelessWidget {
             children: const [
               DashboardPage(),
               NewsPage(),
+              WebView(),
             ],
           ),
         ),

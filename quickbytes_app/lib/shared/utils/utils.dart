@@ -32,6 +32,10 @@ Download QuickBytes now and thank me later! 👌 [insert download link or app st
 
     Uri uri = Uri.parse(uriString);
 
+    handleUrlExternally(uri);
+  }
+
+  static void handleUrlExternally(Uri uri) async {
     try {
       if (await canLaunchUrl(uri)) {
         await launchUrl(uri);
@@ -39,5 +43,17 @@ Download QuickBytes now and thank me later! 👌 [insert download link or app st
     } catch (e) {
       Logger.instance.e(e.toString());
     }
+  }
+
+  static String extractDomain(String url) {
+    Uri uri = Uri.parse(url);
+    String domain = uri.host;
+
+    // Remove the 'www.' prefix if present
+    if (domain.startsWith("www.")) {
+      domain = domain.substring(4);
+    }
+
+    return domain;
   }
 }
