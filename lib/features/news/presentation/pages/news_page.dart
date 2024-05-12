@@ -10,6 +10,7 @@ import 'package:quickbytes_app/features/news/presentation/widgets/article_card/a
 import 'package:quickbytes_app/features/news/state/news_bloc.dart';
 import 'package:quickbytes_app/shared/widgets/blur_view.dart';
 import 'package:quickbytes_app/shared/widgets/cached_image.dart';
+import 'package:quickbytes_app/shared/widgets/home_back_action_handler.dart';
 
 final pageStorageBucket = PageStorageBucket();
 
@@ -47,42 +48,44 @@ class _NewsPageState extends State<NewsPage>
   Widget build(BuildContext context) {
     super.build(context);
 
-    return Scaffold(
-      body: BlocBuilder<NewsBloc, NewsState>(
-        builder: (context, state) {
-          print("News Page Bloc Builder");
-          return Stack(
-            children: [
-              // Separated out the background widget responsible for a blur background
-              if (state.selectedArticle != null)
-                BlurView(
-                  height: MediaQuery.of(context).size.height,
-                  width: MediaQuery.of(context).size.width,
-                  sigmaX: 2,
-                  sigmaY: 2,
-                  color: Theme.of(context).cardColor.withOpacity(.3),
-                  child: SizedBox(
-                    child: CachedImage(
-                      state.selectedArticle!.image,
-                      fit: BoxFit.cover,
-                      useOldImageOnUrlChange: true,
-                      placeholder: Container(
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).cardColor,
+    return HomeBackActionHandler(
+      child: Scaffold(
+        body: BlocBuilder<NewsBloc, NewsState>(
+          builder: (context, state) {
+            print("News Page Bloc Builder");
+            return Stack(
+              children: [
+                // Separated out the background widget responsible for a blur background
+                if (state.selectedArticle != null)
+                  BlurView(
+                    height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width,
+                    sigmaX: 2,
+                    sigmaY: 2,
+                    color: Theme.of(context).cardColor.withOpacity(.3),
+                    child: SizedBox(
+                      child: CachedImage(
+                        state.selectedArticle!.image,
+                        fit: BoxFit.cover,
+                        useOldImageOnUrlChange: true,
+                        placeholder: Container(
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).cardColor,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              if (state.userArticles.isEmpty)
-                const Center(child: Text('You are all caught up!'))
-              else
-                NewsPageView(
-                  articles: state.userArticles,
-                ),
-            ],
-          );
-        },
+                if (state.userArticles.isEmpty)
+                  const Center(child: Text('You are all caught up!'))
+                else
+                  NewsPageView(
+                    articles: state.userArticles,
+                  ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }

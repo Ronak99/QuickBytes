@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_repository/news_repository.dart';
 import 'package:quickbytes_app/shared/utils/utils.dart';
+import 'package:quickbytes_app/shared/widgets/home_back_action_handler.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -72,53 +73,56 @@ class _WebViewState extends State<WebView> {
   Widget build(BuildContext context) {
     if (selectedArticle == null) return const Scaffold();
 
-    return Scaffold(
-      appBar: AppBar(
-        leading: BackButton(
-          onPressed: () =>
-              context.read<HomeBloc>().add(SwitchToNewsPageRequested()),
-        ),
-        actions: [
-          if (loadingProgress < 100)
-            AdaptiveProgressIndicator(value: loadingProgress.toDouble() / 100),
-          const SizedBox(width: 20),
-        ],
-        title: Column(
-          children: [
-            Text(
-              Utils.extractDomain(selectedArticle!.sourceUrl),
-              style: const TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.w500,
-                fontSize: 15,
-              ),
-            ),
+    return HomeBackActionHandler(
+      child: Scaffold(
+        appBar: AppBar(
+          leading: BackButton(
+            onPressed: () =>
+                context.read<HomeBloc>().add(SwitchToNewsPageRequested()),
+          ),
+          actions: [
+            if (loadingProgress < 100)
+              AdaptiveProgressIndicator(
+                  value: loadingProgress.toDouble() / 100),
+            const SizedBox(width: 20),
           ],
-        ),
-      ),
-      body: Stack(
-        children: [
-          Column(
+          title: Column(
             children: [
-              Flexible(
-                child: WebViewWidget(
-                  controller: controller,
-                  gestureRecognizers: {
-                    Factory(() => PlatformViewVerticalGestureRecognizer()),
-                  },
+              Text(
+                Utils.extractDomain(selectedArticle!.sourceUrl),
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 15,
                 ),
               ),
             ],
           ),
-          IgnorePointer(
-            ignoring: true,
-            child: AnimatedOpacity(
-              opacity: isLoaded ? 0 : 1,
-              duration: const Duration(milliseconds: 100),
-              child: const LoadingView(),
+        ),
+        body: Stack(
+          children: [
+            Column(
+              children: [
+                Flexible(
+                  child: WebViewWidget(
+                    controller: controller,
+                    gestureRecognizers: {
+                      Factory(() => PlatformViewVerticalGestureRecognizer()),
+                    },
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
+            IgnorePointer(
+              ignoring: true,
+              child: AnimatedOpacity(
+                opacity: isLoaded ? 0 : 1,
+                duration: const Duration(milliseconds: 100),
+                child: const LoadingView(),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

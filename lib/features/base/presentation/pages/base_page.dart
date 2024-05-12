@@ -47,7 +47,7 @@ class _BasePageState extends State<BasePage> {
   Widget build(BuildContext context) {
     return BlocListener<NotificationsBloc, NotificationState>(
       bloc: context.read<NotificationsBloc>(),
-      child: const HomePage(),
+      child: const SizedBox.shrink(),
       listener: (context, state) {
         if (state.notificationData.isNotEmpty) {
           if (state.notification is NewsNotification) {

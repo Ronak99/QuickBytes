@@ -7,7 +7,7 @@ import 'package:quickbytes_app/core/navigation/routes.dart';
 
 GoRouter get appRouter => GoRouter(
       routes: $appRoutes,
-      initialLocation: '/',
+      initialLocation: '/home',
       // redirect: (BuildContext context, GoRouterState state) {
       //   switch (appStatus) {
       //     case AppStatus.authenticated:

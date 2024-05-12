@@ -29,12 +29,12 @@ part 'routes.g.dart';
         TypedGoRoute<UserPreferencesPageRoute>(path: 'preferences'),
       ],
     ),
-    // TypedGoRoute<HomePageRoute>(
-    //   path: 'home',
-    //   routes: [
-    //     TypedGoRoute<RelevancyPageRoute>(path: 'relevancy'),
-    //   ],
-    // ),
+    TypedGoRoute<HomePageRoute>(
+      path: 'home',
+      routes: [
+        TypedGoRoute<RelevancyPageRoute>(path: 'relevancy'),
+      ],
+    ),
   ],
 )
 @immutable
@@ -45,13 +45,13 @@ class BasePageRoute extends GoRouteData {
   }
 }
 
-// @immutable
-// class HomePageRoute extends GoRouteData {
-//   @override
-//   Widget build(BuildContext context, GoRouterState state) {
-//     return const HomePage();
-//   }
-// }
+@immutable
+class HomePageRoute extends GoRouteData {
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const HomePage();
+  }
+}
 
 @immutable
 class RelevancyPageRoute extends GoRouteData {

@@ -9,13 +9,16 @@ import 'package:quickbytes_app/features/home/state/bloc/home_bloc.dart';
 import 'package:quickbytes_app/features/news/state/news_bloc.dart';
 import 'package:quickbytes_app/shared/utils/constants.dart';
 import 'package:quickbytes_app/shared/widgets/cached_image.dart';
+import 'package:quickbytes_app/shared/widgets/home_back_action_handler.dart';
 
 class StaggeredConfig {
   final int crossAxisCellCount;
   final int mainAxisCellCount;
 
-  StaggeredConfig(
-      {required this.crossAxisCellCount, required this.mainAxisCellCount});
+  StaggeredConfig({
+    required this.crossAxisCellCount,
+    required this.mainAxisCellCount,
+  });
 }
 
 class DashboardPage extends StatefulWidget {
@@ -81,52 +84,54 @@ class _DashboardPageState extends State<DashboardPage>
     super.build(context);
     final dashboardBloc = context.read<DashboardBloc>();
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'QuickBytes',
-          style: TextStyle(
-            fontWeight: FontWeight.w600,
-            fontSize: 20,
+    return HomeBackActionHandler(
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text(
+            'QuickBytes',
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 20,
+            ),
           ),
-        ),
-        leading: GestureDetector(
-          onTap: () => SettingsPageRoute().go(context),
-          child: Container(
-            color: Colors.transparent,
-            padding: const EdgeInsets.all(18.0),
-            child: SvgPicture.asset(
-              AssetConstants.setting,
-              colorFilter: ColorFilter.mode(
-                Colors.white.withOpacity(.8),
-                BlendMode.srcIn,
+          leading: GestureDetector(
+            onTap: () => SettingsPageRoute().go(context),
+            child: Container(
+              color: Colors.transparent,
+              padding: const EdgeInsets.all(18.0),
+              child: SvgPicture.asset(
+                AssetConstants.setting,
+                colorFilter: ColorFilter.mode(
+                  Colors.white.withOpacity(.8),
+                  BlendMode.srcIn,
+                ),
               ),
             ),
           ),
         ),
-      ),
-      body: SingleChildScrollView(
-        controller: dashboardBloc.scrollController,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 20),
-          child: BlocBuilder<NewsBloc, NewsState>(
-            builder: (context, state) => Column(
-              children: [
-                StaggeredGrid.count(
-                  crossAxisCount: 4,
-                  mainAxisSpacing: 8,
-                  crossAxisSpacing: 8,
-                  children: getChildren(context),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 16),
-                  child: state.isFetchingMoreData
-                      ? const AdaptiveProgressIndicator(color: Colors.white54)
-                      : const SizedBox(
-                          height: 20,
-                        ),
-                ),
-              ],
+        body: SingleChildScrollView(
+          controller: dashboardBloc.scrollController,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 20),
+            child: BlocBuilder<NewsBloc, NewsState>(
+              builder: (context, state) => Column(
+                children: [
+                  StaggeredGrid.count(
+                    crossAxisCount: 4,
+                    mainAxisSpacing: 8,
+                    crossAxisSpacing: 8,
+                    children: getChildren(context),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16),
+                    child: state.isFetchingMoreData
+                        ? const AdaptiveProgressIndicator(color: Colors.white54)
+                        : const SizedBox(
+                            height: 20,
+                          ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
