@@ -23,22 +23,22 @@ RouteBase get $basePageRoute => GoRouteData.$route(
           factory: $SearchPageRouteExtension._fromState,
         ),
         GoRouteData.$route(
-          path: 'settings',
-          factory: $SettingsPageRouteExtension._fromState,
-          routes: [
-            GoRouteData.$route(
-              path: 'preferences',
-              factory: $UserPreferencesPageRouteExtension._fromState,
-            ),
-          ],
-        ),
-        GoRouteData.$route(
           path: 'home',
           factory: $HomePageRouteExtension._fromState,
           routes: [
             GoRouteData.$route(
               path: 'relevancy',
               factory: $RelevancyPageRouteExtension._fromState,
+            ),
+            GoRouteData.$route(
+              path: 'settings',
+              factory: $SettingsPageRouteExtension._fromState,
+              routes: [
+                GoRouteData.$route(
+                  path: 'preferences',
+                  factory: $UserPreferencesPageRouteExtension._fromState,
+                ),
+              ],
             ),
           ],
         ),
@@ -96,42 +96,6 @@ extension $SearchPageRouteExtension on SearchPageRoute {
   void replace(BuildContext context) => context.replace(location);
 }
 
-extension $SettingsPageRouteExtension on SettingsPageRoute {
-  static SettingsPageRoute _fromState(GoRouterState state) =>
-      SettingsPageRoute();
-
-  String get location => GoRouteData.$location(
-        '/settings',
-      );
-
-  void go(BuildContext context) => context.go(location);
-
-  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
-
-  void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location);
-
-  void replace(BuildContext context) => context.replace(location);
-}
-
-extension $UserPreferencesPageRouteExtension on UserPreferencesPageRoute {
-  static UserPreferencesPageRoute _fromState(GoRouterState state) =>
-      UserPreferencesPageRoute();
-
-  String get location => GoRouteData.$location(
-        '/settings/preferences',
-      );
-
-  void go(BuildContext context) => context.go(location);
-
-  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
-
-  void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location);
-
-  void replace(BuildContext context) => context.replace(location);
-}
-
 extension $HomePageRouteExtension on HomePageRoute {
   static HomePageRoute _fromState(GoRouterState state) => HomePageRoute();
 
@@ -155,6 +119,42 @@ extension $RelevancyPageRouteExtension on RelevancyPageRoute {
 
   String get location => GoRouteData.$location(
         '/home/relevancy',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $SettingsPageRouteExtension on SettingsPageRoute {
+  static SettingsPageRoute _fromState(GoRouterState state) =>
+      SettingsPageRoute();
+
+  String get location => GoRouteData.$location(
+        '/home/settings',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $UserPreferencesPageRouteExtension on UserPreferencesPageRoute {
+  static UserPreferencesPageRoute _fromState(GoRouterState state) =>
+      UserPreferencesPageRoute();
+
+  String get location => GoRouteData.$location(
+        '/home/settings/preferences',
       );
 
   void go(BuildContext context) => context.go(location);

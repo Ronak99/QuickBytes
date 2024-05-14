@@ -23,16 +23,16 @@ part 'routes.g.dart';
     TypedGoRoute<ProfilePageRoute>(path: 'profile'),
     // TypedGoRoute<AuthPageRoute>(path: 'auth'),
     TypedGoRoute<SearchPageRoute>(path: 'search'),
-    TypedGoRoute<SettingsPageRoute>(
-      path: 'settings',
-      routes: [
-        TypedGoRoute<UserPreferencesPageRoute>(path: 'preferences'),
-      ],
-    ),
     TypedGoRoute<HomePageRoute>(
       path: 'home',
       routes: [
         TypedGoRoute<RelevancyPageRoute>(path: 'relevancy'),
+        TypedGoRoute<SettingsPageRoute>(
+          path: 'settings',
+          routes: [
+            TypedGoRoute<UserPreferencesPageRoute>(path: 'preferences'),
+          ],
+        ),
       ],
     ),
   ],
