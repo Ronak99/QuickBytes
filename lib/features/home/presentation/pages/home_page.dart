@@ -1,6 +1,7 @@
 import 'package:connectivity_tracker/view/connectivity_tracker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:quickbytes_app/core/navigation/routes.dart';
 import 'package:quickbytes_app/features/dashboard/presentation/pages/dashboard_page.dart';
 import 'package:quickbytes_app/features/home/state/bloc/home_bloc.dart';
 import 'package:quickbytes_app/features/news/presentation/pages/news_page.dart';
@@ -54,6 +55,8 @@ class _HomePageState extends State<HomePage> {
       listener: (context, state) {
         if (state.notificationData.isNotEmpty) {
           if (state.notification is NewsNotification) {
+            HomePageRoute().go(context);
+
             final notification = state.notification as NewsNotification;
 
             final newsBloc = context.read<NewsBloc>();
