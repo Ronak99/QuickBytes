@@ -37,9 +37,7 @@ class _HomePageState extends State<HomePage> {
 
     if (notificationList.isNotEmpty) {
       notificationsBloc.add(
-        NotificationTapped(
-          notificationList[0],
-        ),
+        NotificationTapped(notificationList[0]),
       );
     }
 
