@@ -97,7 +97,7 @@ class NotificationService(val context: Context) {
 
         // Prepare notification
         val notification = NotificationCompat.Builder(context, kChannelId)
-            .setSmallIcon(androidx.core.R.drawable.notification_bg)
+            .setSmallIcon(R.mipmap.notification_icon)
             .setCustomBigContentView(expandedNotificationView)
             .setContent(collapsedNotificationView)
             .setContentIntent(pendingIntent)
