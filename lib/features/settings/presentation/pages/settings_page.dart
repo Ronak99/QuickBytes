@@ -40,20 +40,20 @@ class SettingsPage extends StatelessWidget {
                 ),
               ],
             ),
-            SettingsBlock(
+            const SettingsBlock(
               title: 'Support',
               items: [
-                const SettingsListItem(
+                SettingsListItem(
                   text: "Share App",
                   icon: AssetConstants.share,
                   onTap: Utils.shareApp,
                 ),
+                // SettingsListItem(
+                //   text: "Rate App",
+                //   icon: AssetConstants.rating,
+                //   onTap: () {},
+                // ),
                 SettingsListItem(
-                  text: "Rate App",
-                  icon: AssetConstants.rating,
-                  onTap: () {},
-                ),
-                const SettingsListItem(
                   text: "Feedback",
                   icon: AssetConstants.feedback,
                   onTap: Utils.userFeedback,
