@@ -9,7 +9,7 @@ class SettingsFooter extends StatelessWidget {
     return const Padding(
       padding: EdgeInsets.only(bottom: 12),
       child: Text(
-        "${AppConfig.name} ${AppConfig.version}${AppConfig.versionCode}${AppConfig.patch}",
+        "${AppConfig.name} ${AppConfig.version}.${AppConfig.patch}",
         style: TextStyle(
           fontWeight: FontWeight.w700,
           color: Colors.white38,
