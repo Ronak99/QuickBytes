@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:quickbytes_app/core/logs/logs.dart';
+import 'package:quickbytes_app/shared/utils/constants.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -26,9 +29,19 @@ Download QuickBytes now and thank me later! 👌 [insert download link or app st
 
   static void userFeedback() async {
     const String contactEmail = "contact@quickbytes.in";
-    const String subject = "";
-    const String body = "";
-    const String uriString = "mailto:$contactEmail?subject=$subject&body=$body";
+    String body = '''
+
+App Version: ${AppConfig.version}, Patch: ${AppConfig.patch}
+Operating System: ${Platform.operatingSystem}, 
+OS Version: ${Platform.operatingSystemVersion}
+------------------
+
+Hello Quickbytes team,
+
+I would like to''';
+
+    String uriString =
+        "mailto:$contactEmail?subject=Quickbytes Feedback&body=$body";
 
     Uri uri = Uri.parse(uriString);
 
