@@ -1,13 +1,19 @@
+import 'package:dotlottie_loader/dotlottie_loader.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:lottie/lottie.dart';
 import 'package:news_repository/news_repository.dart';
 
 import 'package:quickbytes_app/core/logs/logs.dart';
+import 'package:quickbytes_app/core/navigation/routes.dart';
 import 'package:quickbytes_app/features/categories/state/cubit/news_category_cubit.dart';
 import 'package:quickbytes_app/features/news/presentation/widgets/article_card/article_card.dart';
 import 'package:quickbytes_app/features/news/state/news_bloc.dart';
+import 'package:quickbytes_app/shared/utils/constants.dart';
+import 'package:quickbytes_app/shared/widgets/action_button.dart';
 import 'package:quickbytes_app/shared/widgets/blur_view.dart';
 import 'package:quickbytes_app/shared/widgets/cached_image.dart';
 import 'package:quickbytes_app/shared/widgets/home_back_action_handler.dart';
@@ -52,7 +58,12 @@ class _NewsPageState extends State<NewsPage>
       child: Scaffold(
         body: BlocBuilder<NewsBloc, NewsState>(
           builder: (context, state) {
-            print("News Page Bloc Builder");
+            if (state.isFetchingInitialData) {
+              return const AdaptiveProgressIndicator();
+            } else if (state.userArticles.isNotEmpty) {
+              return const CaughtUpView();
+            }
+
             return Stack(
               children: [
                 // Separated out the background widget responsible for a blur background
@@ -76,12 +87,9 @@ class _NewsPageState extends State<NewsPage>
                       ),
                     ),
                   ),
-                if (state.userArticles.isEmpty)
-                  const Center(child: Text('You are all caught up!'))
-                else
-                  NewsPageView(
-                    articles: state.userArticles,
-                  ),
+                NewsPageView(
+                  articles: state.userArticles,
+                ),
               ],
             );
           },
@@ -155,3 +163,40 @@ class NewsPageView extends StatelessWidget {
 //     );
 //   }
 // }
+
+class CaughtUpView extends StatelessWidget {
+  const CaughtUpView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        DotLottieLoader.fromAsset(
+          AssetConstants.checkmark,
+          frameBuilder: (ctx, dotlottie) {
+            if (dotlottie != null) {
+              return Lottie.memory(dotlottie.animations.values.single);
+            } else {
+              return Container();
+            }
+          },
+          errorBuilder: (ctx, e, s) {
+            print(s);
+            return Text(e.toString());
+          },
+        ),
+        const Text(
+          'You\'re all caught up',
+        ),
+        const Text(
+          'You\'ve seen all stories from your preferred news categories',
+        ),
+        ActionButton(
+          text: 'Update Preferences',
+          isLoading: false,
+          onTap: () => UserPreferencesPageRoute().go(context),
+        ),
+      ],
+    );
+  }
+}

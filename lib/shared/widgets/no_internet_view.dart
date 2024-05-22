@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lottie/lottie.dart';
 import 'package:quickbytes_app/shared/utils/utils.dart';
+import 'package:quickbytes_app/shared/widgets/action_button.dart';
 import 'package:quickbytes_app/shared/widgets/cached_image.dart';
 
 class NoInternetView extends StatefulWidget {
@@ -44,7 +45,9 @@ class _NoInternetViewState extends State<NoInternetView> {
                   fontSize: 15,
                   color: Colors.white54),
             ),
-            GestureDetector(
+            ActionButton(
+              text: 'Try Again!',
+              isLoading: _isLoading,
               onTap: () async {
                 setState(() {
                   _isLoading = true;
@@ -60,24 +63,6 @@ class _NoInternetViewState extends State<NoInternetView> {
                   Utils.showSnackbar(message: 'No internet connection found.');
                 }
               },
-              child: Container(
-                margin: const EdgeInsets.only(top: 20, left: 50, right: 50),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  border: Border.all(color: Colors.white70, width: .5),
-                ),
-                width: double.infinity,
-                alignment: Alignment.center,
-                height: 45,
-                child: _isLoading
-                    ? const AdaptiveProgressIndicator()
-                    : const Text(
-                        'Try Again!',
-                        style: TextStyle(
-                          color: Colors.white70,
-                        ),
-                      ),
-              ),
             ),
             // DotLottieLoader.fromAsset(
             //   "assets/lottie/no-internet.lottie",

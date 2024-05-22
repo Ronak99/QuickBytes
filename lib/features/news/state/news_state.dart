@@ -7,6 +7,7 @@ final class NewsState extends Equatable {
   final int index;
   final Article? articleToSelect;
   final bool isFetchingMoreData;
+  final bool isFetchingInitialData;
 
   const NewsState({
     this.allArticles = const [],
@@ -14,6 +15,7 @@ final class NewsState extends Equatable {
     this.index = 0,
     this.articleToSelect,
     this.isFetchingMoreData = false,
+    this.isFetchingInitialData = true,
   });
 
   Article? get selectedArticle =>
@@ -26,7 +28,8 @@ final class NewsState extends Equatable {
         selectedArticle,
         index,
         articleToSelect,
-        isFetchingMoreData
+        isFetchingMoreData,
+        isFetchingInitialData,
       ];
 
   NewsState copyWith({
@@ -35,13 +38,16 @@ final class NewsState extends Equatable {
     int index = 0,
     Article? articleToSelect,
     bool? isFetchingMoreData,
+    bool? isFetchingInitialData,
   }) {
     return NewsState(
       allArticles: allArticles ?? this.allArticles,
       userArticles: userArticles ?? this.userArticles,
       isFetchingMoreData: isFetchingMoreData ?? this.isFetchingMoreData,
       index: index,
-      articleToSelect: articleToSelect,
+      articleToSelect: articleToSelect ?? this.articleToSelect,
+      isFetchingInitialData:
+          isFetchingInitialData ?? this.isFetchingInitialData,
     );
   }
 }
