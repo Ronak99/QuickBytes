@@ -31,12 +31,17 @@ RouteBase get $basePageRoute => GoRouteData.$route(
               factory: $RelevancyPageRouteExtension._fromState,
             ),
             GoRouteData.$route(
+              path: 'preferences',
+              factory: $UserPreferencesHomePageRouteExtension._fromState,
+            ),
+            GoRouteData.$route(
               path: 'settings',
               factory: $SettingsPageRouteExtension._fromState,
               routes: [
                 GoRouteData.$route(
                   path: 'preferences',
-                  factory: $UserPreferencesPageRouteExtension._fromState,
+                  factory:
+                      $UserPreferencesSettingsPageRouteExtension._fromState,
                 ),
               ],
             ),
@@ -131,6 +136,25 @@ extension $RelevancyPageRouteExtension on RelevancyPageRoute {
   void replace(BuildContext context) => context.replace(location);
 }
 
+extension $UserPreferencesHomePageRouteExtension
+    on UserPreferencesHomePageRoute {
+  static UserPreferencesHomePageRoute _fromState(GoRouterState state) =>
+      UserPreferencesHomePageRoute();
+
+  String get location => GoRouteData.$location(
+        '/home/preferences',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
 extension $SettingsPageRouteExtension on SettingsPageRoute {
   static SettingsPageRoute _fromState(GoRouterState state) =>
       SettingsPageRoute();
@@ -149,9 +173,10 @@ extension $SettingsPageRouteExtension on SettingsPageRoute {
   void replace(BuildContext context) => context.replace(location);
 }
 
-extension $UserPreferencesPageRouteExtension on UserPreferencesPageRoute {
-  static UserPreferencesPageRoute _fromState(GoRouterState state) =>
-      UserPreferencesPageRoute();
+extension $UserPreferencesSettingsPageRouteExtension
+    on UserPreferencesSettingsPageRoute {
+  static UserPreferencesSettingsPageRoute _fromState(GoRouterState state) =>
+      UserPreferencesSettingsPageRoute();
 
   String get location => GoRouteData.$location(
         '/home/settings/preferences',

@@ -35,7 +35,7 @@ class SettingsPage extends StatelessWidget {
                 SettingsListItem(
                   text: "Update News Preferences",
                   icon: AssetConstants.preference,
-                  onTap: () => UserPreferencesPageRoute().go(context),
+                  onTap: () => UserPreferencesSettingsPageRoute().go(context),
                   isLast: true,
                 ),
               ],

@@ -27,10 +27,11 @@ part 'routes.g.dart';
       path: 'home',
       routes: [
         TypedGoRoute<RelevancyPageRoute>(path: 'relevancy'),
+        TypedGoRoute<UserPreferencesHomePageRoute>(path: 'preferences'),
         TypedGoRoute<SettingsPageRoute>(
           path: 'settings',
           routes: [
-            TypedGoRoute<UserPreferencesPageRoute>(path: 'preferences'),
+            TypedGoRoute<UserPreferencesSettingsPageRoute>(path: 'preferences'),
           ],
         ),
       ],
@@ -86,7 +87,15 @@ class SearchPageRoute extends GoRouteData {
 }
 
 @immutable
-class UserPreferencesPageRoute extends GoRouteData {
+class UserPreferencesHomePageRoute extends GoRouteData {
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const UserPreferencesPage();
+  }
+}
+
+@immutable
+class UserPreferencesSettingsPageRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const UserPreferencesPage();

@@ -170,12 +170,18 @@ class CaughtUpView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         DotLottieLoader.fromAsset(
           AssetConstants.checkmark,
           frameBuilder: (ctx, dotlottie) {
             if (dotlottie != null) {
-              return Lottie.memory(dotlottie.animations.values.single);
+              return Lottie.memory(
+                dotlottie.animations.values.single,
+                height: 120,
+                width: 120,
+                repeat: false,
+              );
             } else {
               return Container();
             }
@@ -191,10 +197,11 @@ class CaughtUpView extends StatelessWidget {
         const Text(
           'You\'ve seen all stories from your preferred news categories',
         ),
+        const SizedBox(height: 8),
         ActionButton(
           text: 'Update Preferences',
           isLoading: false,
-          onTap: () => UserPreferencesPageRoute().go(context),
+          onTap: () => UserPreferencesHomePageRoute().go(context),
         ),
       ],
     );
