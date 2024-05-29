@@ -73,13 +73,17 @@ class _HomePageState extends State<HomePage> {
         whenConnected: Scaffold(
           body: PageStorage(
             bucket: PageStorageBucket(),
-            child: PageView(
-              controller: context.read<HomeBloc>().state.pageController,
-              children: const [
-                DashboardPage(),
-                NewsPage(),
-                WebView(),
-              ],
+            child: BlocBuilder<NewsBloc, NewsState>(
+              builder: (context, state) {
+                return PageView(
+                  controller: context.read<HomeBloc>().state.pageController,
+                  children: [
+                    const DashboardPage(),
+                    const NewsPage(),
+                    if (state.selectedArticle != null) const WebView(),
+                  ],
+                );
+              },
             ),
           ),
         ),
