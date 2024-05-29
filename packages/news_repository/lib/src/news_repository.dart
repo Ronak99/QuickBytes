@@ -71,27 +71,18 @@ class NewsRepository {
       List<dynamic> categoryList =
           await _cacheRepository.categories.queryCategories();
 
-      // new logic:
-      List<NewsCategory> existingCategories =
-          categoryList.map((e) => NewsCategory.fromJson(e)).toList();
+      if (categoryList.isEmpty) {
+        // parse out categories that are all of major category
+        List<NewsCategory> categoriesToSave =
+            allCategories.where((category) => !category.isAll).toList();
+        // save a default set of categories and return that
+        await _cacheRepository.categories.saveCategories(
+          categoriesToSave.map((e) => e.toJson()).toList(),
+        );
+        return categoriesToSave;
+      }
 
-      // look for new categories, if any
-      List<NewsCategory> newCategories = allCategories
-          .where(
-            (category) => !existingCategories
-                .any((existingCategory) => existingCategory.id == category.id),
-          )
-          .toList();
-
-      // Create a list of NewsCategories from categoryList, which are not present in allCategories
-
-      // Then loop over them to save them in cache repository was done by the old logic
-      await _cacheRepository.categories.saveCategories(
-        newCategories.map((e) => e.toJson()).toList(),
-      );
-
-      // return the existing and newly added category list instead of just category list
-      return [...existingCategories, ...newCategories];
+      return categoryList.map((e) => NewsCategory.fromJson(e)).toList();
     } catch (e) {
       if (e is ApiException) {
         throw QueryNewsCategoryException(message: e.message);
