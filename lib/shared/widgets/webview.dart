@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_repository/news_repository.dart';
 import 'package:quickbytes_app/shared/utils/utils.dart';
@@ -41,16 +40,19 @@ class _WebViewState extends State<WebView> {
         NavigationDelegate(
           onProgress: (int progress) {
             // Update loading bar.
-            setState(() {
-              loadingProgress = progress;
-            });
+            if (mounted) {
+              setState(() {
+                loadingProgress = progress;
+              });
+            }
           },
           onPageFinished: (String url) {
-            setState(() {});
             WidgetsBinding.instance.addPostFrameCallback((_) {
-              setState(() {
-                isLoaded = true;
-              });
+              if (mounted) {
+                setState(() {
+                  isLoaded = true;
+                });
+              }
             });
           },
           onWebResourceError: (WebResourceError error) {},
