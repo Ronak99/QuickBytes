@@ -45,7 +45,7 @@ final class NewsState extends Equatable {
       userArticles: userArticles ?? this.userArticles,
       isFetchingMoreData: isFetchingMoreData ?? this.isFetchingMoreData,
       index: index,
-      articleToSelect: articleToSelect ?? this.articleToSelect,
+      articleToSelect: articleToSelect,
       isFetchingInitialData:
           isFetchingInitialData ?? this.isFetchingInitialData,
     );

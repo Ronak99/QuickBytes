@@ -64,7 +64,7 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
     ArticleSelectedAtIndex event,
     Emitter<NewsState> emit,
   ) {
-    emit(state.copyWith(index: event.index));
+    emit(state.copyWith(articleToSelect: null, index: event.index));
   }
 
   void _onArticleSelect(ArticleSelected event, Emitter<NewsState> emit) {
