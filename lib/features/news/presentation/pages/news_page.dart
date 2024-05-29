@@ -87,9 +87,7 @@ class _NewsPageState extends State<NewsPage>
                       ),
                     ),
                   ),
-                NewsPageView(
-                  articles: state.userArticles,
-                ),
+                NewsPageView(articles: state.userArticles),
               ],
             );
           },
