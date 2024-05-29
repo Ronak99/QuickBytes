@@ -60,7 +60,7 @@ class _NewsPageState extends State<NewsPage>
           builder: (context, state) {
             if (state.isFetchingInitialData) {
               return const AdaptiveProgressIndicator();
-            } else if (state.userArticles.isNotEmpty) {
+            } else if (state.userArticles.isEmpty) {
               return const CaughtUpView();
             }
 

@@ -42,9 +42,12 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
     int articleIndex = userArticles.indexOf(event.article);
 
     if (articleIndex == -1) {
-      if (!cardSwiperController.hasClients) return;
-      int currentIndex = cardSwiperController.page!.toInt();
+      // if this article does not exists in the list
+      int currentIndex = 0;
 
+      if (cardSwiperController.hasClients) {
+        currentIndex = cardSwiperController.page!.toInt();
+      }
       // add the selected article to current index, to allow users keep on scrolling without affecting
       // previously viewed news
       userArticles.insert(currentIndex, event.article);
