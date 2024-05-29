@@ -32,6 +32,8 @@ class _WebViewState extends State<WebView> {
 
     selectedArticle = context.read<NewsBloc>().state.selectedArticle;
 
+    if (selectedArticle == null) return;
+
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setBackgroundColor(const Color(0x00000000))
