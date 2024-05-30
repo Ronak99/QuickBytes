@@ -15,7 +15,7 @@ import 'package:quickbytes_app/features/settings/presentation/pages/settings_pag
 part 'routes.g.dart';
 
 // generation command
-// flutter pub run build_runner build
+// dart pub run build_runner build
 
 @TypedGoRoute<BasePageRoute>(
   path: '/',

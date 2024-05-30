@@ -8,20 +8,6 @@ import 'package:quickbytes_app/core/navigation/routes.dart';
 GoRouter get appRouter => GoRouter(
       routes: $appRoutes,
       initialLocation: '/home',
-      // redirect: (BuildContext context, GoRouterState state) {
-      //   switch (appStatus) {
-      //     case AppStatus.authenticated:
-      //       bool isOnAuthPage = state.matchedLocation == "/auth";
-      //       if (isOnAuthPage) {
-      //         return HomePageRoute().location;
-      //       } else {
-      //         return null;
-      //       }
-
-      //     default:
-      //       return AuthPageRoute().location;
-      //   }
-      // },
       errorBuilder: (BuildContext context, GoRouterState state) {
         return ErrorPage(
           message: state.error?.message ?? "An error occurred!",
