@@ -50,6 +50,6 @@ class AssetConstants {
 class AppConfig {
   static const version = '1.0.0';
   static const versionCode = '1';
-  static const patch = '0';
+  static const patch = '1';
   static const name = 'QuickBytes';
 }
