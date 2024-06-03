@@ -1,9 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:quickbytes_app/features/news/presentation/widgets/article_card/components/article_footer_two.dart';
 import 'package:quickbytes_app/shared/utils/constants.dart';
-
-import 'article_footer.dart';
 
 class ArticleContentView extends StatelessWidget {
   final String title;

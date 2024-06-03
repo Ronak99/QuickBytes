@@ -17,6 +17,7 @@ import 'package:quickbytes_app/shared/widgets/action_button.dart';
 import 'package:quickbytes_app/shared/widgets/blur_view.dart';
 import 'package:quickbytes_app/shared/widgets/cached_image.dart';
 import 'package:quickbytes_app/shared/widgets/home_back_action_handler.dart';
+import 'package:quickbytes_app/shared/widgets/quickbytes_animated_logo.dart';
 
 final pageStorageBucket = PageStorageBucket();
 
@@ -59,7 +60,7 @@ class _NewsPageState extends State<NewsPage>
         body: BlocBuilder<NewsBloc, NewsState>(
           builder: (context, state) {
             if (state.isFetchingInitialData) {
-              return const AdaptiveProgressIndicator();
+              return const QuickbytesAnimatedLogo();
             } else if (state.userArticles.isEmpty) {
               return const CaughtUpView();
             }

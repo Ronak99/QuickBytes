@@ -44,6 +44,7 @@ class AssetConstants {
   static const preference = "assets/images/preference.svg";
   static const setting = "assets/images/setting.svg";
   static const checkmark = "assets/lottie/checkmark.lottie";
+  static const logoForeground = "assets/images/logo_foreground.svg";
 }
 
 class AppConfig {
