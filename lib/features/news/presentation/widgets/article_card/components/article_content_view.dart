@@ -65,8 +65,6 @@ class ArticleContentView extends StatelessWidget {
                   ),
                 ),
               ),
-              // const Spacer(),
-              // const ArticleFooterTwo(),
             ],
           ),
         ),
