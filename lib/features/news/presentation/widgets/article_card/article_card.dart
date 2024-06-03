@@ -19,7 +19,10 @@ class ArticleCard extends StatelessWidget {
       margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
       child: Column(
         children: [
-          ArticleImageView(image: article.image),
+          Expanded(
+            flex: 2,
+            child: ArticleImageView(image: article.image),
+          ),
           // Flexible remains a part of Column instead of being separated into ArticleContentView
           // as it increases code-readability and intuitiveness.
           Flexible(

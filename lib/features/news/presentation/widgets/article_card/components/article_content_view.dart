@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:quickbytes_app/features/news/presentation/widgets/article_card/components/article_footer_two.dart';
 import 'package:quickbytes_app/shared/utils/constants.dart';
@@ -44,14 +45,25 @@ class ArticleContentView extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              AutoSizeText(
                 title,
-                style: Theme.of(context).textTheme.displayLarge,
+                style: TextStyle(
+                  color: ColorConstants.primaryDarkContrast,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 24,
+                ),
+                maxLines: 2,
               ),
-              const SizedBox(height: 12),
-              Text(
-                content,
-                style: Theme.of(context).textTheme.displayMedium,
+              const SizedBox(height: 8),
+              Expanded(
+                child: AutoSizeText(
+                  content,
+                  style: TextStyle(
+                    color: ColorConstants.primaryDarkContrast.withOpacity(.7),
+                    fontWeight: FontWeight.w300,
+                    fontSize: 20,
+                  ),
+                ),
               ),
               // const Spacer(),
               // const ArticleFooterTwo(),
