@@ -20,7 +20,7 @@ class WebView extends StatefulWidget {
 }
 
 class _WebViewState extends State<WebView> {
-  late WebViewController controller;
+  WebViewController? controller;
   bool isLoaded = false;
   int loadingProgress = 0;
   Article? selectedArticle;
@@ -33,49 +33,54 @@ class _WebViewState extends State<WebView> {
 
     if (selectedArticle == null) return;
 
-    controller = WebViewController()
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setBackgroundColor(const Color(0x00000000))
-      ..setNavigationDelegate(
-        NavigationDelegate(
-          onProgress: (int progress) {
-            // Update loading bar.
-            if (mounted) {
-              setState(() {
-                loadingProgress = progress;
-              });
-            }
-          },
-          onPageFinished: (String url) {
-            WidgetsBinding.instance.addPostFrameCallback((_) {
+    try {
+      controller = WebViewController()
+        ..setJavaScriptMode(JavaScriptMode.unrestricted)
+        ..setBackgroundColor(const Color(0x00000000))
+        ..setNavigationDelegate(
+          NavigationDelegate(
+            onProgress: (int progress) {
+              // Update loading bar.
               if (mounted) {
                 setState(() {
-                  isLoaded = true;
+                  loadingProgress = progress;
                 });
               }
-            });
-          },
-          onWebResourceError: (WebResourceError error) {},
-          onNavigationRequest: (NavigationRequest request) {
-            String domain = Utils.extractDomain(request.url);
-            switch (domain) {
-              case 'instagram.com':
-              case 'facebook.com':
-              case 'twitter.com':
-                Utils.handleUrlExternally(Uri.parse(request.url));
-                return NavigationDecision.prevent;
-              default:
-                return NavigationDecision.navigate;
-            }
-          },
-        ),
-      )
-      ..loadRequest(Uri.parse(selectedArticle!.sourceUrl));
+            },
+            onPageFinished: (String url) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                if (mounted) {
+                  setState(() {
+                    isLoaded = true;
+                  });
+                }
+              });
+            },
+            onWebResourceError: (WebResourceError error) {},
+            onNavigationRequest: (NavigationRequest request) {
+              String domain = Utils.extractDomain(request.url);
+              switch (domain) {
+                case 'instagram.com':
+                case 'facebook.com':
+                case 'twitter.com':
+                  Utils.handleUrlExternally(Uri.parse(request.url));
+                  return NavigationDecision.prevent;
+                default:
+                  return NavigationDecision.navigate;
+              }
+            },
+          ),
+        )
+        ..loadRequest(Uri.parse(selectedArticle!.sourceUrl));
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     if (selectedArticle == null) return const Scaffold();
+    if (controller == null) return const Scaffold();
 
     return HomeBackActionHandler(
       child: Scaffold(
@@ -109,7 +114,7 @@ class _WebViewState extends State<WebView> {
               children: [
                 Flexible(
                   child: WebViewWidget(
-                    controller: controller,
+                    controller: controller!,
                     gestureRecognizers: {
                       Factory(() => PlatformViewVerticalGestureRecognizer()),
                     },
