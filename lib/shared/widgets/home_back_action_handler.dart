@@ -35,7 +35,7 @@ class _HomeBackActionHandlerState extends State<HomeBackActionHandler> {
     final HomeBloc homeBloc = context.read<HomeBloc>();
 
     return PopScope(
-      canPop: isReady ? homeBloc.canPop : true,
+      canPop: false,
       onPopInvoked: isReady ? (didPop) => homeBloc.onPop(context) : null,
       child: widget.child,
     );
