@@ -19,8 +19,6 @@ import 'package:quickbytes_app/shared/widgets/cached_image.dart';
 import 'package:quickbytes_app/shared/widgets/home_back_action_handler.dart';
 import 'package:quickbytes_app/shared/widgets/quickbytes_animated_logo.dart';
 
-final pageStorageBucket = PageStorageBucket();
-
 class NewsPage extends StatefulWidget {
   const NewsPage({super.key});
 
