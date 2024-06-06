@@ -29,4 +29,12 @@ class PlatformChannelHandler {
 
     return pendingNotificationList.map((e) => e.toString()).toList();
   }
+
+  Future<void> nativeCrash() async {
+    try {
+      await _platformChannel.invokeMethod("crash_app");
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
 }

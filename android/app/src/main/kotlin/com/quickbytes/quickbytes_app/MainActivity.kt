@@ -31,6 +31,9 @@ class MainActivity: FlutterActivity(), EventChannel.StreamHandler {
                     FlutterMultiDexApplication.resetPendingNotificationList();
                     result.success(true)
                 }
+                if (call.method == "crash_app") {
+                    throw RuntimeException("Native Crash")
+                }
             }
         }
     }
