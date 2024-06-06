@@ -1,7 +1,7 @@
 class ApiConfig {
-  // static const String baseUrl = "http://192.168.0.102:8081";
-  static const String baseUrl =
-      "http://quickbytes-backend-production.up.railway.app";
+  static const String baseUrl = "http://192.168.1.3:8081";
+  // static const String baseUrl =
+  //     "http://quickbytes-backend-production.up.railway.app";
   static const String version = "/v1";
 }
 
@@ -28,6 +28,12 @@ class APIRoutes {
   static Uri categories({Map<String, dynamic>? queryParameters}) =>
       ApiUrl.parse(
         endpoint: "/categories",
+        queryParameters: queryParameters,
+      );
+
+  static Uri notifications({Map<String, dynamic>? queryParameters}) =>
+      ApiUrl.parse(
+        endpoint: "/notifications",
         queryParameters: queryParameters,
       );
 }
