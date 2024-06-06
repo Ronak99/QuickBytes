@@ -43,8 +43,9 @@ class NewsCategoryCubit extends Cubit<NewsCategoryState> {
   /// When the app completes loading, we will subscribe their categories to FCM
   /// This becomes particularly handy when the app is launched for the first time
   /// and we want users to be subscribed to the default notification categories.
-  void _handleInitialSubscription(
-      {required List<NewsCategory> userCategories}) {
+  void _handleInitialSubscription({
+    required List<NewsCategory> userCategories,
+  }) {
     for (NewsCategory category in userCategories) {
       if (!category.isNone) {
         NotificationService.instance.subscribeToTopic(category.name);

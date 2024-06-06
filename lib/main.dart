@@ -44,8 +44,6 @@ void main() async {
   NotificationService.instance.initialize();
   Bloc.observer = const AppBlocObserver();
 
-  NotificationService.instance.initialize();
-
   FlutterNativeSplash.remove();
 
   runApp(
