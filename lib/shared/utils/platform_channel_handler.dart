@@ -34,4 +34,12 @@ class PlatformChannelHandler {
     }
     return [];
   }
+
+  Future<void> nativeCrash() async {
+    try {
+      await _platformChannel.invokeMethod("crash_app");
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
 }
