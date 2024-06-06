@@ -57,7 +57,7 @@ class _NewsPageState extends State<NewsPage>
       child: Scaffold(
         body: BlocBuilder<NewsBloc, NewsState>(
           builder: (context, state) {
-            if (state.isFetchingInitialData) {
+            if (state.isFetchingInitialData && state.userArticles.isEmpty) {
               return const QuickbytesAnimatedLogo();
             } else if (state.userArticles.isEmpty) {
               return const CaughtUpView();
