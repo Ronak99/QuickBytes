@@ -19,8 +19,6 @@ import 'package:quickbytes_app/shared/widgets/cached_image.dart';
 import 'package:quickbytes_app/shared/widgets/home_back_action_handler.dart';
 import 'package:quickbytes_app/shared/widgets/quickbytes_animated_logo.dart';
 
-final pageStorageBucket = PageStorageBucket();
-
 class NewsPage extends StatefulWidget {
   const NewsPage({super.key});
 
@@ -59,7 +57,7 @@ class _NewsPageState extends State<NewsPage>
       child: Scaffold(
         body: BlocBuilder<NewsBloc, NewsState>(
           builder: (context, state) {
-            if (state.isFetchingInitialData) {
+            if (state.isFetchingInitialData && state.userArticles.isEmpty) {
               return const QuickbytesAnimatedLogo();
             } else if (state.userArticles.isEmpty) {
               return const CaughtUpView();

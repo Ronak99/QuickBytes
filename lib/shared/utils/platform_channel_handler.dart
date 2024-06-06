@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/services.dart';
 import 'package:quickbytes_app/core/logs/logs.dart';
 
@@ -22,11 +24,14 @@ class PlatformChannelHandler {
   }
 
   Future<List<String>> getPendingNotifications() async {
-    List<dynamic> pendingNotificationList =
-        await _platformChannel.invokeMethod("get_pending_notifications");
+    if (Platform.isAndroid) {
+      List<dynamic> pendingNotificationList =
+          await _platformChannel.invokeMethod("get_pending_notifications");
 
-    if (pendingNotificationList.isEmpty) return [];
+      if (pendingNotificationList.isEmpty) return [];
 
-    return pendingNotificationList.map((e) => e.toString()).toList();
+      return pendingNotificationList.map((e) => e.toString()).toList();
+    }
+    return [];
   }
 }
