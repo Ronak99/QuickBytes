@@ -41,7 +41,7 @@ void main() async {
 
   await authenticationRepository.user.first;
 
-  NotificationService.instance.initialize();
+  await NotificationService.instance.initialize();
   Bloc.observer = const AppBlocObserver();
 
   FlutterNativeSplash.remove();

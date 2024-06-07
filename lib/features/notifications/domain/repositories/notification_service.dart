@@ -20,13 +20,18 @@ class NotificationService {
     );
 
     NotificationSettings notificationSettings = await requestPermissions();
-    String? token = await getToken();
 
-    try {
-      await apiRepository.notifications.registerToken(token: token);
-    } on ApiException catch (e) {
-      print(e.message);
+    if (notificationSettings.authorizationStatus ==
+        AuthorizationStatus.authorized) {
+      String? token = await getToken();
+
+      try {
+        await apiRepository.notifications.registerToken(token: token);
+      } on ApiException catch (e) {
+        print(e.message);
+      }
     }
+    return;
   }
 
   Future<String?> getToken() async {
