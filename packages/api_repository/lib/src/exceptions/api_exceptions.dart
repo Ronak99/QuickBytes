@@ -18,9 +18,14 @@ class ApiException implements Exception {
       case DioExceptionType.badResponse:
         String message = 'Bad Response!';
         if (dioException.response != null) {
-          Map map = dioException.response!.data as Map;
-          if (map.containsKey('message')) {
-            message = dioException.response!.data['message'];
+          if (dioException.response!.data is Map) {
+            Map map = dioException.response!.data as Map;
+            if (map.containsKey('message')) {
+              message = dioException.response!.data['message'];
+            }
+          } else {
+            message = dioException.response!.data.toString();
+            print(message);
           }
         }
         return ApiException(message: message);

@@ -6,15 +6,7 @@ class NotificationEndpoint {
   Future<void> registerToken({required String? token}) async {
     try {
       Uri uri = APIRoutes.notifications();
-
-      Response<Map<String, dynamic>> response = await Dio()
-          .postUri<Map<String, dynamic>>(uri, data: {"token": token});
-
-      if (response.data == null) {
-        return;
-      }
-
-      return response.data!["data"];
+      await Dio().postUri(uri, data: {"token": token});
     } on DioException catch (e) {
       throw ApiException.fromDioException(e);
     }
