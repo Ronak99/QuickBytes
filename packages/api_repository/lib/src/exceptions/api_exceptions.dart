@@ -24,8 +24,8 @@ class ApiException implements Exception {
               message = dioException.response!.data['message'];
             }
           } else {
+            print("DIO EXCEPTION: ${dioException.response.toString()}");
             message = dioException.response!.data.toString();
-            print(message);
           }
         }
         return ApiException(message: message);
