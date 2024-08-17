@@ -119,3 +119,6 @@ quickbytes_app/build/
 
 # secret file
 serviceAccountKey.json
+
+/keystore
+*.txt
