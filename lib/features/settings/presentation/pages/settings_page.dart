@@ -94,7 +94,11 @@ class SettingsBlock extends StatelessWidget {
         children: [
           Text(
             title,
-            style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+            style: TextStyle(
+              fontWeight: FontWeight.w400,
+              fontSize: 14,
+              color: Colors.white.withOpacity(.6),
+            ),
           ),
           const SizedBox(height: 12),
           ...items,
@@ -133,7 +137,8 @@ class SettingsListItem extends StatelessWidget {
                 ),
         ),
         margin: const EdgeInsets.symmetric(horizontal: 6),
-        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+        height: 50,
+        padding: const EdgeInsets.symmetric(horizontal: 8),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -142,10 +147,12 @@ class SettingsListItem extends StatelessWidget {
               children: [
                 SvgPicture.asset(
                   icon,
-                  height: 25,
-                  width: 25,
+                  height: 18,
+                  width: 18,
                   colorFilter: ColorFilter.mode(
-                      Colors.white.withOpacity(.85), BlendMode.srcIn),
+                    Colors.white.withOpacity(.6),
+                    BlendMode.srcIn,
+                  ),
                 ),
                 const SizedBox(width: 8),
                 Text(
