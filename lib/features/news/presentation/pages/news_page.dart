@@ -40,6 +40,7 @@ class _NewsPageState extends State<NewsPage>
     final newsBloc = context.read<NewsBloc>();
 
     await newsCategoryCubit.queryAllCategories();
+
     newsBloc.add(
       UserArticlesRequested(
         userCategories:

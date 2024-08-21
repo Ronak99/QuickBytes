@@ -32,10 +32,12 @@ final class NewsState extends Equatable {
         isFetchingInitialData,
       ];
 
+  // Ensured that index resets on it's own, this guarantees that news_state hold it's own index value.
   NewsState copyWith({
     List<Article>? allArticles,
     List<Article>? userArticles,
-    int index = 0,
+    int? index,
+    // int index = 0,
     Article? articleToSelect,
     bool? isFetchingMoreData,
     bool? isFetchingInitialData,
@@ -44,7 +46,7 @@ final class NewsState extends Equatable {
       allArticles: allArticles ?? this.allArticles,
       userArticles: userArticles ?? this.userArticles,
       isFetchingMoreData: isFetchingMoreData ?? this.isFetchingMoreData,
-      index: index,
+      index: index ?? this.index,
       articleToSelect: articleToSelect,
       isFetchingInitialData:
           isFetchingInitialData ?? this.isFetchingInitialData,

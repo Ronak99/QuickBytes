@@ -135,7 +135,7 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
         state.userArticles.isNotEmpty ? state.userArticles.last.id : null;
 
     if (cursorId == null) {
-      emit(state.copyWith(isFetchingInitialData: true));
+      emit(state.copyWith(isFetchingInitialData: true, index: state.index));
     }
 
     List<Article> articles = await _newsRepository.queryAllArticles(
@@ -148,6 +148,7 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
     emit(state.copyWith(
       userArticles: updatedArticles,
       isFetchingInitialData: false,
+      index: state.index,
     ));
   }
 
